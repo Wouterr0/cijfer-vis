@@ -1,13 +1,26 @@
 'use strict';
 
+var colors = {
+    'COMB': 'LightSkyBlue',
+    'SUBJ': 'LightGreen',
+    'PO': 'Lavender',
+    'MET': 'LightSalmon',
+    'SET': 'LightCoral',
+}
+
 function fill_div_grade(div, grade) {
     let total_weight = d3.sum(grade.assignments, assignment => assignment.weight);
     if (grade.type === 'SUBJ') {
         for (const assignment of grade.assignments) {
-            div.append('div')
+            let sub_div = div.append('div')
+                .style('display', 'flex')
                 .style('width', `${assignment.weight / total_weight * 100}%`)
-                .style('margin', '2px')
-                .style('background-color', 'LightBlue');
+                .style('gap', '5px')
+                .style('padding', '5px')
+                .style('background-color', colors[assignment.type]);
+            if (assignment.type === 'COMB') {
+                fill_div_grade(sub_div, assignment)
+            }
         }
     } else if (grade.type === 'COMB') {
         for (const assignment of grade.assignments) {
@@ -16,14 +29,16 @@ function fill_div_grade(div, grade) {
                 let sub_div = div.append('div')
                     .style('display', 'flex')
                     .style('width', `${assignment.weight / total_weight * 100}%`)
-                    .style('margin', '2px')
-                    .style('background-color', 'LightGreen');
+                    .style('gap', '5px')
+                    .style('padding', '5px')
+                    .style('background-color', colors[assignment.type]);
                 fill_div_grade(sub_div, assignment);
             } else if (['PO', 'MET', 'SET'].includes(assignment.type)) {
                 div.append('div')
                     .style('width', `${assignment.weight / total_weight * 100}%`)
-                    .style('margin', '2px')
-                    .style('background-color', 'LightBlue');
+                    .style('gap', '5px')
+                    .style('padding', '5px')
+                    .style('background-color', colors[assignment.type]);
             }
         }
     }
@@ -42,7 +57,8 @@ for (const grade of schema) {
         .attr('class', 'noout')
         .style('width', '100%')
         .style('height', '100%')
-        .style('display', 'flex');
+        .style('display', 'flex')
+        .style('gap', '5px')
 
     row.append('td')
         .style('width', '10%')
