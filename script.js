@@ -8,39 +8,28 @@ var colors = {
     'SET': 'LightCoral',
 }
 
-function fill_div_grade(div, grade) {
-    let total_weight = d3.sum(grade.assignments, assignment => assignment.weight);
-    if (grade.type === 'SUBJ') {
-        for (const assignment of grade.assignments) {
-            let sub_div = div.append('div')
-                .style('display', 'flex')
-                .style('width', `${assignment.weight / total_weight * 100}%`)
-                .style('gap', '5px')
-                .style('padding', '5px')
-                .style('background-color', colors[assignment.type]);
-            if (assignment.type === 'COMB') {
-                fill_div_grade(sub_div, assignment)
-            }
+function get_total_subweight(assignment) {
+    return d3.sum(assignment.assignments, assignment => assignment.weight);
+}
+
+function add_assignment(div, color, weight_percent) {
+    return div.append('div')
+        .attr('class', 'assign-block')
+        .style('width', `${weight_percent}%`)
+        .style('background-color', color);
+}
+
+function fill_div_assignment(div, assignment, weight, first=true) {
+    if (assignment.type === 'SUBJ' || assignment.type === 'COMB') {
+        if (!first) {
+            div = add_assignment(div, colors[assignment.type], weight ? weight : 100);
         }
-    } else if (grade.type === 'COMB') {
-        for (const assignment of grade.assignments) {
-            console.log(assignment);
-            if (assignment.type === 'SUBJ') {
-                let sub_div = div.append('div')
-                    .style('display', 'flex')
-                    .style('width', `${assignment.weight / total_weight * 100}%`)
-                    .style('gap', '5px')
-                    .style('padding', '5px')
-                    .style('background-color', colors[assignment.type]);
-                fill_div_grade(sub_div, assignment);
-            } else if (['PO', 'MET', 'SET'].includes(assignment.type)) {
-                div.append('div')
-                    .style('width', `${assignment.weight / total_weight * 100}%`)
-                    .style('gap', '5px')
-                    .style('padding', '5px')
-                    .style('background-color', colors[assignment.type]);
-            }
+        let total_weight = get_total_subweight(assignment);
+        for (const sub_assign of assignment.assignments) {
+            fill_div_assignment(div, sub_assign, sub_assign.weight / total_weight * 100, false);
         }
+    } else if (['PO', 'MET', 'SET'].includes(assignment.type)) {
+        add_assignment(div, colors[assignment.type], weight)
     }
 }
 
@@ -64,7 +53,7 @@ for (const grade of schema) {
         .style('width', '10%')
         .text('6,9');
 
-    fill_div_grade(assign, grade);
+    fill_div_assignment(assign, grade);
     // console.log(grade);
 }
 
