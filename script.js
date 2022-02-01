@@ -8,6 +8,10 @@ var colors = {
     'COMB': 'LightSkyBlue',
 }
 
+function nl_num(n) {
+    return n.toLocaleString('nl');
+}
+
 function add_prop(info, key, value) {
     info.append('span')
         .attr('class', 'info-key')
@@ -34,19 +38,24 @@ function set_info(assignment) {
                 .text(type);
         }
     } else {
-        console.log(assignment);
         info.attr('class', 'info-props')
         add_prop(info, 'soort', assignment.type)
             .style('background-color', colors[assignment.type])
             .style('padding', '0 .25em');
-        add_prop(info, 'weging', `${assignment.global_weight_percent}%`);
-        add_prop(info, 'leerjaar', assignment.year);
-        add_prop(info, 'periode', assignment.period);
-        if (assignment.domains) {
-            add_prop(info, 'domeinen', assignment.domains.join(', '));
+        if (['VAK', 'COMB'].includes(assignment.type)) {
+            add_prop(info, 'naam', assignment.fullname);
         }
-        add_prop(info, 'beschrijving', assignment.description);
-        
+        add_prop(info, 'weging', `${nl_num(assignment.global_weight_percent)}%`);
+        if (['PO', 'MET', 'SET'].includes(assignment.type)) {
+            add_prop(info, 'leerjaar', assignment.year);
+            add_prop(info, 'periode', assignment.period);
+            if (assignment.domains) {
+                add_prop(info, 'domeinen', assignment.domains.join(', '));
+            }
+            add_prop(info, 'beschrijving', assignment.description)
+                .style('white-space', 'pre-wrap');
+        }
+
 
 
     }
@@ -62,9 +71,11 @@ function add_assignment(assignment, div, color, weight_percent) {
         .style('width', `${weight_percent}%`)
         .style('background-color', color)
         .on('mouseover', (e) => {
+            e.stopPropagation();
             set_info(assignment);
         })
         .on('mouseout', (e) => {
+            e.stopPropagation();
             set_info();
         });
 }
@@ -97,7 +108,8 @@ for (const grade of schema) {
         .append('div')
         .attr('class', 'noout assign-block')
         .style('width', '100%')
-        .style('height', '100%');
+        .style('height', '100%')
+        .style('padding', '0');
 
     fill_div_assignment(assign, grade);
     // console.log(grade);
