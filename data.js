@@ -1,6 +1,6 @@
 schema = [
     {
-        type: "SUBJ",
+        type: "VAK",
         fullname: "Natuurkunde",
         shortname: "Na.",
         assignments: [
@@ -47,7 +47,7 @@ schema = [
         ]
     },
     {
-        type: "SUBJ",
+        type: "VAK",
         fullname: "Scheikunde",
         shortname: "Sck.",
         assignments: [
@@ -99,7 +99,7 @@ schema = [
         shortname: "Comb.",
         assignments: [
             {
-                type: "SUBJ",
+                type: "VAK",
                 fullname: "Maatschappijleer",
                 shortname: "Maat.",
                 assignments: [
@@ -139,7 +139,7 @@ schema = [
                 weight: 1
             },
             {
-                type: "SUBJ",
+                type: "VAK",
                 fullname: "Algemene Natuurwetenschappen (Filosofie en Technologie)",
                 shortname: "ANW",
                 assignments: [
@@ -187,7 +187,7 @@ schema = [
                 weight: 1
             },
             {
-                type: "SUBJ",
+                type: "VAK",
                 fullname: "Culturele en Kunstzinnige vorming",
                 shortname: "CKV",
                 assignments: [

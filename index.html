@@ -19,13 +19,13 @@
     <style>
         body {
             font-family: 'Courier New', Courier, monospace;
-            font-size: 40px;
+            font-size: min(5vw, 2.5em);
         }
 
         table {
             width: 100%;
             height: 1px;
-            border-spacing: 5px;
+            border-spacing: .1em;
         }
         
         th, tr, td {
@@ -34,12 +34,31 @@
 
         .assign-block {
             display: flex;
-            gap: 5px;
-            padding: 5px;
+            gap: .1em;
+            padding: .1em;
         }
 
         table, th, tr, td, div:not(.noout) {
             /* border: 1px solid black; */
+        }
+
+        .heading {
+            font-weight: 700;
+            text-align: center;
+        }
+
+        #info {
+            /* width: 400px;
+            height: 500px; */
+            display: inline-block;
+            background: GhostWhite;
+            border: .1em solid DarkGrey;
+            padding: .5em 5%;
+        }
+
+        .legend-item {
+            margin: .1em 0;
+            padding: .1em .25em;
         }
 
     </style>
@@ -49,10 +68,9 @@
     <table id="overview">
         <th>VAK</th>
         <th>OPDRACHTEN</th>
-        <th>GEMIDELDE</th>
     </table>
-
-    
+    <br>
+    <div id="info"></div>
 
 </body>
 
