@@ -18,7 +18,9 @@
 
     <style>
         :root {
+            --select-border-size: .08em;
             --assign-gap: .2em;
+            --assign-padd: calc(var(--assign-gap) - var(--select-border-size));
         }
 
         body {
@@ -39,7 +41,9 @@
         .assign-block {
             display: flex;
             gap: var(--assign-gap);
-            padding: var(--assign-gap);
+            padding: var(--assign-padd);
+            border: var(--select-border-size) solid transparent;
+            /* border-radius: 2em; */
         }
 
         table, th, tr, td, div:not(.noout) {
@@ -56,7 +60,7 @@
             height: 500px; */
             display: inline-block;
             background: GhostWhite;
-            border: .1em solid DarkGrey;
+            border: .2rem solid DarkGrey;
         }
 
         .info-legend {
@@ -65,8 +69,8 @@
         }
 
         .info-props {
-            font-size: .75em;
-            width: max(30%, 400px);
+            font-size: .7em;
+            width: 15em;
             padding: .5em;
         }
 
@@ -77,6 +81,10 @@
 
         .info-key {
             font-weight: 700;
+        }
+
+        #selected-assign {
+            border: var(--select-border-size) solid rgba(0, 0, 0, .4);
         }
 
     </style>

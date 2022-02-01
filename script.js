@@ -45,7 +45,7 @@ function set_info(assignment) {
         if (['VAK', 'COMB'].includes(assignment.type)) {
             add_prop(info, 'naam', assignment.fullname);
         }
-        add_prop(info, 'weging', `${nl_num(assignment.global_weight_percent)}%`);
+        add_prop(info, 'cijfer weging', `${nl_num(assignment.global_weight_percent)}%`);
         if (['PO', 'MET', 'SET'].includes(assignment.type)) {
             add_prop(info, 'leerjaar', assignment.year);
             add_prop(info, 'periode', assignment.period);
@@ -55,9 +55,6 @@ function set_info(assignment) {
             add_prop(info, 'beschrijving', assignment.description)
                 .style('white-space', 'pre-wrap');
         }
-
-
-
     }
 }
 
@@ -66,18 +63,35 @@ function get_total_subweight(assignment) {
 }
 
 function add_assignment(assignment, div, color, weight_percent) {
-    return div.append('div')
-        .attr('class', 'assign-block')
+    let assign_div = div.append('div');
+    assign_div.attr('class', 'assign-block')
         .style('width', `${weight_percent}%`)
         .style('background-color', color)
         .on('mouseover', (e) => {
             e.stopPropagation();
-            set_info(assignment);
+            assign_div.style('filter', 'brightness(85%)');
+            if (d3.select('#selected-assign').empty()) {
+                set_info(assignment);
+            }
         })
         .on('mouseout', (e) => {
             e.stopPropagation();
-            set_info();
+            assign_div.style('filter', null);
+            if (d3.select('#selected-assign').empty()) {
+                set_info();
+            }
+        })
+        .on('click', (e) => {
+            e.stopPropagation();
+            if (assign_div.attr('id') === 'selected-assign') {
+                assign_div.attr('id', null);
+            } else {
+                d3.select('#selected-assign').attr('id', null);
+                assign_div.attr('id', 'selected-assign');
+                set_info(assignment);
+            }
         });
+    return assign_div;
 }
 
 function fill_div_assignment(div, assignment, weight, first = true, global_weight_percent = 100) {
@@ -109,7 +123,8 @@ for (const grade of schema) {
         .attr('class', 'noout assign-block')
         .style('width', '100%')
         .style('height', '100%')
-        .style('padding', '0');
+        .style('padding', '0')
+        .style('border-width', '0');
 
     fill_div_assignment(assign, grade);
     // console.log(grade);
