@@ -1,15 +1,74 @@
 'use strict';
 
-var colors = {
-    'PO': 'LightGreen',
-    'SET': 'LightCoral',
-    'MET': 'LightSalmon',
-    'VAK': 'MediumSlateBlue',
-    'COMB': 'LightSkyBlue',
+const colors = {
+    'PO': [144, 238, 144],
+    'SET': [240, 128, 128],
+    'MET': [255, 160, 122],
+    'VAK': [123, 104, 238],
+    'COMB': [135, 206, 250],
 }
+
+let mode = 'PLAN';  // RES mode or PLAN mode
+let selected_assign;
+let results = {};  // TODO: load saved results from localStorage if available
 
 function nl_num(n) {
     return n.toLocaleString('nl');
+}
+
+function gen_id() {
+    return Math.random().toString(36).slice(2, 12);
+}
+
+function rgb_to_str(rgb) {
+    return `rgb(${rgb.join(', ')})`;
+}
+
+function get_assign_by_id(id, assignments = schema) {
+    for (const assign of assignments) {
+        if (assign.id === id) {
+            return assign;
+        }
+        if (assign.assignments) {
+            let res = get_assign_by_id(id, assign.assignments);
+            if (res) {
+                return res;
+            }
+        }
+    }
+}
+
+function select_id(id) {
+    return d3.select(`[id="${id}"]`);
+}
+
+function apply_assign_result(id) {
+    if (!(id in results)) {
+        return;
+    }
+    let assign_div = select_id(id);
+    const dark_factor = .7;
+    let color = colors[get_assign_by_id(id).type];
+    let dark_color = rgb_to_str(color.map(i => i * dark_factor));
+    color = rgb_to_str(color)
+    let fill_percent = (results[id] - 1) / 9 * 100;
+    let s = `border-box linear-gradient(0deg, ${dark_color} 0%, ${dark_color} ${fill_percent}%, ${color} ${fill_percent}%, ${color} 100%)`;
+    console.log(s);
+    assign_div
+        .style('background', s);
+
+    /*
+    color_strings = [`${colors[0]} 0%`];
+    for (var i = 1; i < colors.length; i++) {
+        var color_percent = (1 - 1 / 2 ** i) * 100 + "%";
+        color_strings.push(`${colors[i - 1]} ${color_percent}`);
+        color_strings.push(`${colors[i]} ${color_percent}`);
+    }
+    color_strings.push(`${colors[colors.length - 1]} 100%`);
+    document.body.style.background = `linear-gradient(90deg, ${color_strings.join(
+        ", "
+    )})`;
+    */
 }
 
 function add_prop(info, key, value) {
@@ -23,10 +82,10 @@ function add_prop(info, key, value) {
     return value_span;
 }
 
-function set_info(assignment) {
+function update_info() {
     let info = d3.select('#info');
     info.selectAll('*').remove();
-    if (!assignment) {
+    if (!selected_assign) {
         info.attr('class', 'info-legend')
             .append('div')
             .attr('class', 'heading')
@@ -34,62 +93,124 @@ function set_info(assignment) {
         for (const type in colors) {
             info.append('div')
                 .attr('class', 'legend-item')
-                .style('background-color', colors[type])
+                .style('background-color', rgb_to_str(colors[type]))
                 .text(type);
         }
     } else {
         info.attr('class', 'info-props')
-        add_prop(info, 'soort', assignment.type)
-            .style('background-color', colors[assignment.type])
+        add_prop(info, 'soort', selected_assign.type)
+            .style('background-color', rgb_to_str(colors[selected_assign.type]))
             .style('padding', '0 .25em');
-        if (['VAK', 'COMB'].includes(assignment.type)) {
-            add_prop(info, 'naam', assignment.fullname);
+        if (['VAK', 'COMB'].includes(selected_assign.type)) {
+            add_prop(info, 'naam', selected_assign.fullname);
         }
-        add_prop(info, 'cijfer weging', `${nl_num(assignment.global_weight_percent)}%`);
-        if (['PO', 'MET', 'SET'].includes(assignment.type)) {
-            add_prop(info, 'leerjaar', assignment.year);
-            add_prop(info, 'periode', assignment.period);
-            if (assignment.domains) {
-                add_prop(info, 'domeinen', assignment.domains.join(', '));
+        add_prop(info, 'cijfer weging', `${nl_num(selected_assign.global_weight_percent)}%`);
+        if (['PO', 'MET', 'SET'].includes(selected_assign.type)) {
+            add_prop(info, 'leerjaar', selected_assign.year);
+            add_prop(info, 'periode', selected_assign.period);
+            if (selected_assign.domains) {
+                add_prop(info, 'domeinen', selected_assign.domains.join(', '));
             }
-            add_prop(info, 'beschrijving', assignment.description)
+            add_prop(info, 'beschrijving', selected_assign.description)
                 .style('white-space', 'pre-wrap');
         }
+
+        if (!plan_mode()) {
+            let can_input = !['PO', 'MET', 'SET'].includes(selected_assign.type);
+            info.append('p');
+            info.append('label')
+                .attr('for', 'result')
+                .text('Resultaat');
+            info.append('br');
+            info.append('input')
+                .attr('id', 'result')
+                .attr('type', 'number')
+                .attr('min', '1')
+                .attr('step', '0.1')
+                .property('disabled', can_input)
+                .property('required', true)
+                .attr('lang', 'nl')
+                .node().valueAsNumber = selected_assign.id in results ? results[selected_assign.id] : 5.5;
+            info.append('input')
+                .attr('type', 'button')
+                .property('disabled', can_input)
+                .attr('value', 'invullen')
+                .on('click', () => {
+                    let result = d3.select('#result').node();
+                    if (!result.checkValidity()) {
+                        alert(result.validationMessage);
+                    } else {
+                        results[selected_assign.id] = result.valueAsNumber;
+                        apply_assign_result(selected_assign.id);
+                    }
+                });
+
+        }
     }
+}
+
+
+function set_button_text() {
+    d3.select('#mode').attr('value', (plan_mode() ? 'plannen' : 'resultaten').toUpperCase());
+}
+
+function plan_mode() {
+    return mode === 'PLAN';
+}
+
+function change_mode() {
+    mode = plan_mode() ? 'RES' : 'PLAN';
+    set_button_text();
+
+    update_info();
 }
 
 function get_total_subweight(assignment) {
     return d3.sum(assignment.assignments, assignment => assignment.weight);
 }
 
+function show_assign(assignment, selected = false) {
+    if (assignment) {
+        selected_assign = Object.assign(assignment);
+        selected_assign.selected = selected;
+    } else {
+        selected_assign = assignment;
+    }
+    update_info();
+}
+
 function add_assignment(assignment, div, color, weight_percent) {
-    let assign_div = div.append('div');
-    assign_div.attr('class', 'assign-block')
+    let assign_div = div.append('div')
+        .attr('id', assignment.id)
+        .attr('class', 'assign-block')
         .style('width', `${weight_percent}%`)
-        .style('background-color', color)
+        .style('background-color', rgb_to_str(color));
+    apply_assign_result(assignment.id);
+
+    assign_div
         .on('mouseover', (e) => {
             e.stopPropagation();
             assign_div.style('filter', 'brightness(85%)');
-            if (d3.select('#selected-assign').empty()) {
-                set_info(assignment);
+            if (!selected_assign) {
+                show_assign(assignment);
             }
         })
         .on('mouseout', (e) => {
             e.stopPropagation();
             assign_div.style('filter', null);
-            if (d3.select('#selected-assign').empty()) {
-                set_info();
+            if (!selected_assign.selected) {
+                show_assign(null);
             }
         })
         .on('click', (e) => {
             e.stopPropagation();
-            if (assign_div.attr('id') === 'selected-assign') {
-                assign_div.attr('id', null);
+            if (assign_div.attr('id') === selected_assign.id) {
+                show_assign(assignment, !selected_assign.selected);
             } else {
-                d3.select('#selected-assign').attr('id', null);
-                assign_div.attr('id', 'selected-assign');
-                set_info(assignment);
+                d3.select('.selected').classed('selected', false);
+                show_assign(assignment, true);
             }
+            assign_div.classed('selected', selected_assign.selected);
         });
     return assign_div;
 }
@@ -130,4 +251,5 @@ for (const grade of schema) {
     // console.log(grade);
 }
 
-set_info();
+update_info();
+set_button_text();
