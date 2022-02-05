@@ -8,7 +8,7 @@ const colors = {
     'COMB': [135, 206, 250],
 }
 
-let mode = 'PLAN';  // RES mode or PLAN mode
+let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;
 let results = {};  // TODO: load saved results from localStorage if available
 
@@ -84,6 +84,41 @@ function get_assign_by_id(id, assignments = schema) {
             }
         }
     }
+}
+
+function calc_avg(grade, layer_rounding = false) {
+    if (!['VAK', 'COMB'].includes(grade.type)) {
+        throw `cannot calculate average of assignment type ${grade.type}`;
+    }
+    if (grade.assignments.length === 0) {
+        console.warn(`grade of type ${grade.type} has 0 assignments`);
+        return 0;
+    }
+    let total_subweight = get_total_subweight(grade);
+
+    let weighted_sum = 0;
+    let weight_sum = 0;
+    for (const assign of grade.assignments) {
+        let score;
+        if (['PO', 'MET', 'SET'].includes(assign.type)) {
+            score = results[assign.id];
+            if (!score) {
+                continue;
+            }
+        } else {
+            score = calc_avg(assign, layer_rounding);
+            if (!score) {
+                continue;
+            }
+        }
+        let weight = assign.weight / total_subweight;
+        weighted_sum += score * weight;
+        weight_sum += weight;
+    }
+    if (weight_sum === 0) {
+        return;
+    }
+    return weighted_sum / weight_sum;  // TODO: round appropriately
 }
 
 function select_id(id) {
@@ -163,6 +198,7 @@ function update_info() {
 
         if (!plan_mode()) {
             let can_input = !['PO', 'MET', 'SET'].includes(selected_assign.type);
+
             info.append('p');
             info.append('label')
                 .attr('for', 'result')
@@ -176,7 +212,7 @@ function update_info() {
                 .property('disabled', can_input)
                 .property('required', true)
                 .attr('lang', 'nl')
-                .node().valueAsNumber = selected_assign.id in results ? results[selected_assign.id] : 5.5;
+                .node().valueAsNumber = selected_assign.id in results ? results[selected_assign.id] : (5.5);
             info.append('input')
                 .attr('type', 'button')
                 .property('disabled', can_input)
@@ -188,7 +224,7 @@ function update_info() {
                     } else {
                         results[selected_assign.id] = result.valueAsNumber;
                         save_results();
-                        apply_assign_result(selected_assign.id);
+                        show_table();
                     }
                 });
             // TODO: add remove result button
@@ -208,8 +244,9 @@ function plan_mode() {
 
 function change_mode() {
     mode = plan_mode() ? 'RES' : 'PLAN';
-    set_button_text();
 
+    show_table();
+    set_button_text();
     update_info();
 }
 
@@ -230,10 +267,13 @@ function show_assign(assignment, selected = false) {
 function add_assignment(assignment, div, color, weight_percent) {
     let assign_div = div.append('div')
         .attr('id', assignment.id)
-        .attr('class', 'assign-block')
+        .classed('assign-block', true)
+        .classed('selected', selected_assign && assignment.id === selected_assign.id)
         .style('width', `${weight_percent}%`)
         .style('background-color', rgb_to_str(color));
-    apply_assign_result(assignment.id);
+    if (!plan_mode()) {
+        apply_assign_result(assignment.id);
+    }
 
     assign_div
         .on('mouseover', (e) => {
@@ -279,27 +319,48 @@ function fill_div_assignment(div, assignment, weight, first = true, global_weigh
     }
 }
 
-load_results();
+function show_table() {
+    let table = d3.select('#overview');
+    table.selectChildren().remove();
 
-for (const grade of schema) {
-
-    let row = d3.select('#overview')
-        .append('tr')
-
-    row.append('td')
-        .text(grade.shortname)
+    table.append('th')
+        .text('VAK')
         .style('width', '10%');
-    let assign = row.append('td')
-        .append('div')
-        .attr('class', 'noout assign-block')
-        .style('width', '100%')
-        .style('height', '100%')
-        .style('padding', '0')
-        .style('border-width', '0');
+    table.append('th')
+        .text('OPDRACHTEN');
+    if (!plan_mode()) {
+        table.append('th')
+            .text('GEM.')
+            .style('width', '10%');
+    }
 
-    fill_div_assignment(assign, grade);
-    // console.log(grade);
+    for (const grade of schema) {
+        let row = table.append('tr');
+
+        row.append('td')
+            .text(grade.shortname);
+        let assign = row.append('td')
+            .append('div')
+            .attr('class', 'noout assign-block')
+            .style('width', '100%')
+            .style('height', '100%')
+            .style('padding', '0')
+            .style('border-width', '0');
+        if (!plan_mode()) {
+            let avg = calc_avg(grade, true);
+            row.append('td')
+                .text(avg ? nl_num(avg) : '-');
+        }
+
+        fill_div_assignment(assign, grade);
+        // console.log(grade);
+    }
 }
 
-update_info();
+// TODO: ensure no duplicate id's
+
+load_results();
+
+show_table();
 set_button_text();
+update_info();

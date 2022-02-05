@@ -28,10 +28,12 @@
 
         input {
             font-family: inherit;
+            font-size: calc(var(--assign-font-size) / 3);
         }
 
         #mode {
             font-weight: 700;
+            padding: .1em .6em;
         }
 
         table {
@@ -71,7 +73,7 @@
         #info {
             /* width: 400px;
             height: 500px; */
-            display: inline-block;
+            /* display: inline-block; */
             background: GhostWhite;
             border: .2rem solid DarkGrey;
             font-size: calc(var(--assign-font-size) * .5);
@@ -99,10 +101,7 @@
 
 <body>
     <input type="button" id="mode" onclick="change_mode()" />
-    <table id="overview">
-        <th>VAK</th>
-        <th>OPDRACHTEN</th>
-    </table>
+    <table id="overview"></table>
     <div id="info"></div>
 
 </body>
