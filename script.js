@@ -24,6 +24,54 @@ function rgb_to_str(rgb) {
     return `rgb(${rgb.join(', ')})`;
 }
 
+function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch (e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
+function load_results() {
+    if (!storageAvailable('localStorage')) {
+        console.error('localStorage is not accessible');
+        return false;
+    }
+    let saved_results = localStorage.getItem('results');
+    if (saved_results === null) {
+        results = {};
+        return false;
+    }
+    results = JSON.parse(atob(saved_results));
+    return true;
+}
+
+function save_results() {
+    if (!storageAvailable('localStorage')) {
+        console.error('localStorage is not accessible');
+        return false;
+    }
+    localStorage.setItem('results', btoa(JSON.stringify(results)));
+    return true;
+}
+
 function get_assign_by_id(id, assignments = schema) {
     for (const assign of assignments) {
         if (assign.id === id) {
@@ -52,10 +100,8 @@ function apply_assign_result(id) {
     let dark_color = rgb_to_str(color.map(i => i * dark_factor));
     color = rgb_to_str(color)
     let fill_percent = (results[id] - 1) / 9 * 100;
-    let s = `border-box linear-gradient(0deg, ${dark_color} 0%, ${dark_color} ${fill_percent}%, ${color} ${fill_percent}%, ${color} 100%)`;
-    console.log(s);
     assign_div
-        .style('background', s);
+        .style('background', `border-box linear-gradient(0deg, ${dark_color} 0%, ${dark_color} ${fill_percent}%, ${color} ${fill_percent}%, ${color} 100%)`);
 
     /*
     color_strings = [`${colors[0]} 0%`];
@@ -141,9 +187,11 @@ function update_info() {
                         alert(result.validationMessage);
                     } else {
                         results[selected_assign.id] = result.valueAsNumber;
+                        save_results();
                         apply_assign_result(selected_assign.id);
                     }
                 });
+            // TODO: add remove result button
 
         }
     }
@@ -230,6 +278,8 @@ function fill_div_assignment(div, assignment, weight, first = true, global_weigh
         add_assignment(assignment, div, colors[assignment.type], weight, global_weight_percent)
     }
 }
+
+load_results();
 
 for (const grade of schema) {
 
