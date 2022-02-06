@@ -121,7 +121,9 @@ function calc_avg(grade, layer_rounding = false) {
     if (weight_sum === 0) {
         return;
     }
-    return Math.round((weighted_sum / weight_sum + Number.EPSILON) * 10) / 10;
+
+    let avg = weighted_sum / weight_sum;
+    return layer_rounding ? Math.round((avg + Number.EPSILON) * 10) / 10 : avg;
 }
 
 function select_id(id) {
@@ -355,7 +357,8 @@ function show_table() {
         let row = table.append('tr');
 
         row.append('td')
-            .text(grade.shortname);
+            .text(grade.shortname)
+            .attr('title', grade.fullname);
         let assign = row.append('td')
             .style('height', '100%')
             .append('div')
@@ -366,10 +369,16 @@ function show_table() {
             .style('border-width', '0');
         if (!plan_mode()) {
             let avg = calc_avg(grade, true);
-            row.append('td')
-                .text(avg ? nl_num(avg, 1) : '-');
+            let avg_elem = row.append('td');
             if (avg) {
-                avgs.push(avg);
+                avg_elem.text(nl_num(avg, 1))
+                    .attr('title', nl_num(calc_avg(grade)));
+            } else {
+                avg_elem.text('-');
+            }
+
+            if (avg) {
+                avgs.push([avg, calc_avg(grade)]);
             }
         }
 
@@ -387,12 +396,20 @@ function show_table() {
         let total_avg_elem = total_row.append('td');
         total_avg_elem.append('hr').attr('class', 'tot-sep');
 
+        let rsum = 0;
         let sum = 0;
         for (const avg of avgs) {
-            sum += avg;
+            sum += avg[0];
+            rsum += avg[1];
         }
 
-        total_avg_elem.append('div').text(avgs.length === 0 ? '-' : nl_num(sum / avgs.length, 1));
+        let avg_div = total_avg_elem.append('div');
+        if (avgs.length === 0) {
+            avg_div.text('-');
+        } else {
+            avg_div.text(nl_num(sum / avgs.length, 1))
+                .attr('title', nl_num(rsum / avgs.length));
+        }
     }
 }
 
