@@ -106,6 +106,306 @@ schema = [
         ]
     },
     {
+        type: "VAK",
+        fullname: "Biologie",
+        shortname: "Bio.",
+        id: "q8uicp9j8r",
+        assignments: [
+            {
+                type: "PO",
+                year: 5,
+                period: 1,
+                description: "Engelstalige presentatie in groepsverband over een aan klimaatverandering gerelateerd mondiaal probleem",
+                domains: ["A", "C3", "F3"],
+                weight: 20,
+                id: "d4vz6v5b99"
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 1,
+                description: "Geschreven product(en) dat inzicht geeft op het gebied van seksualiteit en gedrag\nIndividueel werk",
+                domains: ["A", "D3", "D4"],
+                weight: 20,
+                id: "x4mnsu5pms"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 2,
+                description: "Schriftelijke toets over de werking van het menselijk lichaam op gebied van voeding en gezondheid",
+                domains: ["A", "B5", "B6", "B7", "C2"],
+                weight: 20,
+                id: "4jgnsh723y"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 3,
+                description: "Toets op het gebied van reproductie en moleculaire biologie.",
+                domains: ["A", "V1", "E1", "E2", "E3"],
+                weight: 20,
+                id: "mte3o9np95"
+            },
+            {
+                type: "PO",
+                year: 6,
+                period: 2,
+                description: "Verslaglegging van praktijkonderdel(en)",
+                domains: ["A", "E1", "E2", "F1", "F2", "F4"],
+                weight: 20,
+                id: "drtwlr6mpg"
+            }
+        ]
+    },
+    {
+        type: "VAK",
+        fullname: "Wiskunde B",
+        shortname: "WisB",
+        id: "jbw2r2cjlb",
+        assignments: [
+            {
+                type: "SET",
+                year: 5,
+                period: 1,
+                description: "Toets over goniometrische functies",
+                domains: ["D"],
+                weight: 15,
+                id: "3645gcx0n4"
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 2,
+                description: "Wiskunde in teams: Wiskunde B-dag\nDe leerlingen werken in groepjes van ca. 4 aan een wiskunde B dag opdracht. Onderwerpen zijn wisselend en spreken kennis en vaardigheden uit meerdere domeinen aan.",
+                domains: ["A1", "A2", "F"],
+                weight: 10,
+                id: "4sf3nykl59"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 4,
+                description: "Toets over integreren en differentiëren",
+                domains: ["C"],
+                weight: 30,
+                id: "9w5jxlu4mi"
+            },
+            {
+                type: "PO",
+                year: 6,
+                period: 2,
+                description: "Keuzeonderwerp\nDe leerlingen werken individueel een keuze-onderwerp uit, bijvoorbeeld uit de zebraboekjes en geven daar een presentatie over.",
+                domains: ["A", "F"],
+                weight: 10,
+                id: "x3eylkvg6w"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 2,
+                description: "Toets over alle meetkunde",
+                domains: ["E"],
+                weight: 35,
+                id: "ykx7val347"
+            }
+        ]
+    },
+    {
+        type: "VAK",
+        fullname: "Wiskunde D",
+        shortname: "WisD",
+        id: "zzhzstumsx",
+        assignments: [
+            {
+                type: "SET",
+                year: 5,
+                period: 1,
+                description: "Matrices en ruimterekenen",
+                domains: ["D3"],
+                weight: 10,
+                id: "ttzm0zf9m7"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 2,
+                description: "Toevalsvariabelen en kansverdeling",
+                domains: ["B3", "B4"],
+                weight: 10,
+                id: "gw7p763u55"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 3,
+                description: "Meetkundige en andere bewijzen",
+                domains: ["D1"],
+                weight: 15,
+                id: "mfqfmo2l85"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 4,
+                description: "Complexe getallen",
+                domains: ["E"],
+                weight: 10,
+                id: "e59b5uko1e"
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 4,
+                description: "Wetenschap in de praktijk - Besmettelijke ziekten",
+                domains: ["A", "C", "F", "G"],
+                weight: 10,
+                id: "g9g7w0cs1g"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 1,
+                description: "Kegelsneden",
+                domains: ["D2"],
+                weight: 10,
+                id: "1ttniiwdqc"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 2,
+                description: "Correlatie, regressie, verdelingen en hypothese toetsen",
+                domains: ["B5", "B6", "B7"],
+                weight: 15,
+                id: "vl9vqadsoh"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 3,
+                description: "Defferentiaalvergelijkingen",
+                domains: ["C2", "C3", "F"],
+                weight: 10,
+                id: "parew325rb"
+            },
+            {
+                type: "PO",
+                year: 6,
+                period: 3,
+                description: "Onderzoeksproject\nEen geschreven verslag met een mondelinge presentatie aan de klas",
+                domains: ["A", "G"],
+                weight: 10,
+                id: "p0ovmrxnc0"
+            }
+        ]
+    },
+    {
+        type: "VAK",
+        fullname: "Nederlands",
+        shortname: "Ned.",
+        id: "zx30rjiwo1",
+        assignments: [
+            {
+                type: "SET",
+                year: 5,
+                period: 3,
+                description: "Gedocumenteerd schrijven: beschouwing schrijven op basis van bronnen",
+                domains: ["A", "A1", "A2", "A3", "C", "D"],
+                weight: 30,
+                id: "fb0ed940hj"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 1,
+                description: "Motivatiebrief schrijven",
+                domains: ["C", "D"],
+                weight: 25,
+                id: "npd3gqz79f"
+            },
+            {
+                type: "MET",
+                year: 6,
+                period: 2,
+                description: "Literatuur - Voordracht en mondeling over vier romans van de literatuurlijst\n\nVoordracht en mondeling worden gemiddeld en leveren één cijfer op\n\nIndeling door docent. Herkansing gebeurt in bijbehorende periode.",
+                domains: ["B", "D", "E", "E1", "E2", "E3"],
+                weight: 45,
+                id: "9aicnqjbgs"
+            },
+        ]
+    },
+    {
+        type: "VAK",
+        fullname: "Engels",
+        shortname: "Eng.",
+        id: "ns17jgif2b",
+        assignments: [
+            {
+                type: "MET",
+                year: 6,
+                period: 1,
+                description: "Dragon’s Den pitch met aansluitend gesprek.",
+                domains: ["C", "C1", "C2"],
+                weight: 35,
+                id: "tzma7h6lza"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 2,
+                description: "Essay over sociaal/economisch thema",
+                domains: ["D"],
+                weight: 35,
+                id: "ua1f2n494n"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 3,
+                description: "Luistertoets Engels Cito",
+                domains: ["B"],
+                weight: 30,
+                id: "e484pmwj16"
+            },
+        ]
+    },
+    {
+        type: "VAK",
+        fullname: "Spaans",
+        shortname: "Sp.",
+        id: "ahpadn77oh",
+        assignments: [
+            {
+                type: "SET",
+                year: 6,
+                period: 1,
+                description: "Schrijfvaardigheid:\nProfielrelevante schrijfopdracht in vier delen (B1)\nSchriftelijke opdrachten in vier delen: reactie - informatie vragen en verstrekken - presentatie - literair verslag.\nDoor docent goedgekeurde hulpmiddelen toegestaan.",
+                domains: ["D", "D1", "D2", "E", "E1", "E2", "E3"],
+                weight: 35,
+                id: "c7qbfcy1gn"
+            },
+            {
+                type: "MET",
+                year: 6,
+                period: 2,
+                description: "Spreekvaardigheid:\nSpaanstalige cultuur en literatuur (B1+)\nMonoloog (presentatie in groepjes) en interactie (spontaan reageren op vragen uit het publiek). Door docent goedgekeurde hulpmiddelen toegestaan.",
+                domains: ["C", "C1", "C2", "E", "E1", "E2", "E3"],
+                weight: 35,
+                id: "d2jadrap3j"
+            },
+            {
+                type: "SET",
+                year: 6,
+                period: 3,
+                description: "Cito Kijk- en luistertoets Spaans (B2)",
+                domains: ["B"],
+                weight: 30,
+                id: "5dwmzbevfi"
+            }
+        ]
+    },
+    {
         type: "COMB",
         fullname: "Combinatiecijfer",
         shortname: "Comb.",

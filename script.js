@@ -91,8 +91,7 @@ function calc_avg(grade, layer_rounding = false) {
         throw `cannot calculate average of assignment type ${grade.type}`;
     }
     if (grade.assignments.length === 0) {
-        console.warn(`grade of type ${grade.type} has 0 assignments`);
-        return 0;
+        return;
     }
     let total_subweight = get_total_subweight(grade);
 
