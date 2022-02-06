@@ -196,7 +196,23 @@ function update_info() {
         }
 
         if (!plan_mode()) {
-            let can_input = !['PO', 'MET', 'SET'].includes(selected_assign.type);
+            let can_input = ['PO', 'MET', 'SET'].includes(selected_assign.type);
+
+            let value;
+            if (can_input) {
+                if (selected_assign.id in results) {
+                    value = results[selected_assign.id];
+                } else {
+                    value = 5.5;
+                }
+            } else {
+                let avg = calc_avg(selected_assign, true);
+                if (avg) {
+                    value = avg;
+                } else {
+                    value = 5.5;
+                }
+            }
 
             info.append('p');
             info.append('label')
@@ -208,13 +224,13 @@ function update_info() {
                 .attr('type', 'number')
                 .attr('min', '1')
                 .attr('step', '0.1')
-                .property('disabled', can_input)
+                .property('disabled', !can_input)
                 .property('required', true)
                 .attr('lang', 'nl')
-                .node().valueAsNumber = selected_assign.id in results ? results[selected_assign.id] : (5.5);
+                .node().valueAsNumber = value;
             info.append('input')
                 .attr('type', 'button')
-                .property('disabled', can_input)
+                .property('disabled', !can_input)
                 .attr('value', 'invullen')
                 .on('click', () => {
                     let result = d3.select('#result').node();
