@@ -29,20 +29,28 @@
         input {
             font-family: inherit;
             font-size: calc(var(--assign-font-size) / 2);
+            padding: .1em .6em;
         }
 
         #mode {
+            display: block;
             font-weight: 700;
-            padding: .1em .6em;
+            /* clear: both; */
+        }
+
+        .grid {
+            display: flex;
+            flex-flow: row wrap;
         }
 
         table {
             /* TODO: fix firefox weirdness */
-            width: 100%;
+            width: min(100%, 45em);
             height: 1px;
             border-spacing: var(--assign-gap);
             margin-bottom: .3em;
             font-size: var(--assign-font-size);
+            float: left;
         }
         
         th, tr, td {
@@ -73,12 +81,13 @@
         #info {
             /* width: 400px;
             height: 500px; */
-            /* display: inline-block; */
             background: GhostWhite;
             border: .2rem solid DarkGrey;
             font-size: calc(var(--assign-font-size) * 2 / 3);
-            width: 25em;
             padding: .5em;
+            float: left;
+            flex: 1;
+            max-width: 30em;
         }
 
         .info-legend {
@@ -88,7 +97,7 @@
         }
 
         .legend-item {
-            margin: .1em 5em;
+            margin: .1em 2em;
             padding: .1em .25em;
         }
 
@@ -101,8 +110,10 @@
 
 <body>
     <input type="button" id="mode" onclick="change_mode()" />
-    <table id="overview"></table>
-    <div id="info"></div>
+    <div class="grid">
+        <table id="overview"></table>
+        <div id="info"></div>
+    </div>
 
 </body>
 

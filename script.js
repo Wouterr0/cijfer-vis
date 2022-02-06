@@ -10,10 +10,14 @@ const colors = {
 
 let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;
-let results = {};  // TODO: load saved results from localStorage if available
+let results = {};
 
-function nl_num(n) {
-    return n.toLocaleString('nl');
+function nl_num(n, fract_digits) {
+    if (fract_digits) {
+        return n.toLocaleString('nl', {minimumFractionDigits: fract_digits, maximumFractionDigits: fract_digits});
+    } else {
+        return n.toLocaleString('nl');
+    }
 }
 
 function gen_id() {
@@ -117,7 +121,7 @@ function calc_avg(grade, layer_rounding = false) {
     if (weight_sum === 0) {
         return;
     }
-    return weighted_sum / weight_sum;  // TODO: round appropriately
+    return Math.round((weighted_sum / weight_sum + Number.EPSILON) * 10) / 10;
 }
 
 function select_id(id) {
@@ -242,6 +246,16 @@ function update_info() {
                         show_table();
                     }
                 });
+            info.append('input')
+                .attr('type', 'button')
+                .property('disabled', !can_input)
+                .attr('value', 'wissen')
+                .on('click', () => {
+                    delete results[selected_assign.id];
+                    save_results();
+                    show_table();
+                    update_info();
+                });
             // TODO: add remove result button
 
         }
@@ -340,7 +354,7 @@ function show_table() {
 
     table.append('th')
         .text('VAK')
-        .style('width', '10%');
+        .style('width', '5%');
     table.append('th')
         .text('OPDRACHTEN');
     if (!plan_mode()) {
@@ -364,7 +378,7 @@ function show_table() {
         if (!plan_mode()) {
             let avg = calc_avg(grade, true);
             row.append('td')
-                .text(avg ? nl_num(avg) : '-');
+                .text(avg ? nl_num(avg, 1) : '-');
         }
 
         fill_div_assignment(assign, grade);
