@@ -10,7 +10,8 @@ const colors = {
 
 let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;
-let results = {};
+// let results = {};
+let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo1LjIsIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjN9'));
 
 function nl_num(n, fract_digits) {
     if (fract_digits) {
@@ -60,7 +61,6 @@ function load_results() {
     }
     let saved_results = localStorage.getItem('results');
     if (saved_results === null) {
-        results = {};
         return false;
     }
     results = JSON.parse(atob(saved_results));
