@@ -14,7 +14,7 @@ let results = {};
 
 function nl_num(n, fract_digits) {
     if (fract_digits) {
-        return n.toLocaleString('nl', {minimumFractionDigits: fract_digits, maximumFractionDigits: fract_digits});
+        return n.toLocaleString('nl', { minimumFractionDigits: fract_digits, maximumFractionDigits: fract_digits });
     } else {
         return n.toLocaleString('nl');
     }
@@ -360,7 +360,7 @@ function show_table() {
     if (!plan_mode()) {
         table.append('th')
             .text('GEM.')
-            .style('width', '10%');
+            .style('width', '5%');
     }
 
     for (const grade of schema) {
@@ -369,6 +369,7 @@ function show_table() {
         row.append('td')
             .text(grade.shortname);
         let assign = row.append('td')
+            .style('height', '100%')
             .append('div')
             .attr('class', 'noout assign-block')
             .style('width', '100%')
