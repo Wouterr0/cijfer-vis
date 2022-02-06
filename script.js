@@ -140,19 +140,6 @@ function apply_assign_result(id) {
     let fill_percent = (results[id] - 1) / 9 * 100;
     assign_div
         .style('background', `border-box linear-gradient(0deg, ${dark_color} 0%, ${dark_color} ${fill_percent}%, ${color} ${fill_percent}%, ${color} 100%)`);
-
-    /*
-    color_strings = [`${colors[0]} 0%`];
-    for (var i = 1; i < colors.length; i++) {
-        var color_percent = (1 - 1 / 2 ** i) * 100 + "%";
-        color_strings.push(`${colors[i - 1]} ${color_percent}`);
-        color_strings.push(`${colors[i]} ${color_percent}`);
-    }
-    color_strings.push(`${colors[colors.length - 1]} 100%`);
-    document.body.style.background = `linear-gradient(90deg, ${color_strings.join(
-        ", "
-    )})`;
-    */
 }
 
 function add_prop(info, key, value) {
@@ -262,7 +249,6 @@ function update_info() {
     }
 }
 
-
 function set_button_text() {
     d3.select('#mode').attr('value', (plan_mode() ? 'plannen' : 'resultaten').toUpperCase());
 }
@@ -363,6 +349,8 @@ function show_table() {
             .style('width', '5%');
     }
 
+    let avgs = [];
+
     for (const grade of schema) {
         let row = table.append('tr');
 
@@ -380,10 +368,31 @@ function show_table() {
             let avg = calc_avg(grade, true);
             row.append('td')
                 .text(avg ? nl_num(avg, 1) : '-');
+            if (avg) {
+                avgs.push(avg);
+            }
         }
 
         fill_div_assignment(assign, grade);
-        // console.log(grade);
+    }
+
+    if (!plan_mode()) {
+        let total_row = table.append('tr')
+        let total = total_row.append('td')
+            .attr('colspan', '2');
+        total.append('hr').attr('class', 'tot-sep');
+        total.append('div')
+            .text('Totaal:');
+
+        let total_avg_elem = total_row.append('td');
+        total_avg_elem.append('hr').attr('class', 'tot-sep');
+
+        let sum = 0;
+        for (const avg of avgs) {
+            sum += avg;
+        }
+
+        total_avg_elem.append('div').text(avgs.length === 0 ? '-' : nl_num(sum / avgs.length, 1));
     }
 }
 
