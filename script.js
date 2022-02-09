@@ -385,23 +385,43 @@ function show_table() {
         fill_div_assignment(assign, grade);
     }
 
+
     if (!plan_mode()) {
-        let total_row = table.append('tr')
-        let total = total_row.append('td')
-            .attr('colspan', '2');
-        total.append('hr').attr('class', 'tot-sep');
-        total.append('div')
-            .text('Totaal:');
-
-        let total_avg_elem = total_row.append('td');
-        total_avg_elem.append('hr').attr('class', 'tot-sep');
-
-        let rsum = 0;
+        let minv = Infinity;
+        let maxv = -Infinity;
         let sum = 0;
+        let rsum = 0;
         for (const avg of avgs) {
             sum += avg[0];
             rsum += avg[1];
+            minv = Math.min(minv, avg[0]);
+            maxv = Math.max(maxv, avg[0]);
         }
+
+        let median;
+        if (avgs.length % 2 == 0) {
+            median = (avgs[avgs.length / 2 - 1][0] + avgs[avgs.length / 2][0]) / 2;
+        } else {
+            median = avgs[Math.floor(avgs.length / 2)][0];
+        }
+
+        let total_row = table.append('tr')
+        let tot_hr = total_row.append('td')
+            .attr('colspan', '2');
+        tot_hr.append('hr').attr('class', 'tot-sep');
+        let total = tot_hr.append('div')
+            .style('display', 'flex');
+        total.append('div')
+            .text('Totaal:');
+        let stats = total.append('div')
+            .attr('class', 'stats');
+        stats.append('div').html(`<strong>min:</strong> ${nl_num(minv, 1)}`);
+        stats.append('div').html(`<strong>max:</strong> ${nl_num(maxv, 1)}`);
+        stats.append('div').html(`<strong>mediaan:</strong> ${nl_num(median, 1)}`);
+
+
+        let total_avg_elem = total_row.append('td');
+        total_avg_elem.append('hr').attr('class', 'tot-sep');
 
         let avg_div = total_avg_elem.append('div');
         if (avgs.length === 0) {
