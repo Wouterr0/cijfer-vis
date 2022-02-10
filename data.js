@@ -143,7 +143,7 @@ schema = [
                 year: 5,
                 period: 3,
                 description: "Toets op het gebied van reproductie en moleculaire biologie.",
-                domains: ["A", "V1", "E1", "E2", "E3"],
+                domains: ["A", "B1", "E1", "E2", "E3"],
                 weight: 20,
                 id: "mte3o9np95"
             },
@@ -156,6 +156,68 @@ schema = [
                 weight: 20,
                 id: "drtwlr6mpg"
             }
+        ]
+    },
+    {
+        type: "VAK",
+        fullname: "Natuur, Leven en Technologie",
+        shortname: "NLT",
+        id: "1u6jxaj0m3",
+        assignments: [
+            {
+                type: "PO",
+                year: 5,
+                period: 1,
+                description: "Engelstalige presentatie in groepsverband over een door klimaatverandering veroorzaakt mondiaal probleem",
+                domains: ["A", "B1", "C2"],
+                weight: 15,
+                id: "yt5n5xsuya",
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 1,
+                description: "Geschreven product(en) dat inzicht geeft op het gebied van seksualiteit en gedrag\nindividueel werk",
+                domains: ["A", "D1", "D2"],
+                weight: 17,
+                id: "7rd6f0gaah",
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 2,
+                description: "Geschreven product over metingen aan het melkwegstelsel\ngroepswerk",
+                domains: ["A", "C1"],
+                weight: 17,
+                id: "95yy7a2zk",
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 3,
+                description: "Technisch ontwerp van een robot opstellen in groepsverband",
+                domains: ["A", "B2", "E1"],
+                weight: 17,
+                id: "ttqdrd95q4",
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 3,
+                description: "Individuele opdracht naar aanleiding van een bezoek aan externe organisatie op het gebied van duurzaamheid",
+                domains: ["A", "E2"],
+                weight: 17,
+                id: "mfujt5tlpj",
+            },
+            {
+                type: "PO",
+                year: 6,
+                period: 2,
+                description: "Individueel uitwerken van enkele huiswerkopdrachten over fundamentele theorieën in een natuurwetenschap naar keuze",
+                domains: ["A", "F1"],
+                weight: 17,
+                id: "8g0vfrexow",
+            },
         ]
     },
     {
