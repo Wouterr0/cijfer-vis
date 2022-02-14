@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importeer magister cijfers</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: min(4vh, min(5vw, 2em));
+            margin: 1em;
+        }
+
+        .instructions {
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        h1 {
+            font-size: 1.2em;
+        }
+
+        kbd {
+            background-color: #eee;
+            /* border-radius: 3px; */
+            border: 1px solid #b4b4b4;
+            color: #333;
+            display: inline-block;
+            font-size: .85em;
+            font-weight: 700;
+            line-height: 1;
+            padding: .1em .3em;
+            white-space: nowrap;
+        }
+
+        table {
+            flex: 1;
+            border-collapse: collapse;
+        }
+        td {
+            border: .05em solid blue;
+        }
+
+        .errors {
+            background-color: lightcoral;
+            color: crimson;
+            font-weight: 700;
+            line-height: 1.6;
+            padding: .1em .5em;
+            white-space: pre-wrap;
+        }
+    </style>
+
+    <script src="/d3.v7.min.js"></script>
+    <script defer>
+        let errors = [];
+        function set_error(msg) {
+            console.error(msg);
+            errors.push(msg);
+
+            d3.select('.errors')
+                .style('display', 'block')
+                .text(errors.join('\n'));
+        }
+
+        document.addEventListener('paste', function (e) {
+            e.preventDefault();
+
+            try {
+                let pastedText = e.clipboardData.getData('text/html');
+                let results = pastedText.matchAll(/<span\s+id="((?:WISB|WISD|NAT|SCHK|BIOL|ANW|NLT|MAAT|CKV)_\d+_\d+)"\s+title="(\d+,\d+)"[\s\n]+class=".*?">/g);
+
+                for (const result of results) {
+                    console.log(result[1], result[2]);
+
+                    let row = d3.select('.results')
+                        .append('tr');
+                    row.append('td')
+                        .text(result[1]);
+                    row.append('td')
+                        .text(result[2]);
+                }
+
+            } catch (error) {
+                set_error(error.stack);
+            }
+        });
+
+
+        window.onload = () => {
+            d3.select('.errors')
+                .style('display', 'none');
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="errors"></div>
+    <div style="display: flex;">
+        <div class="instructions">
+            <h1>Resultaten importeren uit magister</h1>
+            <ol>
+                <li>Ga naar je magister cijfers</li>
+                <li>Klik op "Bekijk cijferoverzicht"</li>
+                <li>Selecteer alles op de pagina met de toetsencombinatie <kbd>Ctrl</kbd>+<kbd>a</kbd> (<kbd>⌘
+                        Command</kbd>+<kbd>a</kbd> voor Apple producten)</li>
+                <li>Kopieer het geselecteerde naar je klipbord met de toetsencombinatie <kbd>Ctrl</kbd>+<kbd>c</kbd>
+                </li>
+                <li>Ga terug naar deze pagina</li>
+                <li>Laad je resultaten door ze te plakken op deze pagina met <kbd>Ctrl</kbd>+<kbd>v</kbd></li>
+            </ol>
+        </div>
+        <table class="results"></table>
+    </div>
+</body>
+
+</html>
