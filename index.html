@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cijver visualisatie</title>
+    <title>Cijfer visualisatie</title>
 
-    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <script src="/d3.v7.min.js" defer></script>
 
     <!-- <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script> -->
     <!-- <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script> -->
@@ -116,6 +116,33 @@
         .info-key {
             font-weight: 700;
         }
+
+        .import-btn {
+            margin: 1em;
+            padding: .5em 1em;
+            background-color: white;
+            /* color: black; */
+            border-width: .03em;
+            border-radius: .2em;
+            border-style: solid;
+            border-color: transparent;
+            font-size: calc(var(--assign-font-size) * 1);
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: 700;
+            /* border-style: ; */
+        }
+
+        .import-btn:hover {
+            background-color: #0683EA;
+            color: white;
+            border-color: black;
+        }
+
+        .import-btn:active {
+            outline: .1em solid black;
+        }
+
+        
 
     </style>
 </head>

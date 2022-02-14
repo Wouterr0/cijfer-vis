@@ -10,8 +10,8 @@ const colors = {
 
 let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;
-// let results = {};
-let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo2LjksIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjMsInl0NW41eHN1eWEiOjYuOCwiN3JkNmYwZ2FhaCI6OC4yfQ=='));
+let results = {};
+// let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo2LjksIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjMsInl0NW41eHN1eWEiOjYuOCwiN3JkNmYwZ2FhaCI6OC4yfQ=='));
 
 function nl_num(n, fract_digits) {
     if (fract_digits) {
@@ -262,9 +262,7 @@ function plan_mode() {
 function change_mode() {
     mode = plan_mode() ? 'RES' : 'PLAN';
 
-    show_table();
-    set_button_text();
-    update_info();
+    show_page();
 }
 
 function get_total_subweight(assignment) {
@@ -333,6 +331,20 @@ function fill_div_assignment(div, assignment, weight, first = true, global_weigh
     } else if (['PO', 'MET', 'SET'].includes(assignment.type)) {
         assignment.global_weight_percent = global_weight_percent;
         add_assignment(assignment, div, colors[assignment.type], weight, global_weight_percent)
+    }
+}
+
+function show_clipboard_import() {
+    console.log('now');
+    if (!plan_mode()) {
+        d3.select('.grid')
+            .append('a')
+            .attr('class', 'import-btn')
+            .attr('href', '/import.html')
+            .text('Importeer cijfers van magister');
+    } else {
+        console.log('no btn')
+        d3.select('.import-btn').remove();
     }
 }
 
@@ -434,10 +446,14 @@ function show_table() {
     }
 }
 
+function show_page() {
+    set_button_text();
+    show_table();
+    show_clipboard_import();
+    update_info();
+}
+
 // TODO: ensure no duplicate id's
 
 load_results();
-
-show_table();
-set_button_text();
-update_info();
+show_page();
