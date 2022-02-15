@@ -339,7 +339,7 @@ function show_clipboard_import() {
         d3.select('.grid')
             .append('a')
             .attr('class', 'import-btn')
-            .attr('href', '/import.html')
+            .attr('href', 'import.html')
             .text('Importeer cijfers van magister');
     } else {
         d3.select('.import-btn').remove();
