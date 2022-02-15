@@ -210,6 +210,11 @@ function change_mode() {
     show_page();
 }
 
+function set_scale() {
+    d3.select(":root")
+        .style('--table-font-size', `calc(min(4vh, min(5vw, 2em)) * ${d3.select('.scale').property('value')})`);
+}
+
 function get_total_subweight(assignment) {
     return d3.sum(assignment.assignments, assignment => assignment.weight);
 }
