@@ -442,6 +442,7 @@ schema = [
                 description: "Dragon’s Den pitch met aansluitend gesprek.",
                 domains: ["C", "C1", "C2"],
                 weight: 35,
+                magister: "ENTL8301",
                 id: "tzma7h6lza"
             },
             {
@@ -451,6 +452,7 @@ schema = [
                 description: "Essay over sociaal/economisch thema",
                 domains: ["D"],
                 weight: 35,
+                magister: "ENTL8302",
                 id: "ua1f2n494n"
             },
             {
