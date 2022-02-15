@@ -300,7 +300,7 @@ function show_import_link() {
     }
 }
 
-function show_table() {
+function show_clear_button() {
     if (!plan_mode()) {
         d3.select('body')
             .insert('input', '.grid')
@@ -317,7 +317,9 @@ function show_table() {
     } else {
         d3.select('.clear-btn').remove();
     }
+}
 
+function show_table() {
     let table = d3.select('#overview');
     table.selectChildren().remove();
 
@@ -418,6 +420,7 @@ function show_table() {
 
 function show_page() {
     set_button_text();
+    show_clear_button();
     show_table();
     show_import_link();
     update_info();
