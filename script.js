@@ -342,7 +342,6 @@ function show_clipboard_import() {
             .attr('href', '/import.html')
             .text('Importeer cijfers van magister');
     } else {
-        console.log('no btn')
         d3.select('.import-btn').remove();
     }
 }
