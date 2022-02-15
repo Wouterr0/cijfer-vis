@@ -86,7 +86,7 @@
 
             try {
                 let pastedText = e.clipboardData.getData('text/html');
-                let magister_results = [...pastedText.matchAll(/<span\s+id="(WISB|WISD|NAT|SCHK|BIOL|ANW|NLT|MAAT|CKV)_(\d+)_\2"\s+title="(\d+,\d+)"[\s\n]+class=".*?">/g)];
+                let magister_results = [...pastedText.matchAll(/<span\s+id="(WISB|WISD|NAT|SCHK|BIOL|ANW|NLT|MAAT|CKV)_[\d\.]+_(\d+)"\s+title="(\d+,\d+)"[\s\n]/g)];
                 if (magister_results.length === 0) {
                     set_error("Kon geen resultaten vinden op het klipbord");
                 }
