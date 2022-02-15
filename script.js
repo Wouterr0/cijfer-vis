@@ -288,7 +288,7 @@ function fill_div_assignment(div, assignment, weight, first = true, global_weigh
     }
 }
 
-function show_clipboard_import() {
+function show_import_link() {
     if (!plan_mode()) {
         d3.select('.grid')
             .append('a')
@@ -301,6 +301,23 @@ function show_clipboard_import() {
 }
 
 function show_table() {
+    if (!plan_mode()) {
+        d3.select('body')
+            .insert('input', '.grid')
+            .attr('type', 'button')
+            .attr('class', 'clear-btn')
+            .attr('value', 'ALLE RESULTATEN WISSEN')
+            .on('click', () => {
+                if (confirm('Weet je zeker dat je alle resultaten wilt wissen?')) {
+                    results = {};
+                    save_results();
+                    show_table();
+                }
+            })
+    } else {
+        d3.select('.clear-btn').remove();
+    }
+
     let table = d3.select('#overview');
     table.selectChildren().remove();
 
@@ -402,7 +419,7 @@ function show_table() {
 function show_page() {
     set_button_text();
     show_table();
-    show_clipboard_import();
+    show_import_link();
     update_info();
 }
 
