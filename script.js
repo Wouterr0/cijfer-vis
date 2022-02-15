@@ -106,7 +106,7 @@ function update_info() {
             .append('div')
             .attr('class', 'heading')
             .text('LEGENDA');
-        
+
         let types = Object.assign({}, used_types);
         while (Object.keys(types).length !== 0) {
             let type = Object.keys(types).reduce((t, c) => { return types[t] > types[c] ? t : c });
@@ -192,8 +192,6 @@ function update_info() {
                     show_table();
                     update_info();
                 });
-            // TODO: add remove result button
-
         }
     }
 }
