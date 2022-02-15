@@ -1,17 +1,10 @@
 'use strict';
 
-const colors = {
-    'PO': [144, 238, 144],
-    'SET': [240, 128, 128],
-    'MET': [255, 160, 122],
-    'VAK': [123, 104, 238],
-    'COMB': [135, 206, 250],
-}
-
 let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;
 let results = {};
 // let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo2LjksIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjMsInl0NW41eHN1eWEiOjYuOCwiN3JkNmYwZ2FhaCI6OC4yfQ=='));
+let used_types = {};
 
 function nl_num(n, fract_digits) {
     if (fract_digits) {
@@ -88,13 +81,10 @@ function apply_assign_result(id) {
         return;
     }
     let assign_div = select_id(id);
-    const dark_factor = .7;
-    let color = colors[get_assign_by_id(id).type];
-    let dark_color = rgb_to_str(color.map(i => i * dark_factor));
-    color = rgb_to_str(color)
+    let type = get_assign_by_id(id).type;
     let fill_percent = (results[id] - 1) / 9 * 100;
     assign_div
-        .style('background', `border-box linear-gradient(0deg, ${dark_color} 0%, ${dark_color} ${fill_percent}%, ${color} ${fill_percent}%, ${color} 100%)`);
+        .style('background', `border-box linear-gradient(0deg, var(--${type}-color-dark) 0%, var(--${type}-color-dark) ${fill_percent}%, var(--${type}-color) ${fill_percent}%, var(--${type}-color) 100%)`);
 }
 
 function add_prop(info, key, value) {
@@ -116,16 +106,20 @@ function update_info() {
             .append('div')
             .attr('class', 'heading')
             .text('LEGENDA');
-        for (const type in colors) {
+        
+        let types = Object.assign({}, used_types);
+        while (Object.keys(types).length !== 0) {
+            let type = Object.keys(types).reduce((t, c) => { return types[t] > types[c] ? t : c });
             info.append('div')
                 .attr('class', 'legend-item')
-                .style('background-color', rgb_to_str(colors[type]))
+                .style('background-color', `var(--${type}-color)`)
                 .text(type);
+            delete types[type];
         }
     } else {
         info.attr('class', 'info-props')
         add_prop(info, 'soort', selected_assign.type)
-            .style('background-color', rgb_to_str(colors[selected_assign.type]))
+            .style('background-color', `var(--${selected_assign.type}-color)`)
             .style('padding', '0 .25em');
         if (['VAK', 'COMB'].includes(selected_assign.type)) {
             add_prop(info, 'naam', selected_assign.fullname);
@@ -232,13 +226,20 @@ function show_assign(assignment, selected = false) {
     update_info();
 }
 
-function add_assignment(assignment, div, color, weight_percent) {
+function use_type(type) {
+    if (!(type in used_types)) {
+        used_types[type] = 0;
+    }
+    used_types[type]++;
+}
+
+function add_assignment(assignment, div, weight_percent) {
     let assign_div = div.append('div')
         .attr('id', assignment.id)
         .classed('assign-block', true)
         .classed('selected', selected_assign && assignment.id === selected_assign.id)
         .style('width', `${weight_percent}%`)
-        .style('background-color', rgb_to_str(color));
+        .style('background-color', `var(--${assignment.type}-color)`);
     if (!plan_mode()) {
         apply_assign_result(assignment.id);
     }
@@ -274,16 +275,18 @@ function add_assignment(assignment, div, color, weight_percent) {
 function fill_div_assignment(div, assignment, weight, first = true, global_weight_percent = 100) {
     if (assignment.type === 'VAK' || assignment.type === 'COMB') {
         if (!first) {
+            use_type(assignment.type);
             assignment.global_weight_percent = global_weight_percent;
-            div = add_assignment(assignment, div, colors[assignment.type], weight ? weight : 100);
+            div = add_assignment(assignment, div, weight ? weight : 100);
         }
         let total_weight = get_total_subweight(assignment);
         for (const sub_assign of assignment.assignments) {
             fill_div_assignment(div, sub_assign, sub_assign.weight / total_weight * 100, false, sub_assign.weight / total_weight * global_weight_percent);
         }
     } else if (['PO', 'MET', 'SET'].includes(assignment.type)) {
+        use_type(assignment.type);
         assignment.global_weight_percent = global_weight_percent;
-        add_assignment(assignment, div, colors[assignment.type], weight, global_weight_percent)
+        add_assignment(assignment, div, weight, global_weight_percent);
     }
 }
 
@@ -405,7 +408,7 @@ function show_page() {
     update_info();
 }
 
-// TODO: ensure no duplicate id's
+// TODO: ensure no errors in data.js
 
 load_results();
 show_page();
