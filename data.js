@@ -1,4 +1,6 @@
 // Find data at https://esprit.magister.net/api/personen/69726/aanmeldingen/136419/cijfers/cijferoverzichtvooraanmelding
+// TODO: add handelingsdelen
+// TODO: add SE's
 schema = [
     {
         type: "VAK",

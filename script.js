@@ -335,7 +335,6 @@ function fill_div_assignment(div, assignment, weight, first = true, global_weigh
 }
 
 function show_clipboard_import() {
-    console.log('now');
     if (!plan_mode()) {
         d3.select('.grid')
             .append('a')
@@ -412,7 +411,8 @@ function show_table() {
 
         // TODO: sort avgs
         let median;
-        if (avgs.length % 2 == 0) {
+        if (avgs.length === 0) { }
+        else if (avgs.length % 2 == 0) {
             median = (avgs[avgs.length / 2 - 1][0] + avgs[avgs.length / 2][0]) / 2;
         } else {
             median = avgs[Math.floor(avgs.length / 2)][0];
@@ -428,9 +428,9 @@ function show_table() {
             .text('Totaal:');
         let stats = total.append('div')
             .attr('class', 'stats');
-        stats.append('div').html(`<strong>min:</strong> ${nl_num(minv, 1)}`);
-        stats.append('div').html(`<strong>max:</strong> ${nl_num(maxv, 1)}`);
-        stats.append('div').html(`<strong>mediaan:</strong> ${nl_num(median, 1)}`);
+        stats.append('div').html(`<strong>min:</strong> ${avgs.length === 0 ? '-' : nl_num(minv, 1)}`);
+        stats.append('div').html(`<strong>max:</strong> ${avgs.length === 0 ? '-' : nl_num(maxv, 1)}`);
+        stats.append('div').html(`<strong>mediaan:</strong> ${avgs.length === 0 ? '-' : nl_num(median, 1)}`);
 
 
         let total_avg_elem = total_row.append('td');
