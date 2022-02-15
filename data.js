@@ -1,3 +1,4 @@
+// Find data at https://esprit.magister.net/api/personen/69726/aanmeldingen/136419/cijfers/cijferoverzichtvooraanmelding
 schema = [
     {
         type: "VAK",
@@ -12,6 +13,7 @@ schema = [
                 description: "Engelstalige presentatie in groepsverband over een aan klimaatverandering en duurzaamheid gerelateerd mondiaal probleem",
                 domains: ["A", "G2"],
                 weight: 16,
+                magister: "NAT8202",
                 id: "0otgmtlnnu"
             },
             {
@@ -21,6 +23,7 @@ schema = [
                 description: "Toets over periodieke verschijnselen, biofysica, materiaaleigenschappen en medische beeldvorming",
                 domains: ["A", "B1", "B2", "E1", "G1"],
                 weight: 34,
+                magister: "NAT8203",
                 id: "ia3n5mpq8h"
             },
             {
@@ -30,6 +33,7 @@ schema = [
                 description: "Technisch ontwerp van een robot opstellen in groepsverband",
                 domains: ["A", "I3"],
                 weight: 16,
+                magister: "NAT8204",
                 id: "gk6bpztd3m"
             },
             {
@@ -39,6 +43,7 @@ schema = [
                 description: "Individueel portfolio van verslaglegging van experimenten op het gebied van periodieke verschijnselen en elektromagnetisme.",
                 domains: ["A", "I1"],
                 weight: 17,
+                magister: "NAT8205",
                 id: "vktv19mfe2"
             },
             {
@@ -48,6 +53,7 @@ schema = [
                 description: "Modelstudie over een bewegingsverschijnsel\nIndividueel werk",
                 domains: ["A", "I2"],
                 weight: 17,
+                magister: "NAT8206",
                 id: "p9zxizlb5a"
             }
         ]
@@ -65,6 +71,7 @@ schema = [
                 description: "Engelstalige presentatie in groepsverband over een door klimaatverandering veroorzaakt mondiaal probleem",
                 domains: ["A", "C9", "E3", "F4", "G4"],
                 weight: 15,
+                magister: "SCHK8201",
                 id: "bibthnx1dj"
             },
             {
@@ -74,6 +81,7 @@ schema = [
                 description: "Schriftelijk examen over de chemie van voeding en gezondheid",
                 domains: ["A", "B1", "C1", "C2", "C5", "C7"],
                 weight: 30,
+                magister: "SCHK8202",
                 id: "gbx6hdqihp"
             },
             {
@@ -83,6 +91,7 @@ schema = [
                 description: "Individuele opdracht naar aanleiding van een bezoek aan externe organisatie op het gebied van duurzaamheid",
                 domains: ["A", "C8", "F5", "G5"],
                 weight: 20,
+                magister: "SCHK8203",
                 id: "1zdnkkmoho"
             },
             {
@@ -92,6 +101,7 @@ schema = [
                 description: "Individuele verslaglegging van uitvoer van en werkhouding voor verscheidene practica op het gebied van gezondheid",
                 domains: ["A", "C10", "D2", "D4", "C5"],
                 weight: 20,
+                magister: "SCHK8204",
                 id: "z01wr9t5g8"
             },
             {
@@ -118,6 +128,7 @@ schema = [
                 description: "Engelstalige presentatie in groepsverband over een aan klimaatverandering gerelateerd mondiaal probleem",
                 domains: ["A", "C3", "F3"],
                 weight: 20,
+                magister: "BIOL8201",
                 id: "d4vz6v5b99"
             },
             {
@@ -127,6 +138,7 @@ schema = [
                 description: "Geschreven product(en) dat inzicht geeft op het gebied van seksualiteit en gedrag\nIndividueel werk",
                 domains: ["A", "D3", "D4"],
                 weight: 20,
+                magister: "BIOL8202",
                 id: "x4mnsu5pms"
             },
             {
@@ -136,6 +148,7 @@ schema = [
                 description: "Schriftelijke toets over de werking van het menselijk lichaam op gebied van voeding en gezondheid",
                 domains: ["A", "B5", "B6", "B7", "C2"],
                 weight: 20,
+                magister: "BIOL8203",
                 id: "4jgnsh723y"
             },
             {
@@ -145,6 +158,7 @@ schema = [
                 description: "Toets op het gebied van reproductie en moleculaire biologie.",
                 domains: ["A", "B1", "E1", "E2", "E3"],
                 weight: 20,
+                magister: "BIOL8204",
                 id: "mte3o9np95"
             },
             {
@@ -171,6 +185,7 @@ schema = [
                 description: "Engelstalige presentatie in groepsverband over een door klimaatverandering veroorzaakt mondiaal probleem",
                 domains: ["A", "B1", "C2"],
                 weight: 15,
+                magister: "NLT8201",
                 id: "yt5n5xsuya",
             },
             {
@@ -180,6 +195,7 @@ schema = [
                 description: "Geschreven product(en) dat inzicht geeft op het gebied van seksualiteit en gedrag\nindividueel werk",
                 domains: ["A", "D1", "D2"],
                 weight: 17,
+                magister: "NLT8202",
                 id: "7rd6f0gaah",
             },
             {
@@ -189,6 +205,7 @@ schema = [
                 description: "Geschreven product over metingen aan het melkwegstelsel\ngroepswerk",
                 domains: ["A", "C1"],
                 weight: 17,
+                magister: "NLT8203",
                 id: "95yy7a2zk",
             },
             {
@@ -198,6 +215,7 @@ schema = [
                 description: "Technisch ontwerp van een robot opstellen in groepsverband",
                 domains: ["A", "B2", "E1"],
                 weight: 17,
+                magister: "NLT8204",
                 id: "ttqdrd95q4",
             },
             {
@@ -207,6 +225,7 @@ schema = [
                 description: "Individuele opdracht naar aanleiding van een bezoek aan externe organisatie op het gebied van duurzaamheid",
                 domains: ["A", "E2"],
                 weight: 17,
+                magister: "NLT8205",
                 id: "mfujt5tlpj",
             },
             {
@@ -216,6 +235,7 @@ schema = [
                 description: "Individueel uitwerken van enkele huiswerkopdrachten over fundamentele theorieën in een natuurwetenschap naar keuze",
                 domains: ["A", "F1"],
                 weight: 17,
+                magister: "NLT8302",
                 id: "8g0vfrexow",
             },
         ]
@@ -233,6 +253,7 @@ schema = [
                 description: "Toets over goniometrische functies",
                 domains: ["D"],
                 weight: 15,
+                magister: "WISB8201",
                 id: "3645gcx0n4"
             },
             {
@@ -242,6 +263,7 @@ schema = [
                 description: "Wiskunde in teams: Wiskunde B-dag\nDe leerlingen werken in groepjes van ca. 4 aan een wiskunde B dag opdracht. Onderwerpen zijn wisselend en spreken kennis en vaardigheden uit meerdere domeinen aan.",
                 domains: ["A1", "A2", "F"],
                 weight: 10,
+                magister: "WISB8202",
                 id: "4sf3nykl59"
             },
             {
@@ -251,6 +273,7 @@ schema = [
                 description: "Toets over integreren en differentiëren",
                 domains: ["C"],
                 weight: 30,
+                magister: "WISB8203",
                 id: "9w5jxlu4mi"
             },
             {
@@ -286,6 +309,7 @@ schema = [
                 description: "Matrices en ruimterekenen",
                 domains: ["D3"],
                 weight: 10,
+                magister: "WISD8201",
                 id: "ttzm0zf9m7"
             },
             {
@@ -295,6 +319,7 @@ schema = [
                 description: "Toevalsvariabelen en kansverdeling",
                 domains: ["B3", "B4"],
                 weight: 10,
+                magister: "WISD8202",
                 id: "gw7p763u55"
             },
             {
@@ -304,6 +329,7 @@ schema = [
                 description: "Meetkundige en andere bewijzen",
                 domains: ["D1"],
                 weight: 15,
+                magister: "WISD8203",
                 id: "mfqfmo2l85"
             },
             {
@@ -313,6 +339,7 @@ schema = [
                 description: "Complexe getallen",
                 domains: ["E"],
                 weight: 10,
+                magister: "WISD8204",
                 id: "e59b5uko1e"
             },
             {
@@ -322,6 +349,7 @@ schema = [
                 description: "Wetenschap in de praktijk - Besmettelijke ziekten",
                 domains: ["A", "C", "F", "G"],
                 weight: 10,
+                magister: "WISD8206",
                 id: "g9g7w0cs1g"
             },
             {
@@ -375,6 +403,7 @@ schema = [
                 description: "Gedocumenteerd schrijven: beschouwing schrijven op basis van bronnen",
                 domains: ["A", "A1", "A2", "A3", "C", "D"],
                 weight: 30,
+                magister: "NETL8206",
                 id: "fb0ed940hj"
             },
             {
@@ -393,6 +422,7 @@ schema = [
                 description: "Literatuur - Voordracht en mondeling over vier romans van de literatuurlijst\n\nVoordracht en mondeling worden gemiddeld en leveren één cijfer op\n\nIndeling door docent. Herkansing gebeurt in bijbehorende periode.",
                 domains: ["B", "D", "E", "E1", "E2", "E3"],
                 weight: 45,
+                magister: "NETL8207",
                 id: "9aicnqjbgs"
             },
         ]
@@ -486,6 +516,7 @@ schema = [
                         description: "Politieke partijen en opvattingen over de verzorgingsstaat boekje in groepjes",
                         domains: ["A", "C", "D"],
                         weight: 25,
+                        magister: "MAAT8111",
                         id: "hfhyyrjk40"
                     },
                     {
@@ -495,6 +526,7 @@ schema = [
                         description: "Rechten, rechtvaardigheid en de pluriforme samenleving documentaire in groepjes",
                         domains: ["A", "B", "C", "E"],
                         weight: 25,
+                        magister: "MAAT8112",
                         id: "w3tfmzaq0o"
                     },
                     {
@@ -504,6 +536,7 @@ schema = [
                         description: "Politiek: regels en instituties",
                         domains: ["B", "C", "D"],
                         weight: 25,
+                        magister: "MAAT8201",
                         id: "ywoflqkdxz"
                     },
                     {
@@ -513,6 +546,7 @@ schema = [
                         description: "Portfolio: maatschappelijke instituties en ontwikkelingen",
                         domains: ["A", "B", "C", "D", "E"],
                         weight: 25,
+                        magister: "MAAT8202",
                         id: "8ulmc1jqp7"
                     }
                 ],
@@ -531,6 +565,7 @@ schema = [
                         description: "Duurzaamheid\nDuo's\n- Technisch ontwerp (ontwerpcyclus)\n- Product of prototype\n- Reflectie op duurzaamheidsfilosofie",
                         domains: ["A2", "A4", "A5", "D2"],
                         weight: 20,
+                        magister: "ANW8201",
                         id: "ejsxrxx47q"
                     },
                     {
@@ -540,6 +575,7 @@ schema = [
                         description: "Wetenschapsfilosofie\n- Reductionisme\n- Correspondentietheorie\n- Kritisch rationalisme\n- Coherentietheorie\n- Coventionalisme\n- Pragmatisme",
                         domains: ["B1", "B2", "C3", "F3"],
                         weight: 20,
+                        magister: "ANW8202",
                         id: "davve54u4w"
                     },
                     {
@@ -549,6 +585,7 @@ schema = [
                         description: "Modelleren\nDuo's\n\nProgrammeren en toelichten van een model in Netlogo",
                         domains: ["A6", "B1", "B2", "C3", "F3"],
                         weight: 20,
+                        magister: "ANW8203",
                         id: "07joobkhw9"
                     },
                     {
@@ -558,6 +595,7 @@ schema = [
                         description: "Onderzoekscyclus voor PWS\nDuo of individueel\nData Science toegepast in profielwerkstuk",
                         domains: ["A1", "A3"],
                         weight: 20,
+                        magister: "ANW8204",
                         id: "xsvzaplzbl"
                     },
                     {
@@ -585,6 +623,7 @@ schema = [
                         description: "Corporate identity boek politieke partijen op basis van politieke ideologie en geschiedenis in groepjes",
                         domains: ["A", "B", "C", "D"],
                         weight: 33,
+                        magister: "CKV8111",
                         id: "qvkw1mzs5y"
                     },
                     {
@@ -594,6 +633,7 @@ schema = [
                         description: "Documentaire maken over maatschappelijk onderwerp in groepjes",
                         domains: ["A", "B", "C", "D"],
                         weight: 33,
+                        magister: "CKV8112",
                         id: "zswpp19h9x"
                     },
                     {
@@ -603,6 +643,7 @@ schema = [
                         description: "Portfolio CKV-activiteiten: keuze, bijwonen, beschrijving en analyse van 4 verschillende culturele activiteiten. Presentatie in een portfolio. (individueel)",
                         domains: ["A", "B", "C", "D"],
                         weight: 34,
+                        magister: "CKV8201",
                         id: "wo4mih1hcq"
                     }
                 ],
