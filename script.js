@@ -342,6 +342,10 @@ function show_table() {
     let avgs = [];
 
     for (const grade of schema) {
+        let toggle = d3.select(`#toggle-${grade.id}`);
+        if (!toggle.empty() && !toggle.property('checked')) {
+            continue;
+        }
         let row = table.append('tr');
 
         row.append('td')
