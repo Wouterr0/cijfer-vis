@@ -394,6 +394,50 @@ schema = [
     },
     {
         type: "VAK",
+        fullname: "Filosofie",
+        shortname: "Fi.",
+        id: "9i65zn7fb7",
+        assignments: [
+            {
+                type: "SET",
+                year: 5,
+                period: 1,
+                description: "Individuele toets over |\n- Ethiek: Utilisme, Deontologie, Deugdethiek, Slavenmoraal\n- Antropologie: klassieke, moderne en postmoderne mensbeeld.",
+                domains: ["B", "C"],
+                weight: 25,
+                id: "piqyaduiep"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 2,
+                description: "Wetenschapsfilosofie\n- Reductionisme\n- Correspondentietheorie\n- Kritisch rationalisme\n- Coherentietheorie\n- Conventietheorie\n- Pragmatisme",
+                domains: ["E"],
+                weight: 25,
+                id: "blj4nhc7cr"
+            },
+            {
+                type: "SET",
+                year: 5,
+                period: 3,
+                description: "Individuele toets over Kennisleer:\n- Platonisme\n- Taoïsme\n- Empirisme,\n- Rationalisme,\n- Transcendentalisme,\n- Perspectivisme\n- Pragmatisme\n- Deconstructivisme",
+                domains: ["D"],
+                weight: 25,
+                id: "7d9ld91une"
+            },
+            {
+                type: "PO",
+                year: 5,
+                period: 4,
+                description: "Groepsopdracht (2 a 3) waarin de leerlingen een les verzorgen over:\npolitieke en sociale filosofie:\n- Theorie uitleggen, politiek/sociaal fenomeen analyseren, discussie over stelling begeleiden.",
+                domains: ["A"],
+                weight: 25,
+                id: "o7gjalrjtv"
+            },
+        ]
+    },
+    {
+        type: "VAK",
         fullname: "Nederlands",
         shortname: "Ned.",
         id: "zx30rjiwo1",
