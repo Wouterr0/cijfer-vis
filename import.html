@@ -10,13 +10,18 @@
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
-            font-size: min(4vh, min(5vw, 2em));
+            font-size: min(2vw, 2em);
             margin: 1em;
         }
 
         .instructions {
             flex: 1;
             line-height: 1.6;
+        }
+        
+        .demo {
+            width: 20em;
+            height: auto;
         }
 
         h1 {
@@ -127,7 +132,7 @@
 
 <body>
     <div class="errors"></div>
-    <div style="display: flex;">
+    <div style="display: flex; gap: 1em;">
         <div class="instructions">
             <h1>Resultaten importeren uit magister</h1>
             <ol>
@@ -145,6 +150,7 @@
                 <li><a href="./">Ga terug</a> naar de hoofdpagina</li>
             </ol>
         </div>
+        <img src="demo.gif" class="demo" alt="Voorbeeld van het importeren van magister cijfers">
         <table class="magister_results"></table>
     </div>
 </body>
