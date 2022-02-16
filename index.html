@@ -49,27 +49,37 @@
 
         input {
             font-family: inherit;
-            font-size: calc(var(--font-size) / 2);    
+            font-size: calc(var(--font-size) / 2);
         }
 
         input[type="button"] {
             padding: .1em .6em;
         }
 
-        #mode {
+        #settings {
+            display: flex;
+            margin: 0 0 1em 0;
+            gap: .5em;
+        }
+
+        #settings > input {
             display: inline-block;
+        }
+
+        #mode {
             font-weight: 700;
         }
 
         .scale {
-            position: fixed;
+            /* position: fixed;
             top: .1em;
-            right: 1em;
+            right: 1em; */
+            margin-left: auto;
         }
 
-        .clear-btn {
+        /* .clear-btn {
             display: inline-block;
-        }
+        } */
 
         .grid {
             display: flex;
@@ -181,11 +191,13 @@
 </head>
 
 <body>
-    <input type="button" id="mode" onclick="change_mode()" />
-    <input type="range" class="scale" min="0.5" max="1.5" value="1" step="0.1" oninput="set_scale()" list="tickmarks"/>
-    <datalist id="tickmarks">
-        <option value="1.0"></option>
-    </datalist>
+    <div id="settings">
+        <input type="button" id="mode" onclick="change_mode()" />
+        <input type="range" class="scale" min="0.5" max="1.5" value="1" step="0.1" oninput="set_scale()" list="tickmarks"/>
+        <datalist id="tickmarks">
+            <option value="1.0"></option>
+        </datalist>
+    </div>
     <div class="grid">
         <table id="overview"></table>
         <div id="info"></div>

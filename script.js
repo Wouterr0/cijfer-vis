@@ -307,8 +307,8 @@ function show_import_link() {
 
 function show_clear_button() {
     if (!plan_mode()) {
-        d3.select('body')
-            .insert('input', '.grid')
+        d3.select('#settings')
+            .insert('input', '#mode + *')
             .attr('type', 'button')
             .attr('class', 'clear-btn')
             .attr('value', 'ALLE RESULTATEN WISSEN')
