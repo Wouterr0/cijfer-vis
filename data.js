@@ -405,6 +405,7 @@ schema = [
                 description: "Individuele toets over |\n- Ethiek: Utilisme, Deontologie, Deugdethiek, Slavenmoraal\n- Antropologie: klassieke, moderne en postmoderne mensbeeld.",
                 domains: ["B", "C"],
                 weight: 25,
+                magister: "FI8201",
                 id: "piqyaduiep"
             },
             {
@@ -414,6 +415,7 @@ schema = [
                 description: "Wetenschapsfilosofie\n- Reductionisme\n- Correspondentietheorie\n- Kritisch rationalisme\n- Coherentietheorie\n- Conventietheorie\n- Pragmatisme",
                 domains: ["E"],
                 weight: 25,
+                magister: "FI8202",
                 id: "blj4nhc7cr"
             },
             {
@@ -423,6 +425,7 @@ schema = [
                 description: "Individuele toets over Kennisleer:\n- Platonisme\n- Taoïsme\n- Empirisme,\n- Rationalisme,\n- Transcendentalisme,\n- Perspectivisme\n- Pragmatisme\n- Deconstructivisme",
                 domains: ["D"],
                 weight: 25,
+                magister: "FI8203",
                 id: "7d9ld91une"
             },
             {
@@ -432,6 +435,7 @@ schema = [
                 description: "Groepsopdracht (2 a 3) waarin de leerlingen een les verzorgen over:\npolitieke en sociale filosofie:\n- Theorie uitleggen, politiek/sociaal fenomeen analyseren, discussie over stelling begeleiden.",
                 domains: ["A"],
                 weight: 25,
+                magister: "FI8204",
                 id: "o7gjalrjtv"
             },
         ]
