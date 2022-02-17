@@ -26,7 +26,7 @@ function storageAvailable(type) {
     }
 }
 
-function load_results() {
+function load(str) {
     if (!storageAvailable('localStorage')) {
         console.error('localStorage is not accessible');
         return false;
@@ -35,15 +35,28 @@ function load_results() {
     if (saved_results === null) {
         return false;
     }
-    results = JSON.parse(atob(saved_results));
+    return JSON.parse(atob(saved_results));
+}
+
+function load_results() {
+    let res = load('results', results);
+    if (res) {
+        results = res;
+    }
+}
+
+function save(str, var_) {
+    if (!storageAvailable('localStorage')) {
+        console.error('localStorage is not accessible');
+        return;
+    }
+    localStorage.setItem(str, btoa(JSON.stringify(var_)));
     return true;
 }
 
-function save_results() {
-    if (!storageAvailable('localStorage')) {
-        console.error('localStorage is not accessible');
-        return false;
+function store_results() {
+    store('results', results);
+    if (res) {
+        results = res;
     }
-    localStorage.setItem('results', btoa(JSON.stringify(results)));
-    return true;
 }
