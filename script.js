@@ -478,6 +478,7 @@ function add_optional_settings() {
             });
         d3.select('#settings').insert('label', `#${id} + *`)
             .attr('for', id)
+            .attr('title', optional.fullname)
             .text(optional.shortname);
         d3.select('#settings').insert('br', `[for=${id}] + *`);
     }
