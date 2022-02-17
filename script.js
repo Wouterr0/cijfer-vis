@@ -427,11 +427,6 @@ function show_table() {
     }
 }
 
-function easter_egg() {
-    if (Math.random() < .05) {
-        d3.select('style').node().innerHTML += '.assign-block{border-radius: 2em;}';
-    }
-}
 
 function show_page() {
     set_button_text();
@@ -444,5 +439,4 @@ function show_page() {
 // TODO: ensure no errors in data.js
 
 load_results();
-easter_egg();
 show_page();
