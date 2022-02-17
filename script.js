@@ -427,9 +427,11 @@ function show_table() {
     }
 }
 
-function easter_egg() {
-    if (Math.random() < .05) {
-        d3.select('style').node().innerHTML += '.assign-block{border-radius: 2em;}';
+function make_round() {
+    if (d3.select('#round').property('checked')) {
+        d3.select('body').append('style').attr('class', 'round-style').text('.assign-block{border-radius: 2em;}');
+    } else {
+        d3.select('.round-style').remove();
     }
 }
 
@@ -437,6 +439,7 @@ function show_page() {
     set_button_text();
     show_clear_button();
     show_table();
+    make_round();
     show_import_link();
     update_info();
 }
@@ -444,5 +447,4 @@ function show_page() {
 // TODO: ensure no errors in data.js
 
 load_results();
-easter_egg();
 show_page();
