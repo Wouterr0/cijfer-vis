@@ -302,6 +302,7 @@ schema = [
         type: "VAK",
         fullname: "Wiskunde D",
         shortname: "WisD",
+        optional: true,
         id: "zzhzstumsx",
         assignments: [
             {
@@ -396,6 +397,7 @@ schema = [
         type: "VAK",
         fullname: "Filosofie",
         shortname: "Fi.",
+        optional: true,
         id: "9i65zn7fb7",
         assignments: [
             {

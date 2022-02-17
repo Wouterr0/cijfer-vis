@@ -47,7 +47,7 @@
             font-family: 'Courier New', Courier, monospace;
         }
 
-        input {
+        input, label {
             font-family: inherit;
             font-size: calc(var(--font-size) / 2);
         }
@@ -192,17 +192,12 @@
 <body>
     <div id="settings">
         <input type="button" id="mode" onclick="change_mode()" />
-        <hr>
-        <input type="checkbox" id="toggle-zzhzstumsx" onchange="show_table()">
-        <label for="wisD">WisD</label>
-        <br>
-        <input type="checkbox" id="toggle-9i65zn7fb7" onchange="show_table()">
-        <label for="filo">Filo</label>
+        <hr id="before-optional">
         <input type="range" class="scale" min="0.5" max="1.5" value="1" step="0.1" oninput="set_scale()" list="tickmarks"/>
         <datalist id="tickmarks">
             <option value="1.0"></option>
         </datalist>
-        <input type="checkbox" id="round" onchange="make_round()">
+        <input type="checkbox" id="round" onchange="set_round()">
     </div>
     <div class="grid">
         <table id="overview"></table>

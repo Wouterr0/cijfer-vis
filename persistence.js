@@ -31,7 +31,7 @@ function load(str) {
         console.error('localStorage is not accessible');
         return false;
     }
-    let saved_results = localStorage.getItem('results');
+    let saved_results = localStorage.getItem(str);
     if (saved_results === null) {
         return false;
     }
@@ -45,6 +45,13 @@ function load_results() {
     }
 }
 
+function load_settings() {
+    let res = load('settings', settings);
+    if (res) {
+        settings = res;
+    }
+}
+
 function save(str, var_) {
     if (!storageAvailable('localStorage')) {
         console.error('localStorage is not accessible');
@@ -54,9 +61,10 @@ function save(str, var_) {
     return true;
 }
 
-function store_results() {
-    store('results', results);
-    if (res) {
-        results = res;
-    }
+function save_results() {
+    save('results', results);
+}
+
+function save_settings() {
+    save('settings', settings);
 }

@@ -4,6 +4,7 @@ let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;
 let results = {};
 // let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo2LjksIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjMsInl0NW41eHN1eWEiOjYuOCwiN3JkNmYwZ2FhaCI6OC4yfQ=='));
+let settings = { extra: [] };
 let used_types = {};
 
 function nl_num(n, fract_digits) {
@@ -207,12 +208,26 @@ function plan_mode() {
 function change_mode() {
     mode = plan_mode() ? 'RES' : 'PLAN';
 
-    show_page();
+    show_page_for_mode();
 }
 
 function set_scale() {
-    d3.select(":root")
-        .style('--table-font-size', `calc(min(4vh, min(5vw, 2em)) * ${d3.select('.scale').property('value')})`);
+    let scale_val = d3.select('.scale').property('valueAsNumber');
+    settings.scale = scale_val;
+    save_settings();
+    d3.select(':root')
+        .style('--table-font-size', `calc(min(4vh, min(5vw, 2em)) * ${scale_val})`);
+}
+
+function set_round() {
+    let is_round = d3.select('#round').property('checked');
+    settings.round = is_round;
+    save_settings();
+    if (is_round) {
+        d3.select('body').append('style').attr('class', 'round-style').text('.assign-block{border-radius: 2em;}');
+    } else {
+        d3.select('.round-style').remove();
+    }
 }
 
 function get_total_subweight(assignment) {
@@ -427,19 +442,70 @@ function show_table() {
     }
 }
 
-function make_round() {
-    if (d3.select('#round').property('checked')) {
-        d3.select('body').append('style').attr('class', 'round-style').text('.assign-block{border-radius: 2em;}');
-    } else {
-        d3.select('.round-style').remove();
+function get_optional_settings(assignments = schema) {
+    let found = [];
+    for (const assign of assignments) {
+        if (assign.type === 'VAK') {
+            if (assign.optional === true) {
+                found = found.concat(assign);
+            }
+        } else if (assign.type === 'COMB') {
+            found = found.concat(get_optional_settings(assign.assignments));
+        }
+    }
+    return found;
+}
+
+function add_optional_settings() {
+    for (const optional of get_optional_settings().reverse()) {
+        let id = `toggle-${optional.id}`;
+        let chbx = d3.select('#settings').insert('input', '#before-optional + *')
+            .attr('type', 'checkbox')
+            .attr('id', id)
+            .property('checked', settings.extra.includes(optional.id))
+            .on('click', () => {
+                show_table();
+                if (chbx.property('checked')) {
+                    if (!settings.extra.includes(optional.id)) {
+                        settings.extra.push(optional.id);
+                    }
+                } else {
+                    if (settings.extra.includes(optional.id)) {
+                        settings.extra.splice(settings.extra.indexOf(optional.id), 1);
+                    }
+                }
+                save_settings();
+            });
+        d3.select('#settings').insert('label', `#${id} + *`)
+            .attr('for', id)
+            .text(optional.shortname);
+        d3.select('#settings').insert('br', `[for=${id}] + *`);
     }
 }
 
-function show_page() {
+function load_ui_settings() {
+    if ('scale' in settings) {
+        d3.select('.scale')
+            .property('value', settings.scale);
+    }
+    set_scale()
+
+    if ('round' in settings) {
+        d3.select('#round')
+            .property('checked', settings.round);
+    }
+    set_round();
+}
+
+function apply_settings() {
+    add_optional_settings();
+    load_ui_settings();
+}
+
+function show_page_for_mode() {
     set_button_text();
     show_clear_button();
     show_table();
-    make_round();
     show_import_link();
     update_info();
 }
@@ -447,4 +513,6 @@ function show_page() {
 // TODO: ensure no errors in data.js
 
 load_results();
-show_page();
+load_settings();
+apply_settings();
+show_page_for_mode();
