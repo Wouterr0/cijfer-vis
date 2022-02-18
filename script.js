@@ -4,7 +4,7 @@ let mode = 'RES';  // RES mode or PLAN mode
 let selected_assign;  // TODO: store `selected` not on the object but in a separate object
 let results = {};
 // let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo2LjksIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjMsInl0NW41eHN1eWEiOjYuOCwiN3JkNmYwZ2FhaCI6OC4yfQ=='));
-let settings = { extra: [] };
+let settings = { extra: [], replacing: [] };
 let used_types = {};
 
 function nl_num(n, fract_digits) {
@@ -39,7 +39,7 @@ function preprocess_schema() {
             delete assign.like;
         }
 
-        if (['PO', 'MET', 'SET'].includes(assign.type)) {}
+        if (['PO', 'MET', 'SET'].includes(assign.type)) { }
         else {
             for (const i in assign.assignments) {
                 recurse(assign.assignments[i]);
@@ -381,7 +381,18 @@ function show_table() {
 
     let avgs = [];
 
-    for (const grade of schema) {
+    for (let grade of schema) {
+        if (grade.replaces) {
+            continue;
+        }
+
+        for (const ids of settings.replacing) {
+            let [replacing, replaced] = ids.split('-');
+            if (replacing === grade.id) {
+                grade = get_assign_by_id(replaced);
+            }
+        }
+
         let toggle = d3.select(`#toggle-${grade.id}`);
         if (!toggle.empty() && !toggle.property('checked')) {
             continue;
@@ -467,29 +478,32 @@ function show_table() {
     }
 }
 
-function get_optional_settings(assignments = schema) {
-    let found = [];
+function get_optional_assigns(pure, replacing, assignments = schema) {
     for (const assign of assignments) {
         if (assign.type === 'VAK') {
             if (assign.optional === true) {
-                found = found.concat(assign);
+                pure.push(assign);
+            }
+            if (assign.replaces) {
+                replacing.push([get_assign_by_id(assign.replaces), assign]);
             }
         } else if (assign.type === 'COMB') {
-            found = found.concat(get_optional_settings(assign.assignments));
+            get_optional_assigns(pure, replacing, assign.assignments);
         }
     }
-    return found;
 }
 
 function add_optional_settings() {
-    for (const optional of get_optional_settings().reverse()) {
+    let pure = [];
+    let replacing = [];  // [the subject that is default, the subject that can replace it], ...
+    get_optional_assigns(pure, replacing);
+    for (const optional of pure) {
         let id = `toggle-${optional.id}`;
-        let chbx = d3.select('#settings').insert('input', '#before-optional + *')
+        let chbx = d3.select('#settings').insert('input', '.scale')
             .attr('type', 'checkbox')
             .attr('id', id)
             .property('checked', settings.extra.includes(optional.id))
             .on('click', () => {
-                show_table();
                 if (chbx.property('checked')) {
                     if (!settings.extra.includes(optional.id)) {
                         settings.extra.push(optional.id);
@@ -500,12 +514,42 @@ function add_optional_settings() {
                     }
                 }
                 save_settings();
+                show_table();
             });
-        d3.select('#settings').insert('label', `#${id} + *`)
+        d3.select('#settings').insert('label', '.scale')
             .attr('for', id)
             .attr('title', optional.fullname)
             .text(optional.shortname);
-        d3.select('#settings').insert('br', `[for=${id}] + *`);
+        d3.select('#settings').insert('br', '.scale');
+    }
+    d3.select('#settings').insert('hr', '.scale');
+    for (const replaced of replacing) {
+        console.log(replaced);
+        let ids = replaced[0].id + '-' + replaced[1].id;
+        let id = 'replace-' + ids;
+        let chbx = d3.select('#settings').insert('input', '.scale')
+            .attr('type', 'checkbox')
+            .attr('id', id)
+            .property('checked', settings.replacing.includes(ids))
+            .on('click', () => {
+                if (chbx.property('checked')) {
+                    if (!settings.replacing.includes(ids)) {
+                        settings.replacing.push(ids);
+                    }
+                } else {
+                    if (settings.replacing.includes(ids)) {
+                        settings.replacing.splice(settings.replacing.indexOf(ids), 1);
+                    }
+                }
+                save_settings();
+                show_table();
+            });
+        d3.select('#settings').insert('label', '.scale')
+            .attr('for', id)
+            .attr('title', replaced[1].fullname)
+            .text(replaced[1].shortname);
+        d3.select('#settings').insert('br', '.scale');
+
     }
 }
 

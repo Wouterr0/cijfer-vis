@@ -518,6 +518,37 @@ schema = [
     },
     {
         type: "VAK",
+        fullname: "Engels (Versneld)",
+        shortname: "SnelEng.",
+        replaces: "ns17jgif2b",
+        id: "vrzx1r9o5w",
+        assignments: [
+            {
+                type: "MET",
+                year: 5,
+                period: 1,
+                description: "Presentatie met aansluitend gesprek over een onderwerp passend bij het gekozen profiel.",
+                domains: ["C", "C1", "C2"],
+                weight: 35,
+                magister: "ENTL8301",
+                id: "knigogvo82"
+            },
+            {
+                like: "ua1f2n494n",
+                year: 5,
+                period: 2,
+                id: "8rly123ah6"
+            },
+            {
+                like: "e484pmwj16",
+                year: 5,
+                period: 3,
+                id: "rpl6l1jjox"
+            }
+        ]
+    },
+    {
+        type: "VAK",
         fullname: "Spaans",
         shortname: "Sp.",
         id: "ahpadn77oh",
