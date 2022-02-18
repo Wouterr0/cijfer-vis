@@ -48,6 +48,10 @@
         }
 
         .errors {
+            margin: 1em 0                       ;
+        }
+
+        .error {
             background-color: lightcoral;
             color: crimson;
             font-weight: 700;
@@ -62,14 +66,12 @@
     <script src="data.js" defer></script>
     <script src="persistence.js" defer></script>
     <script defer>
-        let errors = [];
         function set_error(msg) {
             console.error(msg);
-            errors.push(msg);
-
             d3.select('.errors')
-                .style('display', 'block')
-                .text(errors.join('\n'));
+                .append('div')
+                .attr('class', 'error')
+                .text(msg);
         }
 
         function get_id_by_magister(magister, assignments = schema) {
@@ -120,12 +122,6 @@
                 set_error(error.stack);
             }
         });
-
-
-        window.onload = () => {
-            d3.select('.errors')
-                .style('display', 'none');
-        }
 
     </script>
 </head>
