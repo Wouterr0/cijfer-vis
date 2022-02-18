@@ -143,15 +143,11 @@ function update_info() {
             if (can_input) {
                 if (selected_assign.id in results) {
                     value = results[selected_assign.id];
-                } else {
-                    value = 5.5;
                 }
             } else {
                 let avg = calc_avg(selected_assign, true);
                 if (avg) {
                     value = avg;
-                } else {
-                    value = 5.5;
                 }
             }
 
