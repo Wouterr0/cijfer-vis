@@ -1,7 +1,7 @@
 'use strict';
 
 let mode = 'RES';  // RES mode or PLAN mode
-let selected_assign;
+let selected_assign;  // TODO: store `selected` not on the object but in a separate object
 let results = {};
 // let results = JSON.parse(atob('eyIwb3RnbXRsbm51Ijo2LjQsImlhM241bXBxOGgiOjguOCwiYmlidGhueDFkaiI6Ny4xLCJnYng2aGRxaWhwIjo4LjgsImQ0dno2djViOTkiOjguNiwieDRtbnN1NXBtcyI6OC4zLCI0amduc2g3MjN5Ijo2LjksIjM2NDVnY3gwbjQiOjguMywiNHNmM255a2w1OSI6OS42LCJ0dHptMHpmOW03IjoxMCwiZ3c3cDc2M3U1NSI6OS4yLCJ5d29mbHFrZHh6Ijo3LjksIjh1bG1jMWpxcDciOjguNSwiaGZoeXlyams0MCI6OC43LCJ3M3RmbXphcTBvIjo3LjMsImVqc3hyeHg0N3EiOjguMywiZGF2dmU1NHU0dyI6OS40LCJxdmt3MW16czV5Ijo2LCJ6c3dwcDE5aDl4Ijo3LCJ3bzRtaWgxaGNxIjo2LjMsInl0NW41eHN1eWEiOjYuOCwiN3JkNmYwZ2FhaCI6OC4yfQ=='));
 let settings = { extra: [] };
@@ -21,6 +21,35 @@ function gen_id() {
 
 function rgb_to_str(rgb) {
     return `rgb(${rgb.join(', ')})`;
+}
+
+/**
+ * Transform schema to parse and remove `like` refrences
+ */
+function preprocess_schema() {
+
+    function recurse(assign) {
+        if (assign.like) {
+            const src = get_assign_by_id(assign.like);
+            for (const key in src) {
+                if (!(key in assign)) {  // don't duplicate key if aready exists
+                    assign[key] = src[key];
+                }
+            }
+            delete assign.like;
+        }
+
+        if (['PO', 'MET', 'SET'].includes(assign.type)) {}
+        else {
+            for (const i in assign.assignments) {
+                recurse(assign.assignments[i]);
+            }
+        }
+    }
+
+    for (const i in schema) {
+        recurse(schema[i]);
+    }
 }
 
 function get_assign_by_id(id, assignments = schema) {
@@ -508,7 +537,7 @@ function show_page_for_mode() {
 }
 
 // TODO: ensure no errors in data.js
-
+preprocess_schema();
 load_results();
 load_settings();
 apply_settings();
