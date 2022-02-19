@@ -543,6 +543,7 @@ function add_optional_settings() {
                 }
                 save_settings();
                 show_table();
+                update_info();
             });
         d3.select('#settings').insert('label', '.scale')
             .attr('for', id)
