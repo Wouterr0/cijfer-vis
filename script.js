@@ -525,7 +525,6 @@ function add_optional_settings() {
     }
     d3.select('#settings').insert('hr', '.scale');
     for (const replaced of replacing) {
-        console.log(replaced);
         let ids = replaced[0].id + '-' + replaced[1].id;
         let id = 'replace-' + ids;
         let chbx = d3.select('#settings').insert('input', '.scale')
