@@ -190,6 +190,7 @@ function update_info() {
                 .attr('type', 'number')
                 .attr('min', '1')
                 .attr('step', '0.1')
+                .attr('placeholder', nl_num(6.9))
                 .property('disabled', !can_input)
                 .property('required', true)
                 .attr('lang', 'nl')
@@ -543,6 +544,7 @@ function add_optional_settings() {
                 }
                 save_settings();
                 show_table();
+                selected_assign = undefined;
                 update_info();
             });
         d3.select('#settings').insert('label', '.scale')
