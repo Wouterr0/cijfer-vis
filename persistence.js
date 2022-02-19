@@ -41,14 +41,14 @@ function load(str) {
 function load_results() {
     let res = load('results', results);
     if (res) {
-        results = res;
+        Object.assign(results, results, res);
     }
 }
 
 function load_settings() {
     let res = load('settings', settings);
     if (res) {
-        settings = res;
+        Object.assign(settings, settings, res);
     }
 }
 
