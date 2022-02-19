@@ -465,8 +465,8 @@ function show_table() {
         stats.append('div').html(`<strong>max:</strong> ${avgs.length === 0 ? '-' : nl_num(maxv, 1)}`);
         stats.append('div').html(`<strong>mediaan:</strong> ${avgs.length === 0 ? '-' : nl_num(median, 1)}`);
 
-
-        let total_avg_elem = total_row.append('td');
+        let total_avg_elem = total_row.append('td')
+            .style('display', 'block');
         total_avg_elem.append('hr').attr('class', 'tot-sep');
 
         let avg_div = total_avg_elem.append('div');
