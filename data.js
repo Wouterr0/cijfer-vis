@@ -377,7 +377,7 @@ schema = [
                 type: "SET",
                 year: 6,
                 period: 3,
-                description: "Defferentiaalvergelijkingen",
+                description: "Differentiaalvergelijkingen",
                 domains: ["C2", "C3", "F"],
                 weight: 10,
                 id: "parew325rb"
