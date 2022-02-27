@@ -16,6 +16,6 @@ export default {
         min: Number,
         max: Number,
         step: Number,
-    }
-}
+    },
+};
 </script>

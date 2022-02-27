@@ -9,7 +9,6 @@
         />
     </table>
 </template>
-
 <script>
 import Header from './Header.vue';
 import Row from './Row.vue';

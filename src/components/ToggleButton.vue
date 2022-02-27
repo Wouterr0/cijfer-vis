@@ -1,5 +1,9 @@
 <template>
-    <input type="button" :value="this.toggled ? this.other : this.default" @click="toggle()" />
+    <input
+        type="button"
+        :value="this.toggled ? this.other : this.default"
+        @click="toggle()"
+    />
 </template>
 
 <script>
@@ -14,9 +18,7 @@ export default {
             toggled: false,
         };
     },
-    created() {
-
-    },
+    created() {},
     methods: {
         toggle() {
             this.toggled = !this.toggled;

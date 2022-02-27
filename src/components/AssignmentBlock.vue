@@ -1,12 +1,11 @@
 <template>
     <div
-        class="assignment-block"
+        :class="['assignment-block', isViewed ? 'hovered-block' : null]"
         :style="{
             width: widthPercentage + '%',
             background: `var(--${assignment.type}-color)`,
-            filter: isViewed ? 'brightness(85%)' : null,
         }"
-        @mouseenter.stop="onEnter()"
+        @mouseover.stop="onOver()"
         @mouseout.stop="onLeave()"
     >
         <AssignmentBlocks
@@ -36,13 +35,10 @@ export default {
         ),
     },
     methods: {
-        onEnter() {
-            
-            console.log('ENTER', this.assignment.id);
+        onOver() {
             this.isViewed = true;
         },
         onLeave() {
-            console.log('LEAVE', this.assignment.id);
             this.isViewed = false;
         },
     },

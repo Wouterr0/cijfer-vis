@@ -3,7 +3,7 @@
         <AssignmentBlock
             :key="assignment.id"
             :assignment="assignment"
-            :widthPercentage="assignment.weight / totalSubweight * 100"
+            :widthPercentage="(assignment.weight / totalSubweight) * 100"
             v-for="assignment in assignments"
         />
     </div>
@@ -23,15 +23,14 @@ export default {
     data() {
         return {
             totalSubweight: 0,
-        }
+        };
     },
     created() {
         this.totalSubweight = 0;
         for (const assignment of this.assignments) {
             this.totalSubweight += assignment.weight;
         }
-    }
-    
+    },
 };
 </script>
 
@@ -42,6 +41,10 @@ export default {
     padding: var(--assign-padd);
     border: var(--select-border-size) solid transparent;
     /* box-sizing: border-box; */
+}
+
+.hovered-block {
+    filter: brightness(85%);
 }
 
 .group-block {

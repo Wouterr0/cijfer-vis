@@ -15,4 +15,4 @@ export function nl_num(n, fract_digits) {
 
 export function calc_avg(a) {
     return 6.9;
-} 
+}
