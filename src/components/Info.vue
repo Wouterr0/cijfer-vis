@@ -1,7 +1,7 @@
 <template>
     <div :class="['info', assignmentId === null ? 'info-legend' : 'info-props']">
         <!-- TODO: pass calculated used types -->
-        <Legend v-if="assignmentId === null" />
+        <Legend v-if="assignmentId === null" :subjects="subjects" />
         <AssignmentProps v-else :assignment-id="assignmentId" />
     </div>
 </template>
@@ -14,6 +14,7 @@ export default {
     name: 'Info',
     props: {
         assignmentId: String,
+        subjects: Array,
     },
     components: {
         Legend,

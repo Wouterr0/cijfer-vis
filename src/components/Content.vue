@@ -5,7 +5,7 @@
             :resultsMode="resultsMode"
             @assignment-hover="assignmentHover"
         />
-        <Info :assignment-id="focusId" />
+        <Info :assignment-id="focusId" :subjects="subjects" />
     </div>
 </template>
 
