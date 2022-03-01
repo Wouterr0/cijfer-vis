@@ -22,7 +22,7 @@
         <AssignmentProp
             v-if="'domains' in assignment"
             key_="domeinen"
-            :value="assignment.domains"
+            :value="assignment.domains.join(', ')"
         />
         <AssignmentProp
             key_="beschrijving"

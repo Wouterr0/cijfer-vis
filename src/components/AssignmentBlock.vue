@@ -11,6 +11,7 @@
         <AssignmentBlocks
             v-if="['COMB', 'VAK'].includes(assignment.type)"
             :assignments="assignment.assignments"
+            @assignment-hover="(id) => $emit('assignment-hover', id)"
         />
     </div>
 </template>
@@ -41,6 +42,7 @@ export default {
         },
         onLeave() {
             this.isViewed = false;
+            this.$emit('assignmentHover', null);
         },
     },
 };

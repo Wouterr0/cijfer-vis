@@ -19,10 +19,11 @@ export default {
     },
     computed: {
         assigmentTypes() {
-            let s = count_types(this.subjects);
-            let t = new Map([...Object.entries(s)].sort((a, b) => b[1] - a[1]));
-            console.log(s, t);
-            return Object.keys(s);
+            return new Map(
+                [...Object.entries(count_types(this.subjects))].sort(
+                    (a, b) => b[1] - a[1]
+                )
+            ).keys();
         },
     },
 };
