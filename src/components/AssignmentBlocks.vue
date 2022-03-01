@@ -5,6 +5,7 @@
             :assignment="assignment"
             :widthPercentage="(assignment.weight / totalSubweight) * 100"
             v-for="assignment in assignments"
+            @assignment-hover="id => $emit('assignment-hover', id)"
         />
     </div>
 </template>

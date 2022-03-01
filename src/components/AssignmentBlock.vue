@@ -37,6 +37,7 @@ export default {
     methods: {
         onOver() {
             this.isViewed = true;
+            this.$emit('assignmentHover', this.assignment.id);
         },
         onLeave() {
             this.isViewed = false;

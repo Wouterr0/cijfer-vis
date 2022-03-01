@@ -2,7 +2,10 @@
     <tr>
         <td>{{ assignment.shortname }}</td>
         <td>
-            <AssignmentBlocks :assignments="assignment.assignments" />
+            <AssignmentBlocks
+                :assignments="assignment.assignments"
+                @assignment-hover="(id) => $emit('assignment-hover', id)"
+            />
         </td>
         <td>{{ avg }}</td>
     </tr>

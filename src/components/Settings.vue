@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .settings {
     display: flex;
     margin: 0 0 1em 0;

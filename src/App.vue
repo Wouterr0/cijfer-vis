@@ -12,9 +12,10 @@
 </template>
 
 <script>
+import rawData from './data.js';
+import { parse_data } from './utils.js';
 import Settings from './components/Settings.vue';
 import Content from './components/Content.vue';
-import rawData from './data.js';
 
 export default {
     name: 'App',
@@ -35,8 +36,8 @@ export default {
         };
     },
     created() {
-        this.subjects = rawData;
-        console.log(rawData);
+        this.subjects = parse_data(rawData);
+        console.log(this.subjects);
     },
 };
 </script>

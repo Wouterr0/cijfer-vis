@@ -6,6 +6,7 @@
             v-for="subject in subjects"
             :assignment="subject"
             :resultsMode="resultsMode"
+            @assignment-hover="(id) => $emit('assignment-hover', id)"
         />
     </table>
 </template>
