@@ -4,7 +4,9 @@
         <td>
             <AssignmentBlocks
                 :assignments="assignment.assignments"
-                @assignment-hover="(id) => $emit('assignment-hover', id)"
+                :clickedId="clickedId"
+                :hoveredId="hoveredId"
+                @assignment-view="(id, c) => $emit('assignmentView', id, c)"
             />
         </td>
         <td>{{ avg }}</td>
@@ -20,6 +22,8 @@ export default {
     props: {
         assignment: Object,
         resultsMode: Boolean,
+        clickedId: String,
+        hoveredId: String,
     },
     components: {
         AssignmentBlocks,

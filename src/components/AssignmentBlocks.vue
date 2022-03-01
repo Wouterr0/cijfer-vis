@@ -5,7 +5,9 @@
             :assignment="assignment"
             :widthPercentage="(assignment.weight / totalSubweight) * 100"
             v-for="assignment in assignments"
-            @assignment-hover="(id) => $emit('assignment-hover', id)"
+            :clickedId="clickedId"
+            :hoveredId="hoveredId"
+            @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
     </div>
 </template>
@@ -17,6 +19,8 @@ export default {
     name: 'AssignmentBlocks',
     props: {
         assignments: Array,
+        clickedId: String,
+        hoveredId: String,
     },
     components: {
         AssignmentBlock,
@@ -46,6 +50,10 @@ export default {
 
 .hovered-block {
     filter: brightness(85%);
+}
+
+.selected-block {
+    border: var(--select-border-size) solid rgba(0, 0, 0, 0.6);
 }
 
 .group-block {

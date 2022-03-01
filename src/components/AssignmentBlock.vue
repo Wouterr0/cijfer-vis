@@ -1,17 +1,24 @@
 <template>
     <div
-        :class="['assignment-block', isViewed ? 'hovered-block' : null]"
+        :class="[
+            'assignment-block',
+            hoveredId === assignment.id ? 'hovered-block' : null,
+            clickedId === assignment.id ? 'selected-block' : null,
+        ]"
         :style="{
             width: widthPercentage + '%',
             background: `var(--${assignment.type}-color)`,
         }"
         @mouseover.stop="onOver()"
         @mouseout.stop="onLeave()"
+        @click.stop="onClick()"
     >
         <AssignmentBlocks
             v-if="['COMB', 'VAK'].includes(assignment.type)"
             :assignments="assignment.assignments"
-            @assignment-hover="(id) => $emit('assignment-hover', id)"
+            :clickedId="clickedId"
+            :hoveredId="hoveredId"
+            @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
     </div>
 </template>
@@ -24,11 +31,8 @@ export default {
     props: {
         assignment: Object,
         widthPercentage: Number,
-    },
-    data() {
-        return {
-            isViewed: false,
-        };
+        hoveredId: String,
+        clickedId: String,
     },
     components: {
         AssignmentBlocks: defineAsyncComponent(() =>
@@ -37,12 +41,17 @@ export default {
     },
     methods: {
         onOver() {
-            this.isViewed = true;
-            this.$emit('assignmentHover', this.assignment.id);
+            this.$emit('assignmentView', this.assignment.id, false);
         },
         onLeave() {
-            this.isViewed = false;
-            this.$emit('assignmentHover', null);
+            this.$emit('assignmentView', null, false);
+        },
+        onClick() {
+            this.$emit(
+                'assignmentView',
+                this.assignment.id,
+                true
+            );
         },
     },
 };

@@ -6,7 +6,9 @@
             v-for="subject in subjects"
             :assignment="subject"
             :resultsMode="resultsMode"
-            @assignment-hover="(id) => $emit('assignment-hover', id)"
+            :clickedId="clickedId"
+            :hoveredId="hoveredId"
+            @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
     </table>
 </template>
@@ -19,6 +21,8 @@ export default {
     props: {
         subjects: Array,
         resultsMode: Boolean,
+        clickedId: String,
+        hoveredId: String,
     },
     components: {
         Header,
