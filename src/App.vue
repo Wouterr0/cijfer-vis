@@ -1,13 +1,14 @@
 <template>
     <Settings
-        :optional="this.settings.extra"
-        :replacing="this.settings.replacing"
-        :round="this.settings.round"
-        :scale="this.settings.scale"
+        :saved-optional="this.settings.extra"
+        :saved-replacing="this.settings.replacing"
+        :saved-round="this.settings.round"
+        :saved-scale="this.settings.scale"
+        @toggle-round="toggleRound"
     />
     <Content
         :subjects="this.subjects"
-        :resultsMode="this.settings.resultsMode"
+        :results-mode="this.settings.resultsMode"
     />
 </template>
 
@@ -25,7 +26,9 @@ export default {
     },
     data() {
         return {
+            test: 'red',
             subjects: [],
+            results: [],
             settings: {
                 extra: [],
                 replacing: [],
@@ -35,6 +38,17 @@ export default {
             },
         };
     },
+    // TODO: deep watcher on settings and save it to LocalStorage
+    methods: {
+        toggleRound() {
+            this.settings.round = !this.settings.round;
+        }
+    },
+    computed: {
+        roundness() {
+            return this.settings.round ? '2em' : '0';
+        }
+    },
     created() {
         this.subjects = parse_data(rawData);
         console.log(this.subjects);
@@ -42,4 +56,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.assignment-block {
+    border-radius: v-bind(roundness);
+}
+</style>

@@ -38,7 +38,6 @@ export default {
                 this.clickedId !== null ? this.clickedId : this.hoveredId;
 
             console.log(id, clicked, '-', this.hoveredId, this.hoveredId);
-            // console.log('focus assignment with id', id, clicked ? 'clicked' : 'NOT clicked');
         },
     },
     data() {

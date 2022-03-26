@@ -3,15 +3,15 @@
         <ToggleButton
             default="RESULTATEN"
             other="PLANNEN"
-            :style="{ 'font-weight': 700 }"
+            style="font-weight: 700;"
         />
         <hr />
         <Optionals />
         <hr />
         <Replacings />
         <hr class="left" />
-        <Slider :value="this.scale" :min="0.5" :max="1.5" :step="0.1" />
-        <Checkbox />
+        <Slider :value="savedScale" :min="0.5" :max="1.5" :step="0.1" />
+        <Checkbox @checkbox-change="$emit('toggleRound')" />
     </div>
 </template>
 
@@ -32,10 +32,10 @@ export default {
         Checkbox,
     },
     props: {
-        optional: Array,
-        replacing: Array,
-        round: Boolean,
-        scale: Number,
+        savedOptional: Array,
+        savedReplacing: Array,
+        savedRound: Boolean,
+        savedScale: Number,
     },
 };
 </script>

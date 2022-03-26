@@ -1,10 +1,10 @@
 <template>
     <input
         type="range"
-        :value="this.value"
-        :min="this.min"
-        :max="this.max"
-        :step="this.step"
+        :value="value"
+        :min="min"
+        :max="max"
+        :step="step"
     />
 </template>
 

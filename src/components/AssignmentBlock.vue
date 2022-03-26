@@ -16,8 +16,8 @@
         <AssignmentBlocks
             v-if="['COMB', 'VAK'].includes(assignment.type)"
             :assignments="assignment.assignments"
-            :clickedId="clickedId"
-            :hoveredId="hoveredId"
+            :clicked-id="clickedId"
+            :hovered-id="hoveredId"
             @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
     </div>

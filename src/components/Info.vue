@@ -1,14 +1,23 @@
 <template>
-    <div :class="['info', assignmentId === null ? 'info-legend' : 'info-props']">
+    <div
+        :class="['info', assignmentId === null ? 'info-legend' : 'info-props']"
+    >
         <!-- TODO: pass calculated used types -->
         <Legend v-if="assignmentId === null" :subjects="subjects" />
-        <AssignmentProps v-else :assignment-id="assignmentId" />
+        <div v-else>
+            <AssignmentProps :assignment-id="assignmentId" />
+            <div class="result-input">
+                <br>
+                <ResultInput :assignment-id="assignmentId" />
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-import Legend from './Legend.vue'
-import AssignmentProps from './AssignmentProps.vue'
+import Legend from './Legend.vue';
+import AssignmentProps from './AssignmentProps.vue';
+import ResultInput from './ResultInput.vue';
 
 export default {
     name: 'Info',
@@ -19,6 +28,7 @@ export default {
     components: {
         Legend,
         AssignmentProps,
+        ResultInput,
     },
 };
 </script>
