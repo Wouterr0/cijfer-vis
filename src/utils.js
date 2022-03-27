@@ -1,5 +1,7 @@
 import raw_subjects from './data.js';
 
+export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
+
 export function assignment_by_id(id, assignments = raw_subjects) {
     for (const assignment of assignments) {
         if (assignment.id === id) {

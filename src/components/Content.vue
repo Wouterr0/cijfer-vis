@@ -1,13 +1,11 @@
 <template>
     <div class="content">
         <Overview
-            :subjects="subjects"
-            :resultsMode="resultsMode"
             :clickedId="clickedId"
             :hoveredId="hoveredId"
             @assignment-view="assignmentView"
         />
-        <Info :assignment-id="focussedId" :subjects="subjects" />
+        <Info :assignment-id="focussedId" />
     </div>
 </template>
 
@@ -21,10 +19,7 @@ export default {
         Overview,
         Info,
     },
-    props: {
-        resultsMode: Boolean,
-        subjects: Array,
-    },
+    props: {},
     methods: {
         assignmentView(id, clicked) {
             if (clicked) {
@@ -37,7 +32,7 @@ export default {
             this.focussedId =
                 this.clickedId !== null ? this.clickedId : this.hoveredId;
 
-            console.log(id, clicked, '-', this.hoveredId, this.hoveredId);
+            // console.log(id, clicked, '-', this.hoveredId, this.hoveredId);
         },
     },
     data() {

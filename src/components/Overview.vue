@@ -1,11 +1,11 @@
 <template>
     <table class="overview">
-        <Header :resultsMode="resultsMode" />
+        <Header :showResults="showResults" />
         <Row
             :key="subject.id"
             v-for="subject in subjects"
             :assignment="subject"
-            :resultsMode="resultsMode"
+            :showResults="showResults"
             :clickedId="clickedId"
             :hoveredId="hoveredId"
             @assignment-view="(id, c) => $emit('assignmentView', id, c)"
@@ -15,12 +15,11 @@
 <script>
 import Header from './Header.vue';
 import Row from './Row.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'Overview',
     props: {
-        subjects: Array,
-        resultsMode: Boolean,
         clickedId: String,
         hoveredId: String,
     },
@@ -28,6 +27,7 @@ export default {
         Header,
         Row,
     },
+    computed: mapGetters(['subjects', 'showResults']),
 };
 </script>
 

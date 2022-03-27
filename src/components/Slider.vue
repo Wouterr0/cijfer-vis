@@ -1,10 +1,11 @@
 <template>
     <input
         type="range"
-        :value="value"
+        :value="modelValue"
         :min="min"
         :max="max"
         :step="step"
+        @input="$emit('update:modelValue', $event.target.value)"
     />
 </template>
 
@@ -12,7 +13,7 @@
 export default {
     name: 'Slider',
     props: {
-        value: Number,
+        modelValue: Number,
         min: Number,
         max: Number,
         step: Number,

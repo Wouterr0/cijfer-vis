@@ -1,8 +1,8 @@
 <template>
     <input
         type="button"
-        :value="this.toggled ? this.other : this.default"
-        @click="toggle()"
+        :value="UIValue"
+        @click="nextValue"
     />
 </template>
 
@@ -10,18 +10,19 @@
 export default {
     name: 'ToggleButton',
     props: {
-        default: String,
-        other: String,
+        values: Object,
+        modelValue: String,
     },
-    data() {
-        return {
-            toggled: false,
-        };
+    computed: {
+        UIValue() {
+            return this.values[this.modelValue];
+        }
     },
-    created() {},
     methods: {
-        toggle() {
-            this.toggled = !this.toggled;
+        nextValue() {
+          	const keys = Object.keys(this.values);
+            const val = keys[(keys.indexOf(this.modelValue) + 1) % keys.length];
+            this.$emit('update:modelValue', val);
         },
     },
 };

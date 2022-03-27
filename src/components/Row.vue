@@ -9,7 +9,7 @@
                 @assignment-view="(id, c) => $emit('assignmentView', id, c)"
             />
         </td>
-        <td>{{ avg }}</td>
+        <td v-if="showResults" >{{ avg }}</td>
     </tr>
 </template>
 
@@ -21,7 +21,7 @@ export default {
     name: 'Row',
     props: {
         assignment: Object,
-        resultsMode: Boolean,
+        showResults: Boolean,
         clickedId: String,
         hoveredId: String,
     },

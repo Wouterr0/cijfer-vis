@@ -1,17 +1,13 @@
 <template>
     <div class="settings">
-        <ToggleButton
-            default="RESULTATEN"
-            other="PLANNEN"
-            style="font-weight: 700;"
-        />
+        <ToggleButton :values="modi" v-model="mode" style="font-weight: 700" />
         <hr />
         <Optionals />
         <hr />
         <Replacings />
         <hr class="left" />
-        <Slider :value="savedScale" :min="0.5" :max="1.5" :step="0.1" />
-        <Checkbox @checkbox-change="$emit('toggleRound')" />
+        <Slider v-model="scale" :min="0.5" :max="1.5" :step="0.1" />
+        <Checkbox @checkbox-change="setRound" />
     </div>
 </template>
 
@@ -21,6 +17,7 @@ import Optionals from './Optionals.vue';
 import Replacings from './Replacings.vue';
 import Slider from './Slider.vue';
 import Checkbox from './Checkbox.vue';
+import { modi } from '../utils.js';
 
 export default {
     name: 'Settings',
@@ -31,11 +28,32 @@ export default {
         Slider,
         Checkbox,
     },
-    props: {
-        savedOptional: Array,
-        savedReplacing: Array,
-        savedRound: Boolean,
-        savedScale: Number,
+    props: {},
+    methods: {
+        setRound(round) {
+            this.$store.commit('setRround', round);
+        },
+    },
+    computed: {
+        mode: {
+            get() {
+                return this.$store.state.mode;
+            },
+            set(value) {
+                this.$store.commit('setMode', value);
+            },
+        },
+        scale: {
+            get() {
+                return this.$store.state.settings.scale;
+            },
+            set(value) {
+                this.$store.commit('setScale', value);
+            },
+        },
+    },
+    created() {
+        this.modi = modi;
     },
 };
 </script>

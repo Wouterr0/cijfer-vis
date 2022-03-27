@@ -14,13 +14,11 @@
 import { count_types } from '../utils.js';
 
 export default {
-    props: {
-        subjects: Array,
-    },
+    props: {},
     computed: {
         assigmentTypes() {
             return new Map(
-                [...Object.entries(count_types(this.subjects))].sort(
+                [...Object.entries(count_types(this.$store.getters.subjects))].sort(
                     (a, b) => b[1] - a[1]
                 )
             ).keys();

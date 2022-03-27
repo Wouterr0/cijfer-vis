@@ -3,11 +3,11 @@
         :class="['info', assignmentId === null ? 'info-legend' : 'info-props']"
     >
         <!-- TODO: pass calculated used types -->
-        <Legend v-if="assignmentId === null" :subjects="subjects" />
+        <Legend v-if="assignmentId === null" />
         <div v-else>
             <AssignmentProps :assignment-id="assignmentId" />
-            <div class="result-input">
-                <br>
+            <div class="result-input" v-if="showResults">
+                <br />
                 <ResultInput :assignment-id="assignmentId" />
             </div>
         </div>
@@ -18,18 +18,19 @@
 import Legend from './Legend.vue';
 import AssignmentProps from './AssignmentProps.vue';
 import ResultInput from './ResultInput.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'Info',
     props: {
         assignmentId: String,
-        subjects: Array,
     },
     components: {
         Legend,
         AssignmentProps,
         ResultInput,
     },
+    computed: mapGetters(['showResults']),
 };
 </script>
 
