@@ -46,9 +46,93 @@ const store = createStore({
         subjects(state) {
             return state.allSubjects;
         },
+        types(state, getters) {
+            const counted_types = {};
+            function recurse(assignment) {
+                if (!(assignment.type in counted_types)) {
+                    counted_types[assignment.type] = 0;
+                }
+                counted_types[assignment.type]++;
+
+                if (assignment.assignments) {
+                    for (const sub_assignment of assignment.assignments) {
+                        recurse(sub_assignment);
+                    }
+                }
+            }
+
+            for (const subject of getters.subjects) {
+                for (const assignment of subject.assignments) {
+                    recurse(assignment);
+                }
+            }
+
+            return new Map(
+                [...Object.entries(counted_types)].sort((a, b) => b[1] - a[1])
+            ).keys();
+        },
         showResults(state) {
             return state.mode === 'results';
-        }
+        },
+        assignment: (state) => (id) => {
+            function recurse(assignments) {
+                for (const assignment of assignments) {
+                    if (assignment.id === id) {
+                        return assignment;
+                    }
+                    if (assignment.assignments) {
+                        const res = recurse(assignment.assignments);
+                        if (res) {
+                            return res;
+                        }
+                    }
+                }
+            }
+
+            return recurse(state.allSubjects);
+        },
+        total_subweight: (state) => (assignment) => {
+            let total_subweight = 0;
+            for (const sub_assignment of assignment.assignments) {
+                total_subweight += sub_assignment.weight;
+            }
+            return total_subweight;
+        },
+        result:
+            (state, getters) =>
+            (id, rounding = false) => {
+                let result;
+                if (id in state.results) {
+                    result = state.results[id];
+                } else {
+                    const assignment = getters.assignment(id);
+
+                    if (assignment.assignments === undefined) {
+                        result = null;
+                    } else {
+                        let total_subweight =
+                            getters.total_subweight(assignment);
+                        let weighted_sum = 0;
+                        let weight_sum = 0;
+
+                        for (const sub_assignment of assignment.assignments) {
+                            const score = getters.result(sub_assignment.id);
+                            if (score === null) continue;
+                            const weight =
+                                sub_assignment.weight / total_subweight;
+                            weighted_sum += score * weight;
+                            weight_sum += weight;
+                        }
+                        if (weight_sum > 0) {
+                            result = weighted_sum / weight_sum;
+                        }
+                    }
+                }
+                if (!rounding || result === undefined) {
+                    result = Math.round((result + Number.EPSILON) * 10) / 10;
+                }
+                return result;
+            },
     },
     mutations: {
         setRround(state, round) {

@@ -2,7 +2,7 @@
     <div class="heading">LEGENDA</div>
     <div
         :key="type"
-        v-for="type in assigmentTypes"
+        v-for="type in types"
         class="legend-item"
         :style="{ background: `var(--${type}-color)` }"
     >
@@ -11,19 +11,10 @@
 </template>
 
 <script>
-import { count_types } from '../utils.js';
-
+import { mapGetters } from 'vuex';
 export default {
     props: {},
-    computed: {
-        assigmentTypes() {
-            return new Map(
-                [...Object.entries(count_types(this.$store.getters.subjects))].sort(
-                    (a, b) => b[1] - a[1]
-                )
-            ).keys();
-        },
-    },
+    computed: mapGetters(['types']),
 };
 </script>
 

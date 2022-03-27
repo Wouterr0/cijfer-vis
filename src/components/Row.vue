@@ -9,13 +9,14 @@
                 @assignment-view="(id, c) => $emit('assignmentView', id, c)"
             />
         </td>
-        <td v-if="showResults" >{{ avg }}</td>
+        <td v-if="showResults">{{ nl_num(result(assignment.id, false)) }}</td>
     </tr>
 </template>
 
 <script>
 import AssignmentBlocks from './AssignmentBlocks.vue';
-import { calc_avg, nl_num } from '../utils.js';
+import { nl_num } from '../utils.js';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'Row',
@@ -28,10 +29,9 @@ export default {
     components: {
         AssignmentBlocks,
     },
-    computed: {
-        avg() {
-            return nl_num(calc_avg(), 1);
-        },
+    computed: mapGetters(['result']),
+    methods: {
+        nl_num,
     },
 };
 </script>

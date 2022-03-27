@@ -45,7 +45,6 @@ export default {
     gap: var(--assign-gap);
     padding: var(--assign-padd);
     border: var(--select-border-size) solid transparent;
-    /* box-sizing: border-box; */
 }
 
 .hovered-block {

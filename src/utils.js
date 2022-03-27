@@ -50,30 +50,6 @@ export function parse_data(subjects) {
     return subjects;
 }
 
-export function count_types(subjects) {
-    const counted_types = {};
-    function recurse(assignment) {
-        if (!(assignment.type in counted_types)) {
-            counted_types[assignment.type] = 0;
-        }
-        counted_types[assignment.type]++;
-
-        if (['VAK', 'COMB'].includes(assignment.type)) {
-            for (const sub_assignment of assignment.assignments) {
-                recurse(sub_assignment);
-            }
-        }
-    }
-
-    for (const subject of subjects) {
-        for (const assignment of subject.assignments) {
-            recurse(assignment);
-        }
-    }
-
-    return counted_types;
-}
-
 /* export function calc_global_weight_percent(
     id,
     weight_percent = 100,
@@ -102,6 +78,9 @@ export function gen_id() {
 }
 
 export function nl_num(n, fract_digits) {
+    if (n === undefined) {
+        return '-';
+    }
     if (fract_digits) {
         return n.toLocaleString('nl', {
             minimumFractionDigits: fract_digits,
@@ -110,8 +89,4 @@ export function nl_num(n, fract_digits) {
     } else {
         return n.toLocaleString('nl');
     }
-}
-
-export function calc_avg(a) {
-    return 6.9;
 }
