@@ -107,17 +107,18 @@ const store = createStore({
                 } else {
                     const assignment = getters.assignment(id);
 
-                    if (assignment.assignments === undefined) {
-                        result = null;
-                    } else {
+                    if (assignment.assignments) {
                         let total_subweight =
                             getters.total_subweight(assignment);
                         let weighted_sum = 0;
                         let weight_sum = 0;
 
                         for (const sub_assignment of assignment.assignments) {
-                            const score = getters.result(sub_assignment.id);
-                            if (score === null) continue;
+                            const score = getters.result(
+                                sub_assignment.id,
+                                rounding
+                            );
+                            if (score === undefined) continue;
                             const weight =
                                 sub_assignment.weight / total_subweight;
                             weighted_sum += score * weight;
@@ -128,7 +129,7 @@ const store = createStore({
                         }
                     }
                 }
-                if (!rounding || result === undefined) {
+                if (rounding && result !== undefined) {
                     result = Math.round((result + Number.EPSILON) * 10) / 10;
                 }
                 return result;

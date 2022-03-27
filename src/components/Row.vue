@@ -9,7 +9,7 @@
                 @assignment-view="(id, c) => $emit('assignmentView', id, c)"
             />
         </td>
-        <td v-if="showResults">{{ nl_num(result(assignment.id, false)) }}</td>
+        <td v-if="showResults">{{ nl_num(result(assignment.id, true), 1) }}</td>
     </tr>
 </template>
 
