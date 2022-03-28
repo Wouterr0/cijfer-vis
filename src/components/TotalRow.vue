@@ -5,21 +5,21 @@
             <div style="display: flex">
                 <div>Totaal:</div>
                 <div class="stats">
-                    <div :title="nl_num(min())">
-                        <strong>min:</strong> {{ nl_num(min(true)) }}
+                    <div :title="nl_num(min(), 1)">
+                        <strong>min:</strong> {{ nl_num(min(true), 1) }}
                     </div>
-                    <div :title="nl_num(max())">
-                        <strong>max:</strong> {{ nl_num(max(true)) }}
+                    <div :title="nl_num(max(), 1)">
+                        <strong>max:</strong> {{ nl_num(max(true), 1) }}
                     </div>
-                    <div :title="nl_num(median())">
-                        <strong>mediaan:</strong> {{ nl_num(median(true)) }}
+                    <div :title="nl_num(median(), 1)">
+                        <strong>mediaan:</strong> {{ nl_num(median(true), 1) }}
                     </div>
                 </div>
             </div>
         </td>
         <td style="display: block">
             <hr class="tot-sep" />
-            <div :title="nl_num(avg())">{{ nl_num(avg(true)) }}</div>
+            <div :title="nl_num(avg(), 1)">{{ nl_num(avg(true), 1) }}</div>
         </td>
     </tr>
 </template>

@@ -81,12 +81,17 @@ export function nl_num(n, fract_digits) {
     if (n === undefined) {
         return '-';
     }
+
+    const options = {
+        maximumFractionDigits: 3,
+    };
     if (fract_digits) {
         return n.toLocaleString('nl', {
+            ...options,
             minimumFractionDigits: fract_digits,
             maximumFractionDigits: fract_digits,
         });
     } else {
-        return n.toLocaleString('nl');
+        return n.toLocaleString('nl', options);
     }
 }

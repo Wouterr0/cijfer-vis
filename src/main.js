@@ -180,7 +180,15 @@ const store = createStore({
         median:
             (state, getters) =>
             (rounding = false) => {
-                return 0;
+                let results = [];
+                for (const subject of getters.subjects) {
+                    const score = getters.result(subject.id, rounding);
+                    if (score) results.push(score);
+                }
+                results.sort((a, b) => a - b);
+                let mid = Math.floor(results.length / 2);
+                if (results.length % 2) return results[mid];
+                return (results[mid] + results[mid + 1]) / 2;
             },
     },
     mutations: {
