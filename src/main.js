@@ -204,6 +204,11 @@ const store = createStore({
             console.log('scale', scale);
             state.scale = scale;
         },
+        setResult(state, { id, result }) {
+            console.log(`changing result for ${id} to ${result}`);
+            state.results[id] = result;
+            console.log(state);
+        },
     },
 });
 
