@@ -10,11 +10,13 @@
             :hoveredId="hoveredId"
             @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
+        <TotalRow v-if="showResults" />
     </table>
 </template>
 <script>
 import Header from './Header.vue';
 import Row from './Row.vue';
+import TotalRow from './TotalRow.vue';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -26,6 +28,7 @@ export default {
     components: {
         Header,
         Row,
+        TotalRow,
     },
     computed: mapGetters(['subjects', 'showResults']),
 };

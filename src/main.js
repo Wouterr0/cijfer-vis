@@ -134,6 +134,54 @@ const store = createStore({
                 }
                 return result;
             },
+        avg:
+            (state, getters) =>
+            (rounding = false) => {
+                let sum = 0;
+                let amount = 0;
+                for (const subject of getters.subjects) {
+                    const score = getters.result(subject.id, rounding);
+                    if (score) {
+                        sum += score;
+                        amount++;
+                    }
+                }
+                if (amount) {
+                    const result = sum / amount;
+                    return rounding
+                        ? Math.round((result + Number.EPSILON) * 10) / 10
+                        : result;
+                }
+            },
+        min:
+            (state, getters) =>
+            (rounding = false) => {
+                let min = Infinity;
+                for (const subject of getters.subjects) {
+                    const score = getters.result(subject.id, rounding);
+                    if (score < min) min = score;
+                }
+                if (min < Infinity) {
+                    return min;
+                }
+            },
+        max:
+            (state, getters) =>
+            (rounding = false) => {
+                let max = -Infinity;
+                for (const subject of getters.subjects) {
+                    const score = getters.result(subject.id, rounding);
+                    if (score > max) max = score;
+                }
+                if (max > -Infinity) {
+                    return max;
+                }
+            },
+        median:
+            (state, getters) =>
+            (rounding = false) => {
+                return 0;
+            },
     },
     mutations: {
         setRround(state, round) {
