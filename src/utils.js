@@ -83,11 +83,9 @@ export function parse_data(grade) {
 
 export function grade_weight(assignment) {
     let weight = assignment.weight;
-    console.log(weight);
     do {
         assignment = assignment.parent;
         weight /= assignment.total_subweight;
-        console.log(`/${assignment.total_subweight}`);
     } while (assignment.parent);
     return weight;
 }
