@@ -2,8 +2,8 @@
     <div
         :class="[
             'assignment-block',
-            hoveredId === assignment.id ? 'hovered-block' : null,
-            clickedId === assignment.id ? 'selected-block' : null,
+            hovered && hovered.id === assignment.id ? 'hovered-block' : null,
+            clicked && clicked.id === assignment.id ? 'selected-block' : null,
         ]"
         :style="{
             width: widthPercentage + '%',
@@ -14,18 +14,15 @@
         @click.stop="onClick()"
     >
         <AssignmentBlocks
-            v-if="['COMB', 'VAK'].includes(assignment.type)"
+            v-if="assignment.assignments"
             :assignments="assignment.assignments"
-            :clicked-id="clickedId"
-            :hovered-id="hoveredId"
-            @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
     </div>
 </template>
 
 <script>
 import { defineAsyncComponent } from 'vue';
-import { mapGetters } from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
     name: 'AssignmentBlock',
@@ -41,8 +38,9 @@ export default {
         ),
     },
     computed: {
+        ...mapState(['hovered', 'clicked']),
         background() {
-            const res = this.$store.getters.result(this.assignment.id);
+            const res = this.$store.getters.result(this.assignment);
             const type = this.assignment.type;
             if (
                 res === undefined ||
@@ -52,7 +50,7 @@ export default {
                 return `var(--${type}-color)`;
             } else {
                 const fill_percent =
-                    ((this.$store.getters.result(this.assignment.id) - 1) / 9) *
+                    ((this.$store.getters.result(this.assignment) - 1) / 9) *
                     100;
                 return `border-box linear-gradient(0deg, \
                         var(--${type}-color-dark) 0%, \
@@ -64,13 +62,13 @@ export default {
     },
     methods: {
         onOver() {
-            this.$emit('assignmentView', this.assignment.id, false);
+            this.$store.commit('hover', this.assignment);
         },
         onLeave() {
-            this.$emit('assignmentView', null, false);
+            this.$store.commit('hover', null);
         },
         onClick() {
-            this.$emit('assignmentView', this.assignment.id, true);
+            this.$store.commit('click', this.assignment);
         },
     },
 };

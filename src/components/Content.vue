@@ -1,17 +1,14 @@
 <template>
     <div class="content">
-        <Overview
-            :clickedId="clickedId"
-            :hoveredId="hoveredId"
-            @assignment-view="assignmentView"
-        />
-        <Info :assignment-id="focussedId" />
+        <Overview />
+        <Info :assignment="focussed" />
     </div>
 </template>
 
 <script>
 import Overview from './Overview.vue';
 import Info from './Info.vue';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'Content',
@@ -19,29 +16,7 @@ export default {
         Overview,
         Info,
     },
-    props: {},
-    methods: {
-        assignmentView(id, clicked) {
-            if (clicked) {
-                // Deselect block if clicked while aready selected
-                this.clickedId = this.clickedId === id ? null : id;
-            } else {
-                this.hoveredId = id;
-            }
-
-            this.focussedId =
-                this.clickedId !== null ? this.clickedId : this.hoveredId;
-
-            // console.log(id, clicked, '-', this.hoveredId, this.hoveredId);
-        },
-    },
-    data() {
-        return {
-            focussedId: null,
-            clickedId: null,
-            hoveredId: null,
-        };
-    },
+    computed: mapGetters(['focussed']),
 };
 </script>
 

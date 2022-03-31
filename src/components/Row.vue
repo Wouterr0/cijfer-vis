@@ -2,15 +2,10 @@
     <tr>
         <td>{{ assignment.shortname }}</td>
         <td>
-            <AssignmentBlocks
-                :assignments="assignment.assignments"
-                :clickedId="clickedId"
-                :hoveredId="hoveredId"
-                @assignment-view="(id, c) => $emit('assignmentView', id, c)"
-            />
+            <AssignmentBlocks :assignments="assignment.assignments" />
         </td>
-        <td v-if="showResults" :title="nl_num(result(assignment.id))">
-            {{ nl_num(result(assignment.id, true), 1) }}
+        <td v-if="showResults" :title="nl_num(result(assignment))">
+            {{ nl_num(result(assignment, true), 1) }}
         </td>
     </tr>
 </template>
@@ -25,8 +20,6 @@ export default {
     props: {
         assignment: Object,
         showResults: Boolean,
-        clickedId: String,
-        hoveredId: String,
     },
     components: {
         AssignmentBlocks,

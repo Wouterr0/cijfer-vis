@@ -14,29 +14,29 @@ import { mapState } from 'vuex';
 export default {
     name: 'ResultInput',
     props: {
-        assignmentId: String,
+        assignment: Object,
     },
     data() {
         return {
-            result: this.$store.state.results[this.assignmentId],
+            result: this.$store.state.results[this.assignment.id],
         };
     },
     methods: {
         clearResult() {
             this.$store.commit('setResult', {
-                id: this.assignmentId,
+                assignment: this.assignment,
             });
         },
         submitResult() {
             this.$store.commit('setResult', {
-                id: this.assignmentId,
+                assignment: this.assignment,
                 result: this.result,
             });
         },
     },
     watch: {
-        assignmentId() {
-            this.result = this.$store.state.results[this.assignmentId];
+        assignment() {
+            this.result = this.$store.state.results[this.assignment.id];
         },
     },
 };

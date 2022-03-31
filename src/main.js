@@ -7,8 +7,10 @@ import { parse_data } from './utils.js';
 // Create a new store instance.
 const store = createStore({
     state: {
-        allSubjects: parse_data(data),
+        grade: parse_data(data),
         mode: 'results',
+        hovered: null,
+        clicked: null,
         settings: {
             extra: ['zzhzstumsx'],
             replacing: ['ns17jgif2b-vrzx1r9o5w'],
@@ -43,8 +45,14 @@ const store = createStore({
         },
     },
     getters: {
-        subjects(state) {
-            return state.allSubjects;
+        grade(state) {
+            return state.grade;
+        },
+        showResults(state) {
+            return state.mode === 'results';
+        },
+        focussed(state) {
+            return state.clicked !== null ? state.clicked : state.hovered;
         },
         types(state, getters) {
             const counted_types = {};
@@ -61,7 +69,7 @@ const store = createStore({
                 }
             }
 
-            for (const subject of getters.subjects) {
+            for (const subject of getters.grade.assignments) {
                 for (const assignment of subject.assignments) {
                     recurse(assignment);
                 }
@@ -71,56 +79,26 @@ const store = createStore({
                 [...Object.entries(counted_types)].sort((a, b) => b[1] - a[1])
             ).keys();
         },
-        showResults(state) {
-            return state.mode === 'results';
-        },
-        assignment: (state) => (id) => {
-            function recurse(assignments) {
-                for (const assignment of assignments) {
-                    if (assignment.id === id) {
-                        return assignment;
-                    }
-                    if (assignment.assignments) {
-                        const res = recurse(assignment.assignments);
-                        if (res) {
-                            return res;
-                        }
-                    }
-                }
-            }
-
-            return recurse(state.allSubjects);
-        },
-        total_subweight: (state) => (assignment) => {
-            let total_subweight = 0;
-            for (const sub_assignment of assignment.assignments) {
-                total_subweight += sub_assignment.weight;
-            }
-            return total_subweight;
-        },
         result:
             (state, getters) =>
-            (id, rounding = false) => {
+            (assignment, rounding = false) => {
                 let result;
-                if (id in state.results) {
-                    result = state.results[id];
+                if (assignment.id in state.results) {
+                    result = state.results[assignment.id];
                 } else {
-                    const assignment = getters.assignment(id);
-
                     if (assignment.assignments) {
-                        let total_subweight =
-                            getters.total_subweight(assignment);
                         let weighted_sum = 0;
                         let weight_sum = 0;
 
                         for (const sub_assignment of assignment.assignments) {
                             const score = getters.result(
-                                sub_assignment.id,
+                                sub_assignment,
                                 rounding
                             );
                             if (score === undefined) continue;
                             const weight =
-                                sub_assignment.weight / total_subweight;
+                                sub_assignment.weight /
+                                sub_assignment.parent.total_subweight;
                             weighted_sum += score * weight;
                             weight_sum += weight;
                         }
@@ -139,8 +117,8 @@ const store = createStore({
             (rounding = false) => {
                 let sum = 0;
                 let amount = 0;
-                for (const subject of getters.subjects) {
-                    const score = getters.result(subject.id, rounding);
+                for (const subject of getters.grade.assignments) {
+                    const score = getters.result(subject, rounding);
                     if (score) {
                         sum += score;
                         amount++;
@@ -157,8 +135,8 @@ const store = createStore({
             (state, getters) =>
             (rounding = false) => {
                 let min = Infinity;
-                for (const subject of getters.subjects) {
-                    const score = getters.result(subject.id, rounding);
+                for (const subject of getters.grade.assignments) {
+                    const score = getters.result(subject, rounding);
                     if (score < min) min = score;
                 }
                 if (min < Infinity) {
@@ -169,8 +147,8 @@ const store = createStore({
             (state, getters) =>
             (rounding = false) => {
                 let max = -Infinity;
-                for (const subject of getters.subjects) {
-                    const score = getters.result(subject.id, rounding);
+                for (const subject of getters.grade.assignments) {
+                    const score = getters.result(subject, rounding);
                     if (score > max) max = score;
                 }
                 if (max > -Infinity) {
@@ -181,8 +159,8 @@ const store = createStore({
             (state, getters) =>
             (rounding = false) => {
                 let results = [];
-                for (const subject of getters.subjects) {
-                    const score = getters.result(subject.id, rounding);
+                for (const subject of getters.grade.assignments) {
+                    const score = getters.result(subject, rounding);
                     if (score) results.push(score);
                 }
                 results.sort((a, b) => a - b);
@@ -192,7 +170,7 @@ const store = createStore({
             },
     },
     mutations: {
-        setRround(state, round) {
+        setRound(state, round) {
             console.log('round', round);
             state.settings.round = round;
         },
@@ -204,9 +182,16 @@ const store = createStore({
             console.log('scale', scale);
             state.scale = scale;
         },
-        setResult(state, { id, result }) {
-            console.log(`changing result for ${id} to ${result}`);
-            state.results[id] = result;
+        hover(state, assignment) {
+            state.hovered = assignment;
+        },
+        click(state, assignment) {
+            // deselect block if clicked while aready selected
+            state.clicked = state.clicked === assignment ? null : assignment;
+        },
+        setResult(state, { assignment, result }) {
+            console.log(`changing result for ${assignment} to ${result}`);
+            state.results[assignment.id] = result;
             console.log(state);
         },
     },

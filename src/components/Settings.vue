@@ -18,6 +18,7 @@ import Replacings from './Replacings.vue';
 import Slider from './Slider.vue';
 import Checkbox from './Checkbox.vue';
 import { modi } from '../utils.js';
+import { mapMutations } from 'vuex';
 
 export default {
     name: 'Settings',
@@ -28,12 +29,7 @@ export default {
         Slider,
         Checkbox,
     },
-    props: {},
-    methods: {
-        setRound(round) {
-            this.$store.commit('setRround', round);
-        },
-    },
+    methods: mapMutations(['setRound']),
     computed: {
         mode: {
             get() {

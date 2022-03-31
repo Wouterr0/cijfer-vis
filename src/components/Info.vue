@@ -1,14 +1,12 @@
 <template>
-    <div
-        :class="['info', assignmentId === null ? 'info-legend' : 'info-props']"
-    >
+    <div :class="['info', assignment ? 'info-props' : 'info-legend']">
         <!-- TODO: pass calculated used types -->
-        <Legend v-if="assignmentId === null" />
+        <Legend v-if="!assignment" />
         <div v-else>
-            <AssignmentProps :assignment-id="assignmentId" />
+            <AssignmentProps :assignment="assignment" />
             <div class="result-input" v-if="showResults">
                 <br />
-                <ResultInput :assignment-id="assignmentId" />
+                <ResultInput :assignment="assignment" />
             </div>
         </div>
     </div>
@@ -23,7 +21,7 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'Info',
     props: {
-        assignmentId: String,
+        assignment: Object,
     },
     components: {
         Legend,

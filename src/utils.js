@@ -1,13 +1,13 @@
-import raw_subjects from './data.js';
+import raw_grade from './data.js';
 
 export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
 
-export function assignment_by_id(id, assignments = raw_subjects) {
+export function assignment_by_id(id, assignments = raw_grade.assignments) {
     for (const assignment of assignments) {
         if (assignment.id === id) {
             return assignment;
         }
-        if (['COMB', 'VAK'].includes(assignment.type)) {
+        if (assignment.assignments) {
             let res = assignment_by_id(id, assignment.assignments);
             if (res) {
                 return res;
@@ -28,70 +28,85 @@ function sum_assignment_weights(assignments) {
     return sum;
 }
 
-export function parse_data(subjects) {
-    function recurse(assignment, weight = 100, global_weight_percent = 100) {
-        assignment.global_weight_percent = global_weight_percent;
-        if (['VAK', 'COMB'].includes(assignment.type)) {
-            let total_weight = sum_assignment_weights(assignment.assignments);
+export function parse_data(grade) {
+    /*
+     * Steps:
+     * 0. TODO: check validity of data
+     * 1. copy and remove like references
+     * 2. reference parent back (.parent)
+     * 3. cache total_subweight for easy access
+     */
+
+    // copy and remove like references
+    function replace_like(assignment) {
+        if (assignment.like) {
+            if (assignment.assignments) {
+                throw 'A like assignment cannot have children';
+            }
+            const src = assignment_by_id(assignment.like);
+            if (src.assignments) {
+                throw 'A liked assignment cannot have children';
+            }
+            for (const key in src) {
+                if (!(key in assignment))
+                    // don't duplicate key if aready exists
+                    assignment[key] = src[key];
+            }
+            delete assignment.like;
+        }
+        if (assignment.assignments) {
             for (const sub_assignment of assignment.assignments) {
-                recurse(
-                    sub_assignment,
-                    (sub_assignment.weight / total_weight) * 100,
-                    (sub_assignment.weight / total_weight) *
-                        global_weight_percent
-                );
+                replace_like(sub_assignment);
             }
         }
     }
+    replace_like(grade);
 
-    for (const subject of subjects) {
-        recurse(subject);
-    }
-    return subjects;
-}
-
-/* export function calc_global_weight_percent(
-    id,
-    weight_percent = 100,
-    assignments = raw_subjects
-) {
-    let weight_sum = sum_assignment_weights(assignments);
-    for (const assignment of assignments) {
-        if (assignment.id === id) {
-            return (weight_percent * assignment.weight) / weight_sum;
-        } else if (['COMB', 'VAK'].includes(assignment.type)) {
-            let ret = calc_global_weight_percent(
-                id,
-                assignment.assignments,
-                (weight_percent * assignment.weight) / weight_sum
-            );
-            if (ret) {
-                return ret;
+    // reference parent back (.parent)
+    function link_back(assignment, parent) {
+        if (parent) {
+            assignment.parent = parent;
+        }
+        if (assignment.assignments) {
+            let weight_sum = 0;
+            for (const sub_assignment of assignment.assignments) {
+                link_back(sub_assignment, assignment);
+                weight_sum += sub_assignment.weight ? sub_assignment.weight : 1;
             }
+            assignment.total_subweight = weight_sum;
         }
     }
+    link_back(grade);
+
+    return grade;
 }
-*/
+
+export function grade_weight(assignment) {
+    let weight = assignment.weight;
+    console.log(weight);
+    do {
+        assignment = assignment.parent;
+        weight /= assignment.total_subweight;
+        console.log(`/${assignment.total_subweight}`);
+    } while (assignment.parent);
+    return weight;
+}
+
+export function subject_weight(assignment) {}
 
 export function gen_id() {
     return Math.random().toString(36).slice(2, 12);
 }
 
-export function nl_num(n, fract_digits) {
+export function nl_num(n, min_fract_digits, max_fract_digits) {
     if (n === undefined) {
         return '-';
     }
 
-    const options = {
-        maximumFractionDigits: 3,
+    let options = {
+        minimumFractionDigits: min_fract_digits,
+        maximumFractionDigits: max_fract_digits,
     };
-    if (fract_digits) {
-        return n.toLocaleString('nl', {
-            ...options,
-            minimumFractionDigits: fract_digits,
-            maximumFractionDigits: fract_digits,
-        });
-    } else {
-        return n.toLocaleString('nl', options);
-    }
+
+    return n.toLocaleString('nl', options);
 }

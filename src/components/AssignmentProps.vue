@@ -13,8 +13,12 @@
         :value="assignment.fullname"
     />
     <AssignmentProp
-        key_="cijfer weging"
-        :value="nl_num(assignment.global_weight_percent) + '%'"
+        key_="weging per cijfer"
+        :value="nl_num(subject_weight(assignment) * 100, undefined, 4) + '%'"
+    />
+    <AssignmentProp
+        key_="weging diplomacijfer"
+        :value="nl_num(grade_weight(assignment) * 100, undefined, 4) + '%'"
     />
     <div v-if="['PO', 'MET', 'SET'].includes(assignment.type)">
         <AssignmentProp key_="leerjaar" :value="assignment.year" />
@@ -35,20 +39,17 @@
 </template>
 
 <script>
-import { assignment_by_id, nl_num } from '../utils.js';
+import { nl_num, grade_weight, subject_weight } from '../utils.js';
 import AssignmentProp from './AssignmentProp.vue';
 
 export default {
     props: {
-        assignmentId: String,
+        assignment: Object,
     },
     methods: {
         nl_num,
-    },
-    computed: {
-        assignment() {
-            return assignment_by_id(this.assignmentId);
-        },
+        grade_weight,
+        subject_weight,
     },
     components: {
         AssignmentProp,

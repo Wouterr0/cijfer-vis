@@ -5,9 +5,6 @@
             :assignment="assignment"
             :widthPercentage="(assignment.weight / totalSubweight) * 100"
             v-for="assignment in assignments"
-            :clickedId="clickedId"
-            :hoveredId="hoveredId"
-            @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
     </div>
 </template>
@@ -19,8 +16,6 @@ export default {
     name: 'AssignmentBlocks',
     props: {
         assignments: Array,
-        clickedId: String,
-        hoveredId: String,
     },
     components: {
         AssignmentBlock,

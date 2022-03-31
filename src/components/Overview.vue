@@ -3,12 +3,9 @@
         <Header :showResults="showResults" />
         <Row
             :key="subject.id"
-            v-for="subject in subjects"
+            v-for="subject in grade.assignments"
             :assignment="subject"
             :showResults="showResults"
-            :clickedId="clickedId"
-            :hoveredId="hoveredId"
-            @assignment-view="(id, c) => $emit('assignmentView', id, c)"
         />
         <TotalRow v-if="showResults" />
     </table>
@@ -21,16 +18,12 @@ import { mapGetters } from 'vuex';
 
 export default {
     name: 'Overview',
-    props: {
-        clickedId: String,
-        hoveredId: String,
-    },
     components: {
         Header,
         Row,
         TotalRow,
     },
-    computed: mapGetters(['subjects', 'showResults']),
+    computed: mapGetters(['grade', 'showResults']),
 };
 </script>
 
