@@ -163,6 +163,7 @@ const store = createStore({
                     const score = getters.result(subject, rounding);
                     if (score) results.push(score);
                 }
+                if (results.length === 0) return;
                 results.sort((a, b) => a - b);
                 let mid = Math.floor(results.length / 2);
                 if (results.length % 2) return results[mid];
@@ -190,9 +191,10 @@ const store = createStore({
             state.clicked = state.clicked === assignment ? null : assignment;
         },
         setResult(state, { assignment, result }) {
-            console.log(`changing result for ${assignment} to ${result}`);
             state.results[assignment.id] = result;
-            console.log(state);
+        },
+        clearAll(state) {
+            state.results = {};
         },
     },
 });

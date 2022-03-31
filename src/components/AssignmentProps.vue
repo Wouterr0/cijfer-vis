@@ -16,6 +16,7 @@
         key_="weging per cijfer"
         :value="nl_num(subject_weight(assignment) * 100, undefined, 4) + '%'"
     />
+    <!-- TODO: get also in rational form (a / b) eg. 1/40 -->
     <AssignmentProp
         key_="weging diplomacijfer"
         :value="nl_num(grade_weight(assignment) * 100, undefined, 4) + '%'"

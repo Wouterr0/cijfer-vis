@@ -1,6 +1,12 @@
 <template>
     <div class="settings">
         <ToggleButton :values="modi" v-model="mode" style="font-weight: 700" />
+        <input
+            type="button"
+            v-if="showResults"
+            value="ALLE RESULTATEN WISSEN"
+            @click="clearAll"
+        />
         <hr />
         <Optionals />
         <hr />
@@ -18,7 +24,7 @@ import Replacings from './Replacings.vue';
 import Slider from './Slider.vue';
 import Checkbox from './Checkbox.vue';
 import { modi } from '../utils.js';
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
     name: 'Settings',
@@ -29,8 +35,8 @@ export default {
         Slider,
         Checkbox,
     },
-    methods: mapMutations(['setRound']),
     computed: {
+        ...mapGetters(['showResults']),
         mode: {
             get() {
                 return this.$store.state.mode;
@@ -46,6 +52,14 @@ export default {
             set(value) {
                 this.$store.commit('setScale', value);
             },
+        },
+    },
+    methods: {
+        ...mapMutations(['setRound']),
+        clearAll() {
+            if (confirm('Weet je zeker dat je alle resultaten wilt wissen?')) {
+                this.$store.commit('clearAll');
+            }
         },
     },
     created() {
