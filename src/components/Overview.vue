@@ -3,7 +3,7 @@
         <Header :showResults="showResults" />
         <Row
             :key="subject.id"
-            v-for="subject in grade.assignments"
+            v-for="subject in subjects"
             :assignment="subject"
             :showResults="showResults"
         />
@@ -23,7 +23,7 @@ export default {
         Row,
         TotalRow,
     },
-    computed: mapGetters(['grade', 'showResults']),
+    computed: mapGetters(['subjects', 'showResults']),
 };
 </script>
 
