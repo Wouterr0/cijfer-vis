@@ -21,6 +21,7 @@ export default {
     },
     created() {
         console.log(this.$store.state);
+
         window.gen_id = gen_id;
     },
 };

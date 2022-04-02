@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import { createStore } from 'vuex';
 import App from './App.vue';
 import data from './data.js';
-import { parse_data } from './utils.js';
+import { assignment_by_id, parse_data } from './utils.js';
 
 // Create a new store instance.
 const store = createStore({
@@ -12,7 +12,7 @@ const store = createStore({
         hovered: null,
         clicked: null,
         settings: {
-            extra: ['zzhzstumsx'],
+            extra: ['9i65zn7fb7'],
             replacing: ['ns17jgif2b-vrzx1r9o5w'],
             round: false,
             scale: 1,
@@ -46,7 +46,34 @@ const store = createStore({
     },
     getters: {
         subjects(state) {
-            return state.grade.assignments;
+            let subjects = [];
+            for (const subject of state.grade.assignments) {
+                /* Show subject if:
+                 *
+                 *  it is not (
+                 *       the subject is extra and it's turned off
+                 *    or the subject is replaced
+                 *    of the subject can replace and doesn't
+                 *  )
+                 */
+                // TODO: this should preferibly be recursive
+                if (
+                    !(
+                        (subject.optional &&
+                            !state.settings.extra.includes(subject.id)) ||
+                        state.settings.replacing.some((replacer) =>
+                            replacer.startsWith(subject.id)
+                        ) ||
+                        (subject.replaces &&
+                            !state.settings.replacing.some((replacer) =>
+                                replacer.endsWith(subject.id)
+                            ))
+                    )
+                ) {
+                    subjects.push(subject);
+                }
+            }
+            return subjects;
         },
         showResults(state) {
             return state.mode === 'results';
@@ -78,6 +105,47 @@ const store = createStore({
             return new Map(
                 [...Object.entries(counted_types)].sort((a, b) => b[1] - a[1])
             ).keys();
+        },
+        allOptional(state) {
+            let allOptionalAssignments = [];
+            function checkOptional(assignment) {
+                if (assignment.optional) {
+                    allOptionalAssignments.push(assignment);
+                }
+                if (assignment.assignments) {
+                    for (const sub_assignment of assignment.assignments) {
+                        checkOptional(sub_assignment);
+                    }
+                }
+            }
+            checkOptional(state.grade);
+            return allOptionalAssignments;
+        },
+        allReplacing(state) {
+            let allReplacingAssignments = [];
+            function checkReplacing(assignment) {
+                if (assignment.replaces) {
+                    allReplacingAssignments.push({
+                        replaces: assignment_by_id(assignment.replaces),
+                        replacing: assignment,
+                    });
+                }
+                if (assignment.assignments) {
+                    for (const sub_assignment of assignment.assignments) {
+                        checkReplacing(sub_assignment);
+                    }
+                }
+            }
+            checkReplacing(state.grade);
+            return allReplacingAssignments;
+        },
+        isOptional: (state) => (assignment) => {
+            return state.settings.extra.includes(assignment.id);
+        },
+        isReplacing: (state) => (replacing, replaces) => {
+            return state.settings.replacing.includes(
+                replaces.id + '-' + replacing.id
+            );
         },
         result:
             (state, getters) =>
@@ -189,6 +257,27 @@ const store = createStore({
         click(state, assignment) {
             // deselect block if clicked while aready selected
             state.clicked = state.clicked === assignment ? null : assignment;
+        },
+        setOptional(state, { assignment, turnedOn }) {
+            if (turnedOn && !state.settings.extra.includes(assignment.id)) {
+                state.settings.extra.push(assignment.id);
+            }
+            if (!turnedOn) {
+                state.settings.extra = state.settings.extra.filter(
+                    (optional_id) => optional_id !== assignment.id
+                );
+            }
+        },
+        setReplacer(state, { replaces, replacing, turnedOn }) {
+            let replacer_s = replaces.id + '-' + replacing.id;
+            if (turnedOn && !state.settings.replacing.includes(replacer_s)) {
+                state.settings.replacing.push(replacer_s);
+            }
+            if (!turnedOn) {
+                state.settings.replacing = state.settings.replacing.filter(
+                    (replacer) => replacer !== replacer_s
+                );
+            }
         },
         setResult(state, { assignment, result }) {
             state.results[assignment.id] = result;
