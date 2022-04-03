@@ -63,7 +63,10 @@ export default {
         document.querySelector('body').addEventListener('paste', (e) => {
             try {
                 const results = parsePaste(
-                    e.clipboardData.getData('text/html')
+                    e.clipboardData.getData('text/html'),
+                    (error) => {
+                        this.errors.push(error);
+                    }
                 );
                 this.imported_results = results;
             } catch (err) {

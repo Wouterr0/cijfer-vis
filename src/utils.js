@@ -140,7 +140,7 @@ export function save(str, value) {
     return true;
 }
 
-export function parsePaste(pastedText) {
+export function parsePaste(pastedText, err_callback) {
     let magister_results = [
         ...pastedText.matchAll(
             /<span\s+id="([A-Z]+)_[\d\.]+_(\d+)"\s+title="(\d+,\d+)"[\s\n]/g
@@ -162,7 +162,7 @@ export function parsePaste(pastedText) {
                 score: parseFloat(score.replace(',', '.')),
             });
         } else {
-            console.error(`Onbekende magister_id ${magister}`);
+            err_callback(`Onbekende magister_id ${magister}`);
         }
     }
     return results;
