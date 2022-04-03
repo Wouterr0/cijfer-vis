@@ -3,6 +3,7 @@
     <label :for="assignment.id">
         {{ assignment.shortname }}
     </label>
+    <br />
 </template>
 
 <script>

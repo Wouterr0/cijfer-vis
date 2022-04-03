@@ -7,6 +7,7 @@
     <label :for="replaces.id + '-' + replacing.id">
         {{ replacing.shortname }}
     </label>
+    <br />
 </template>
 
 <script>
