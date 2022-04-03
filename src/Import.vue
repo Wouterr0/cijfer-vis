@@ -31,12 +31,12 @@
             </ol>
         </div>
         <img
-            src="demo.gif"
+            src="./demo.gif"
             class="demo"
             alt="Voorbeeld van het importeren van magister cijfers"
         />
         <table class="magister_results">
-            <tr :key="result.magister" v-for="result in results">
+            <tr :key="result.magister" v-for="result in imported_results">
                 <td>{{ result.magister }}</td>
                 <td>{{ result.score }}</td>
             </tr>
@@ -74,11 +74,10 @@ export default {
         });
     },
     watch: {
-        results() {
+        imported_results() {
             let results = { ...load('results', {}) };
             for (const result of this.imported_results) {
                 results[result.assignment.id] = result.score;
-                console.log('asdfASDFasdf');
             }
             save('results', results);
             // TODO: Also turn on apropiate optional subjects
