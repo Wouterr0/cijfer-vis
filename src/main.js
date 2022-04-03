@@ -237,6 +237,18 @@ const store = createStore({
                 if (results.length % 2) return results[mid];
                 return (results[mid] + results[mid + 1]) / 2;
             },
+        subjectWeight: (state) => (assignment) => {
+            if (!assignment.parent) return;
+            let weight = assignment.weight;
+            do {
+                assignment = assignment.parent;
+                weight /= assignment.total_subweight;
+            } while (assignment.parent.parent);
+            return weight;
+        },
+        totalWeight: (state, getters) => (assignment) => {
+            return getters.subjectWeight(assignment) / getters.subjects.length;
+        },
     },
     mutations: {
         setRound(state, round) {

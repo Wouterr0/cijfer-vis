@@ -81,25 +81,6 @@ export function parse_data(grade) {
     return grade;
 }
 
-export function grade_weight(assignment) {
-    let weight = assignment.weight;
-    do {
-        assignment = assignment.parent;
-        weight /= assignment.total_subweight;
-    } while (assignment.parent);
-    return weight;
-}
-
-export function subject_weight(assignment) {
-    if (!assignment.parent) return;
-    let weight = assignment.weight;
-    do {
-        assignment = assignment.parent;
-        weight /= assignment.total_subweight;
-    } while (assignment.parent.parent);
-    return weight;
-}
-
 export function gen_id() {
     return Math.random().toString(36).slice(2, 12);
 }
