@@ -153,12 +153,17 @@ export function parsePaste(pastedText) {
     let results = [];
 
     for (const [, subj, n, score] of magister_results) {
-        let magister = subj + n;
-        results.push({
-            magister: magister,
-            assignment: assignment_were((a) => a.magister === magister),
-            score: parseFloat(score.replace(',', '.')),
-        });
+        const magister = subj + n;
+        const assignment = assignment_were((a) => a.magister === magister);
+        if (assignment) {
+            results.push({
+                magister,
+                assignment,
+                score: parseFloat(score.replace(',', '.')),
+            });
+        } else {
+            console.error(`Onbekende magister_id ${magister}`);
+        }
     }
     return results;
 }

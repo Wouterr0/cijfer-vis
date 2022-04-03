@@ -14,8 +14,8 @@
                 <li>
                     Selecteer alles op de pagina met de toetsencombinatie
                     <kbd>Ctrl</kbd>+<kbd>a</kbd> (<span class="kbdcb"
-                        ><kbd>⌘ Command</kbd>+<kbd>a</kbd></span
-                    >
+                        ><kbd>⌘ Command</kbd>+<kbd>a</kbd>
+                    </span>
                     voor Apple producten)
                 </li>
                 <li>
