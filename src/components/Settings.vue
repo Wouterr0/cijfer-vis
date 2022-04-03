@@ -12,8 +12,23 @@
         <hr />
         <Replacings />
         <hr class="left" />
-        <input type="range" v-model="scale" :min="0.5" :max="1.5" :step="0.1" />
-        <input type="checkbox" v-model="round" />
+        <input
+            type="range"
+            v-model="scale"
+            :min="0.5"
+            :max="1.5"
+            :step="0.1"
+            list="tickmarks"
+            title="Stel de grootte van de tabel in"
+        />
+        <datalist id="tickmarks">
+            <option value="1.0"></option>
+        </datalist>
+        <input
+            type="checkbox"
+            v-model="round"
+            title="Schakel tussen ronde en rechthoekige opdrachten"
+        />
     </div>
 </template>
 
@@ -51,11 +66,9 @@ export default {
         },
         round: {
             get() {
-                console.log('got round', this.$store.state.settings.round);
                 return this.$store.state.settings.round;
             },
             set(value) {
-                console.log('set round', value);
                 this.$store.commit('setRound', value);
             },
         },
@@ -94,5 +107,9 @@ export default {
 
 .settings .left {
     margin: 0 0 0 auto;
+}
+
+input[type='range'] {
+    margin: 0;
 }
 </style>

@@ -278,6 +278,7 @@ const store = createStore({
 // TODO: Improve accessibility (lighthouse, etc.)
 // TODO: Color grades based on their value and cum laude
 // TODO: Fix averages and make a better overview
+// TODO: Add the paste EventListener also on the main page
 // https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 const app = createApp(App);
 app.use(store);

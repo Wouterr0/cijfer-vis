@@ -3,30 +3,23 @@ import raw_grade from './data.js';
 
 export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
 
-export function assignment_by_id(id, assignments = raw_grade.assignments) {
-    for (const assignment of assignments) {
-        if (assignment.id === id) {
-            return assignment;
-        }
+function assignment_were(f, assignment = raw_grade) {
+    if (f(assignment)) {
+        return assignment;
+    } else {
         if (assignment.assignments) {
-            let res = assignment_by_id(id, assignment.assignments);
-            if (res) {
-                return res;
+            for (const sub_assignment of assignment.assignments) {
+                const result = assignment_were(f, sub_assignment);
+                if (result) {
+                    return result;
+                }
             }
         }
     }
 }
 
-function sum_assignment_weights(assignments) {
-    let sum = 0;
-    for (const assignment of assignments) {
-        if (assignment.weight) {
-            sum += assignment.weight;
-        } else {
-            sum += 1;
-        }
-    }
-    return sum;
+export function assignment_by_id(id) {
+    return assignment_were((a) => a.id === id);
 }
 
 export function parse_data(grade) {
@@ -132,15 +125,8 @@ export function load(str, default_value) {
         return false;
     }
     let saved = localStorage.getItem(str);
-    if (saved === null) {
-        saved = default_value;
-    } else {
-        saved = JSON.parse(atob(saved));
-        // populate default values
-        for (const k in default_value) {
-            if (!(k in saved)) saved[k] = default_value[k];
-        }
-    }
+    if (saved !== null) saved = JSON.parse(atob(saved));
+    saved = Object.assign({}, default_value, saved);
     return saved;
 }
 
@@ -152,4 +138,27 @@ export function save(str, value) {
     }
     localStorage.setItem(str, btoa(JSON.stringify(value)));
     return true;
+}
+
+export function parsePaste(pastedText) {
+    let magister_results = [
+        ...pastedText.matchAll(
+            /<span\s+id="([A-Z]+)_[\d\.]+_(\d+)"\s+title="(\d+,\d+)"[\s\n]/g
+        ),
+    ];
+    if (magister_results.length === 0) {
+        throw 'Kon geen resultaten vinden op het klipbord';
+    }
+
+    let results = [];
+
+    for (const [, subj, n, score] of magister_results) {
+        let magister = subj + n;
+        results.push({
+            magister: magister,
+            assignment: assignment_were((a) => a.magister === magister),
+            score: parseFloat(score.replace(',', '.')),
+        });
+    }
+    return results;
 }
