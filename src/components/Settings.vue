@@ -12,8 +12,8 @@
         <hr />
         <Replacings />
         <hr class="left" />
-        <Slider v-model="scale" :min="0.5" :max="1.5" :step="0.1" />
-        <Checkbox @checkbox-change="setRound" />
+        <input type="range" v-model="scale" :min="0.5" :max="1.5" :step="0.1" />
+        <input type="checkbox" v-model="round" />
     </div>
 </template>
 
@@ -21,8 +21,6 @@
 import ToggleButton from './ToggleButton.vue';
 import Optionals from './Optionals.vue';
 import Replacings from './Replacings.vue';
-import Slider from './Slider.vue';
-import Checkbox from './Checkbox.vue';
 import { modi } from '../utils.js';
 import { mapGetters, mapMutations } from 'vuex';
 
@@ -32,8 +30,6 @@ export default {
         ToggleButton,
         Optionals,
         Replacings,
-        Slider,
-        Checkbox,
     },
     computed: {
         ...mapGetters(['showResults']),
@@ -51,6 +47,16 @@ export default {
             },
             set(value) {
                 this.$store.commit('setScale', Number(value));
+            },
+        },
+        round: {
+            get() {
+                console.log('got round', this.$store.state.settings.round);
+                return this.$store.state.settings.round;
+            },
+            set(value) {
+                console.log('set round', value);
+                this.$store.commit('setRound', value);
             },
         },
     },
