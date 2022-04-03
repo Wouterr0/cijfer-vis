@@ -1,7 +1,7 @@
 <template>
     <tr>
         <td>{{ assignment.shortname }}</td>
-        <td>
+        <td class="blocks-column">
             <AssignmentBlocks :assignments="assignment.assignments" />
         </td>
         <td v-if="showResults" :title="nl_num(result(assignment))">
@@ -31,4 +31,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.blocks-column {
+    height: 100%;
+}
+</style>

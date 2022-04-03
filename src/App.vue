@@ -6,7 +6,8 @@
 <script>
 import Settings from './components/Settings.vue';
 import Content from './components/Content.vue';
-import { gen_id } from './utils.js';
+import { gen_id, storageAvailable, load, save } from './utils.js';
+import { mapState } from 'vuex';
 
 export default {
     name: 'App',
@@ -15,8 +16,23 @@ export default {
         Content,
     },
     computed: {
+        ...mapState(['settings', 'results']),
         roundness() {
-            return this.$store.state.settings.round ? '2em' : '0';
+            return this.settings.round ? '2em' : '0';
+        },
+    },
+    watch: {
+        settings: {
+            handler() {
+                save('settings', this.settings);
+            },
+            deep: true,
+        },
+        results: {
+            handler() {
+                save('results', this.results);
+            },
+            deep: true,
         },
     },
     created() {

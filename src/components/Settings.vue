@@ -50,7 +50,7 @@ export default {
                 return this.$store.state.settings.scale;
             },
             set(value) {
-                this.$store.commit('setScale', value);
+                this.$store.commit('setScale', Number(value));
             },
         },
     },

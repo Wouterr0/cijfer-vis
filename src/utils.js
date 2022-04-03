@@ -1,3 +1,4 @@
+import { def } from '@vue/shared';
 import raw_grade from './data.js';
 
 export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
@@ -96,4 +97,59 @@ export function nl_num(n, min_fract_digits, max_fract_digits) {
     };
 
     return n.toLocaleString('nl', options);
+}
+
+export function storageAvailable(type) {
+    var storage;
+    try {
+        storage = window[type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    } catch (e) {
+        return (
+            e instanceof DOMException &&
+            // everything except Firefox
+            (e.code === 22 ||
+                // Firefox
+                e.code === 1014 ||
+                // test name field too, because code might not be present
+                // everything except Firefox
+                e.name === 'QuotaExceededError' ||
+                // Firefox
+                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            storage &&
+            storage.length !== 0
+        );
+    }
+}
+
+export function load(str, default_value) {
+    if (!storageAvailable('localStorage')) {
+        console.error('localStorage is not accessible');
+        return false;
+    }
+    let saved = localStorage.getItem(str);
+    if (saved === null) {
+        saved = default_value;
+    } else {
+        saved = JSON.parse(atob(saved));
+        // populate default values
+        for (const k in default_value) {
+            if (!(k in saved)) saved[k] = default_value[k];
+        }
+    }
+    return saved;
+}
+
+export function save(str, value) {
+    console.log('saving');
+    if (!storageAvailable('localStorage')) {
+        console.error('localStorage is not accessible');
+        return;
+    }
+    localStorage.setItem(str, btoa(JSON.stringify(value)));
+    return true;
 }
