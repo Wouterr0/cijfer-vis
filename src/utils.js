@@ -147,7 +147,7 @@ export function parsePaste(pastedText, err_callback) {
         ),
     ];
     if (magister_results.length === 0) {
-        throw 'Kon geen resultaten vinden op het klipbord';
+        throw 'Kon geen magister resultaten vinden op het klipbord';
     }
 
     let results = [];
