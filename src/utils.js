@@ -141,7 +141,6 @@ export function save(str, value) {
 }
 
 export function parsePaste(pastedText, err_callback) {
-    console.log(pastedText);
     let magister_results = [
         ...pastedText.matchAll(
             /<span\s+id="([A-Z]+).{0,16}?(\d+)"\s+title="(\d+,\d+)"[\s\n]/g
@@ -155,7 +154,6 @@ export function parsePaste(pastedText, err_callback) {
 
     for (const [, subj, n, score] of magister_results) {
         const magister = subj + n;
-        console.log(magister, score);
         const assignment = assignment_were((a) => a.magister === magister);
         if (assignment) {
             results.push({
