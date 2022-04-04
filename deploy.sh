@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # abort on errors
-set -ex
+set -x
 
 # build
 npm run build
@@ -10,7 +10,7 @@ npm run build
 cd dist
 
 # if you are deploying to a custom domain
-# echo 'www.example.com' > CNAME
+echo 'pta.wouterr.com' > CNAME
 
 git init
 git checkout -b main
@@ -21,6 +21,6 @@ git commit -m 'deploy'
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-# git push -f git@github.com:<USERNAME>/<REPO>.git main:gh-pages
+git push -f git@github.com:Wouterr0/cijfer-vis-deploy.git main:gh-pages
 
 cd -
