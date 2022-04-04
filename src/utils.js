@@ -141,9 +141,10 @@ export function save(str, value) {
 }
 
 export function parsePaste(pastedText, err_callback) {
+    console.log(pastedText);
     let magister_results = [
         ...pastedText.matchAll(
-            /<span\s+id="([A-Z]+)_[\d\.]+_(\d+)"\s+title="(\d+,\d+)"[\s\n]/g
+            /<span\s+id="([A-Z]+).{0,16}?(\d+)"\s+title="(\d+,\d+)"[\s\n]/g
         ),
     ];
     if (magister_results.length === 0) {
@@ -154,6 +155,7 @@ export function parsePaste(pastedText, err_callback) {
 
     for (const [, subj, n, score] of magister_results) {
         const magister = subj + n;
+        console.log(magister, score);
         const assignment = assignment_were((a) => a.magister === magister);
         if (assignment) {
             results.push({
@@ -162,7 +164,7 @@ export function parsePaste(pastedText, err_callback) {
                 score: parseFloat(score.replace(',', '.')),
             });
         } else {
-            err_callback(`Onbekende magister_id ${magister}`);
+            err_callback(`Onbekende magister kolomnaam: ${magister}`);
         }
     }
     return results;
