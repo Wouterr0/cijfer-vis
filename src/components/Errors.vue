@@ -1,5 +1,8 @@
 <template>
-    <div class="errors">
+    <div
+        class="errors"
+        :style="{ display: errors.length ? 'initial' : 'none' }"
+    >
         <div class="error" :key="index" v-for="(error, index) in errors">
             {{ error }}
         </div>
@@ -14,7 +17,7 @@ export default {
     },
     created() {
         console.log(this.errors);
-    }
+    },
 };
 </script>
 
