@@ -1,6 +1,5 @@
 :root {
     --font-size: min(4vh, min(5vw, 2em));
-    --table-font-size: min(4vh, min(5vw, 2em));
     --select-border-size: .08em;
     --assign-gap: .2em;
     --assign-padd: calc(var(--assign-gap) - var(--select-border-size));
@@ -25,6 +24,10 @@
     --VAK-color-dark: hsl(0, 0%, var(--dark-l));
 
     font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    margin: 0;
 }
 
 input, label {

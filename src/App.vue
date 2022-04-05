@@ -44,6 +44,10 @@ export default {
 </script>
 
 <style>
+.content {
+    --table-font-size: calc(v-bind(settings.scale) * min(4vh, min(5vw, 2em)));
+}
+
 .assignment-block {
     border-radius: v-bind(roundness);
 }

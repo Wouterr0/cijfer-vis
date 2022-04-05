@@ -15,9 +15,9 @@
         <input
             type="range"
             v-model="scale"
-            :min="0.5"
-            :max="1.5"
-            :step="0.1"
+            :min="0.7"
+            :max="1.3"
+            :step="0.05"
             list="tickmarks"
             title="Stel de grootte van de tabel in"
         />
@@ -90,7 +90,7 @@ export default {
 <style>
 .settings {
     display: flex;
-    margin: 0 0 1em 0;
+    padding: 8px;
     gap: 0.5em;
     margin-top: auto;
     font-size: calc(var(--font-size) / 2);

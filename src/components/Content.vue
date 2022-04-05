@@ -25,6 +25,9 @@ export default {
 
 <style>
 .content {
+    width: 100vw;
+    box-sizing: border-box;
+    padding: 1em;
     display: flex;
     flex-flow: row wrap;
     align-items: flex-start;

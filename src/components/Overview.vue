@@ -29,10 +29,10 @@ export default {
 
 <style>
 .overview {
-    width: min(100vw, max(45em, 80vw));
+    width: 100%;
+    max-width: 45em;
     height: 1px;
     border-spacing: var(--assign-gap);
-    margin: 0 0.3em 0.3em 0;
     font-size: var(--table-font-size);
 }
 
