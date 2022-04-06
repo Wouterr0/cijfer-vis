@@ -548,7 +548,7 @@ export default {
                     description: 'Luistertoets Engels Cito',
                     domains: ['B'],
                     weight: 30,
-                    magister: 'ENTL8302',
+                    magister: 'ENTL8303',
                     id: 'e484pmwj16',
                 },
             ],
