@@ -7,6 +7,7 @@
             min="1"
             step="0.1"
             v-model="result"
+            @keyup.enter="submitResult"
             :disabled="!canInput"
             required
         />
@@ -57,7 +58,6 @@ export default {
             });
         },
         updateResult() {
-            console.log('update result');
             this.result = this.$store.getters.result(this.assignment, true);
         },
     },
