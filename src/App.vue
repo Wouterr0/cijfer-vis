@@ -1,4 +1,5 @@
 <template>
+    <Errors :errors="errors" />
     <Settings />
     <Content />
 </template>
@@ -6,6 +7,7 @@
 <script>
 import Settings from './components/Settings.vue';
 import Content from './components/Content.vue';
+import Errors from './components/Errors.vue';
 import { gen_id, storageAvailable, load, save } from './utils.js';
 import { mapState } from 'vuex';
 
@@ -14,12 +16,18 @@ export default {
     components: {
         Settings,
         Content,
+        Errors,
     },
     computed: {
         ...mapState(['settings', 'results']),
         roundness() {
             return this.settings.round ? '2em' : '0';
         },
+    },
+    data() {
+        return {
+            errors: [],
+        };
     },
     watch: {
         settings: {
@@ -39,6 +47,9 @@ export default {
         console.log(this.$store.state);
 
         window.gen_id = gen_id;
+    },
+    errorCaptured(err, vm, info) {
+        this.errors.push(err);
     },
 };
 </script>
