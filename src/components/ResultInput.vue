@@ -2,9 +2,26 @@
     <label>
         Resultaat:
         <br />
-        <input type="number" min="1" step="0.1" v-model="result" required />
-        <input type="button" value="invullen" @click="submitResult" />
-        <input type="button" value="wissen" @click="clearResult" />
+        <input
+            type="number"
+            min="1"
+            step="0.1"
+            v-model="result"
+            :disabled="!canInput"
+            required
+        />
+        <input
+            type="button"
+            value="invullen"
+            :disabled="!canInput"
+            @click="submitResult"
+        />
+        <input
+            type="button"
+            value="wissen"
+            :disabled="!canInput"
+            @click="clearResult"
+        />
     </label>
 </template>
 
@@ -18,8 +35,13 @@ export default {
     },
     data() {
         return {
-            result: this.$store.state.results[this.assignment.id],
+            result: this.$store.getters.result(this.assignment, true),
         };
+    },
+    computed: {
+        canInput() {
+            return ['SET', 'MET', 'PO'].includes(this.assignment.type);
+        },
     },
     methods: {
         clearResult() {
@@ -36,7 +58,7 @@ export default {
     },
     watch: {
         assignment() {
-            this.result = this.$store.state.results[this.assignment.id];
+            this.result = this.$store.getters.result(this.assignment, true);
         },
     },
 };
