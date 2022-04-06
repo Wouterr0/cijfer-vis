@@ -26,40 +26,48 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
-    name: 'ResultInput',
+    name: "ResultInput",
     props: {
         assignment: Object,
     },
     data() {
         return {
-            result: this.$store.getters.result(this.assignment, true),
+            result: undefined,
         };
     },
     computed: {
+        assignmentResult() {
+            return this.$store.getters.result(this.assignment);
+        },
         canInput() {
-            return ['SET', 'MET', 'PO'].includes(this.assignment.type);
+            return ["SET", "MET", "PO"].includes(this.assignment.type);
         },
     },
     methods: {
         clearResult() {
-            this.$store.commit('setResult', {
+            this.$store.commit("setResult", {
                 assignment: this.assignment,
             });
         },
         submitResult() {
-            this.$store.commit('setResult', {
+            this.$store.commit("setResult", {
                 assignment: this.assignment,
                 result: this.result,
             });
         },
-    },
-    watch: {
-        assignment() {
+        updateResult() {
+            console.log('update result');
             this.result = this.$store.getters.result(this.assignment, true);
         },
+    },
+    watch: {
+        assignmentResult() {
+            this.updateResult();
+        },
+    },
+    created() {
+        this.updateResult();
     },
 };
 </script>
