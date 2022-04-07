@@ -29,6 +29,10 @@
                 </li>
                 <li><a href="./">Ga terug</a> naar de hoofdpagina</li>
             </ol>
+            <i
+                >TIP: je kunt de resultaten ook plakken in het "Importeer
+                resultaten" invoerveld op de hoofdpagina</i
+            >
         </div>
         <img
             src="./demo.gif"
@@ -45,11 +49,11 @@
 </template>
 
 <script>
-import Errors from './components/Errors.vue';
-import { load, save, parsePaste } from './utils.js';
+import Errors from "./components/Errors.vue";
+import { load, save, parsePaste } from "./utils.js";
 
 export default {
-    name: 'Import',
+    name: "Import",
     components: {
         Errors,
     },
@@ -60,10 +64,10 @@ export default {
         };
     },
     mounted() {
-        document.querySelector('body').addEventListener('paste', (e) => {
+        document.querySelector("body").addEventListener("paste", (e) => {
             try {
                 const results = parsePaste(
-                    e.clipboardData.getData('text/html'),
+                    e.clipboardData.getData("text/html"),
                     (error) => {
                         this.errors.push(error);
                     }
@@ -78,11 +82,11 @@ export default {
     },
     watch: {
         imported_results() {
-            let results = { ...load('results', {}) };
+            let results = { ...load("results", {}) };
             for (const result of this.imported_results) {
                 results[result.assignment.id] = result.score;
             }
-            save('results', results);
+            save("results", results);
             // TODO: Also turn on apropiate optional subjects
         },
     },
