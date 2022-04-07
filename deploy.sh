@@ -13,7 +13,6 @@ cd dist
 echo 'pta.wouterr.com' > CNAME
 
 git init
-git switch -c main
 git add -A
 git commit -m 'deploy'
 
