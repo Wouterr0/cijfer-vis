@@ -15,9 +15,6 @@ export default {
     props: {
         errors: Array,
     },
-    created() {
-        console.log(this.errors);
-    },
 };
 </script>
 

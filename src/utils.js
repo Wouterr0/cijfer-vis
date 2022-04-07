@@ -1,15 +1,27 @@
-import { def } from '@vue/shared';
-import raw_grade from './data.js';
+import raw_diploma from './data.js';
+import { check_validity } from './validate_data.js';
 
 export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
 
-function assignment_were(f, assignment = raw_grade) {
+function all_sub_assignments(assignment) {
+    let sub_assignments = [];
+    if (assignment.grades) sub_assignments.push(...assignment.grades);
+    if (assignment.se_assignments)
+        sub_assignments.push(...assignment.se_assignments);
+    if (assignment.ce_assignments)
+        sub_assignments.push(...assignment.ce_assignments);
+    return sub_assignments;
+}
+
+function assignment_where(f, assignment = raw_diploma) {
     if (f(assignment)) {
         return assignment;
     } else {
-        if (assignment.assignments) {
-            for (const sub_assignment of assignment.assignments) {
-                const result = assignment_were(f, sub_assignment);
+        let assignments = all_sub_assignments(assignment);
+
+        if (assignments) {
+            for (const sub_assignment of assignments) {
+                const result = assignment_where(f, sub_assignment);
                 if (result) {
                     return result;
                 }
@@ -19,27 +31,32 @@ function assignment_were(f, assignment = raw_grade) {
 }
 
 export function assignment_by_id(id) {
-    return assignment_were((a) => a.id === id);
+    return assignment_where((a) => a.id === id);
 }
 
-export function parse_data(grade) {
+export function parse_data(diploma) {
     /*
      * Steps:
-     * 0. TODO: check validity of data
      * 1. copy and remove like references
      * 2. reference parent back (.parent)
      * 3. cache total_subweight for easy access
+     * 4. check validity of loaded data
      */
 
     // copy and remove like references
     function replace_like(assignment) {
         if (assignment.like) {
-            if (assignment.assignments) {
-                throw 'A like assignment cannot have children';
+            if (assignment.se_assignments || assignment.ce_assignments) {
+                throw new Error('A like assignment cannot have children');
             }
             const src = assignment_by_id(assignment.like);
-            if (src.assignments) {
-                throw 'A liked assignment cannot have children';
+            if (src === undefined) {
+                throw new Error(
+                    `Cannot find like reference ${assignment.like}`
+                );
+            }
+            if (src.se_assignments || src.ce_assignments) {
+                throw new Error('A liked assignment cannot have children');
             }
             for (const key in src) {
                 if (!(key in assignment))
@@ -48,31 +65,49 @@ export function parse_data(grade) {
             }
             delete assignment.like;
         }
-        if (assignment.assignments) {
-            for (const sub_assignment of assignment.assignments) {
+        if (assignment.grades) {
+            for (const sub_assignment of assignment.grades) {
+                replace_like(sub_assignment);
+            }
+        }
+        if (assignment.se_assignments) {
+            for (const sub_assignment of assignment.se_assignments) {
+                replace_like(sub_assignment);
+            }
+        }
+        if (assignment.ce_assignments) {
+            for (const sub_assignment of assignment.ce_assignments) {
                 replace_like(sub_assignment);
             }
         }
     }
-    replace_like(grade);
+    replace_like(diploma);
 
     // reference parent back (.parent)
     function link_back(assignment, parent) {
         if (parent) {
             assignment.parent = parent;
         }
-        if (assignment.assignments) {
+        // cache total_subweight for easy access
+        let assignments = all_sub_assignments(assignment);
+        if (assignments) {
             let weight_sum = 0;
-            for (const sub_assignment of assignment.assignments) {
+            for (const sub_assignment of assignments) {
                 link_back(sub_assignment, assignment);
                 weight_sum += sub_assignment.weight ? sub_assignment.weight : 1;
             }
             assignment.total_subweight = weight_sum;
         }
     }
-    link_back(grade);
+    link_back(diploma);
 
-    return grade;
+    console.log(diploma);
+    // check validity of loaded data
+    check_validity(diploma, (msg) => {
+        throw new Error(msg);
+    });
+
+    return diploma;
 }
 
 export function gen_id() {
@@ -154,7 +189,7 @@ export function parsePaste(pastedText, err_callback) {
 
     for (const [, subj, n, score] of magister_results) {
         const magister = subj + n;
-        const assignment = assignment_were((a) => a.magister === magister);
+        const assignment = assignment_where((a) => a.magister === magister);
         if (assignment) {
             results.push({
                 magister,

@@ -7,7 +7,7 @@ import { assignment_by_id, parse_data, load } from './utils.js';
 // Create a new store instance.
 const store = createStore({
     state: {
-        grade: parse_data(data),
+        diploma: parse_data(data),
         mode: 'results',
         hovered: null,
         clicked: null,
@@ -22,7 +22,7 @@ const store = createStore({
     getters: {
         subjects(state) {
             let subjects = [];
-            for (const subject of state.grade.assignments) {
+            for (const subject of state.diploma.grades) {
                 /* Show subject if:
                  *
                  *  it is not (
@@ -64,15 +64,17 @@ const store = createStore({
                 }
                 counted_types[assignment.type]++;
 
-                if (assignment.assignments) {
-                    for (const sub_assignment of assignment.assignments) {
+                const sub_assignments = all_sub_assignments(assignment);
+                if (sub_assignments) {
+                    for (const sub_assignment of sub_assignments) {
                         recurse(sub_assignment);
                     }
                 }
             }
 
             for (const subject of getters.subjects) {
-                for (const assignment of subject.assignments) {
+                const sub_assignments = all_sub_assignments(subject);
+                for (const assignment of sub_assignments) {
                     recurse(assignment);
                 }
             }
@@ -83,35 +85,20 @@ const store = createStore({
         },
         allOptional(state) {
             let allOptionalAssignments = [];
-            function checkOptional(assignment) {
-                if (assignment.optional) {
-                    allOptionalAssignments.push(assignment);
-                }
-                if (assignment.assignments) {
-                    for (const sub_assignment of assignment.assignments) {
-                        checkOptional(sub_assignment);
-                    }
+            for (const subject of state.diploma.grades) {
+                if (subject.optional) {
+                    allOptionalAssignments.push(subject);
                 }
             }
-            checkOptional(state.grade);
             return allOptionalAssignments;
         },
         allReplacing(state) {
             let allReplacingAssignments = [];
-            function checkReplacing(assignment) {
-                if (assignment.replaces) {
-                    allReplacingAssignments.push({
-                        replaces: assignment_by_id(assignment.replaces),
-                        replacing: assignment,
-                    });
-                }
-                if (assignment.assignments) {
-                    for (const sub_assignment of assignment.assignments) {
-                        checkReplacing(sub_assignment);
-                    }
+            for (const subject of state.diploma.grades) {
+                if (subject.replaces) {
+                    allReplacingAssignments.push(subject);
                 }
             }
-            checkReplacing(state.grade);
             return allReplacingAssignments;
         },
         isOptional: (state) => (assignment) => {
@@ -129,6 +116,7 @@ const store = createStore({
                 if (assignment.id in state.results) {
                     result = state.results[assignment.id];
                 } else {
+                    throw new Error('getting the result of non core assignment is not implemented');
                     if (assignment.assignments) {
                         let weighted_sum = 0;
                         let weight_sum = 0;
@@ -277,9 +265,9 @@ const store = createStore({
 
 // TODO: Improve accessibility (lighthouse, etc.)
 // TODO: Color grades based on their value and cum laude
+// https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 // TODO: Fix averages and make a better overview
 // TODO: Add the paste EventListener also on the main page
-// https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 const app = createApp(App);
 app.use(store);
 app.mount('#app');
