@@ -12,6 +12,7 @@
         key_="naam"
         :value="assignment.fullname"
     />
+    <!-- TODO: also display weight per subject -->
     <AssignmentProp
         key_="weging per cijfer"
         :value="nl_num(subjectWeight(assignment) * 100, undefined, 4) + '%'"

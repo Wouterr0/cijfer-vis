@@ -1,7 +1,10 @@
 <template>
     <th class="small-row">VAK</th>
-    <th>OPDRACHTEN</th>
-    <th v-if="showResults" class="small-row">GEM.</th>
+    <th>SE OPDRACHTEN</th>
+    <th v-if="showResults" class="small-row">SE</th>
+    <th>CE OPDRACHTEN</th>
+    <th v-if="showResults" class="small-row">CE</th>
+    <th v-if="showResults" class="small-row">Eind.</th>
 </template>
 
 <script>

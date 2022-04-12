@@ -8,7 +8,7 @@
 import Settings from './components/Settings.vue';
 import Content from './components/Content.vue';
 import Errors from './components/Errors.vue';
-import { gen_id, storageAvailable, load, save } from './utils.js';
+import { gen_id, save } from './utils.js';
 import { mapState } from 'vuex';
 
 export default {
@@ -45,7 +45,8 @@ export default {
     },
     created() {
         console.log(this.$store.state);
-
+        // console.log(this.$store.getters.result(this.$store.state.diploma.grades[0], true));
+        console.log(this.$store.getters.result(this.$store.state.diploma, true));
         window.gen_id = gen_id;
     },
     errorCaptured(err, vm, info) {

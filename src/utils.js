@@ -3,9 +3,10 @@ import { check_validity } from './validate_data.js';
 
 export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
 
-function all_sub_assignments(assignment) {
+export function all_sub_assignments(assignment) {
     let sub_assignments = [];
     if (assignment.grades) sub_assignments.push(...assignment.grades);
+    if (assignment.assignments) sub_assignments.push(...assignment.assignments);
     if (assignment.se_assignments)
         sub_assignments.push(...assignment.se_assignments);
     if (assignment.ce_assignments)
@@ -39,7 +40,7 @@ export function parse_data(diploma) {
      * Steps:
      * 1. copy and remove like references
      * 2. reference parent back (.parent)
-     * 3. cache total_subweight for easy access
+     * 3. cache se/ce_total_subweight for easy access
      * 4. check validity of loaded data
      */
 
@@ -88,26 +89,33 @@ export function parse_data(diploma) {
         if (parent) {
             assignment.parent = parent;
         }
-        // cache total_subweight for easy access
-        let assignments = all_sub_assignments(assignment);
-        if (assignments) {
+        // cache se/ce_total_subweight for easy access
+        let sub_assignments = all_sub_assignments(assignment);
+        if (sub_assignments) {
             let weight_sum = 0;
-            for (const sub_assignment of assignments) {
+            for (const sub_assignment of sub_assignments) {
                 link_back(sub_assignment, assignment);
-                weight_sum += sub_assignment.weight ? sub_assignment.weight : 1;
+                if (sub_assignment.weight === undefined)
+                    sub_assignment.weight = 1;
+                if (sub_assignment.type !== 'CSE') {
+                    weight_sum += sub_assignment.weight;
+                }
             }
             assignment.total_subweight = weight_sum;
         }
     }
     link_back(diploma);
 
-    console.log(diploma);
     // check validity of loaded data
     check_validity(diploma, (msg) => {
         throw new Error(msg);
     });
 
     return diploma;
+}
+
+export function round(n, decimals) {
+    return Math.round((n + Number.EPSILON) * 10 ** decimals) / 10 ** decimals;
 }
 
 export function gen_id() {

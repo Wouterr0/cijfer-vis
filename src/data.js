@@ -605,7 +605,7 @@ export default {
         {
             type: 'VAK',
             fullname: 'Engels (Versneld)',
-            shortname: 'V Eng.',
+            shortname: 'SnelEng.',
             replaces: 'ns17jgif2b',
             id: 'vrzx1r9o5w',
             se_assignments: [
@@ -740,7 +740,6 @@ export default {
                             id: '8ulmc1jqp7',
                         },
                     ],
-                    weight: 1,
                 },
                 {
                     type: 'VAK',
@@ -804,7 +803,6 @@ export default {
                             id: '7qgusse1xa',
                         },
                     ],
-                    weight: 1,
                 },
                 {
                     type: 'VAK',
@@ -846,7 +844,6 @@ export default {
                             id: 'wo4mih1hcq',
                         },
                     ],
-                    weight: 1,
                 },
                 {
                     type: 'PO',
@@ -854,7 +851,6 @@ export default {
                     period: 3,
                     description:
                         'Verslaglegging van het profielwerkstuk en bijbehorende mondelinge toelichting',
-                    weight: 1,
                     id: 'vnhbeley4l',
                 },
             ],

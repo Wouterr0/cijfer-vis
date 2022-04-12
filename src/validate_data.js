@@ -166,6 +166,14 @@ export function check_validity(diploma, err_callback) {
         if (grade.type === 'VAK') {
             check_subject(grade);
             check_array(grade, 'ce_assignments', true);
+            // only support one central exam
+            if (grade.ce_assignments && grade.ce_assignments.length > 1) {
+                err_callback(
+                    `grade ${grade.id} has more than one central exam`
+                );
+                return;
+            }
+
             if (grade.ce_assignments) {
                 for (const ce_assignment of grade.ce_assignments) {
                     check_central_assignment(ce_assignment);

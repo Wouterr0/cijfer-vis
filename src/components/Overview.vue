@@ -2,9 +2,9 @@
     <table class="overview">
         <Header :showResults="showResults" />
         <Row
-            :key="subject.id"
-            v-for="subject in subjects"
-            :assignment="subject"
+            :key="grade.id"
+            v-for="grade in subjects"
+            :grade="grade"
             :showResults="showResults"
         />
         <TotalRow v-if="showResults" />
@@ -30,7 +30,7 @@ export default {
 <style>
 .overview {
     width: 100%;
-    max-width: 45em;
+    max-width: 65em;
     height: 1px;
     border-spacing: var(--assign-gap);
     font-size: var(--table-font-size);

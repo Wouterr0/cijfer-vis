@@ -2,7 +2,13 @@ import { createApp } from 'vue';
 import { createStore } from 'vuex';
 import App from './App.vue';
 import data from './data.js';
-import { assignment_by_id, parse_data, load } from './utils.js';
+import {
+    parse_data,
+    round,
+    load,
+    assignment_by_id,
+    all_sub_assignments,
+} from './utils.js';
 
 // Create a new store instance.
 const store = createStore({
@@ -96,7 +102,10 @@ const store = createStore({
             let allReplacingAssignments = [];
             for (const subject of state.diploma.grades) {
                 if (subject.replaces) {
-                    allReplacingAssignments.push(subject);
+                    allReplacingAssignments.push({
+                        replaces: assignment_by_id(subject.replaces),
+                        replacing: subject,
+                    });
                 }
             }
             return allReplacingAssignments;
@@ -111,35 +120,72 @@ const store = createStore({
         },
         result:
             (state, getters) =>
-            (assignment, rounding = false) => {
+            (assignment, rounding = true, se_only = false, ce_only = false) => {
+                function average(assignments, decimals) {
+                    let weighted_sum = 0;
+                    let weight_sum = 0;
+                    let result;
+                    for (const assignment of assignments) {
+                        let score = getters.result(assignment, rounding);
+                        if (score === undefined) continue;
+                        if (decimals) score = round(score, decimals); // round again because top COMB assignments has to be rounded to 0 decimals
+                        const weight =
+                            assignment.weight /
+                            assignment.parent.total_subweight;
+                        weighted_sum += score * weight;
+                        weight_sum += weight;
+                    }
+                    if (weight_sum > 0) {
+                        result = weighted_sum / weight_sum;
+                    }
+                    return result;
+                }
+
                 let result;
+                let decimals;
+
                 if (assignment.id in state.results) {
                     result = state.results[assignment.id];
+                    decimals = 1;
                 } else {
-                    throw new Error('getting the result of non core assignment is not implemented');
-                    if (assignment.assignments) {
-                        let weighted_sum = 0;
-                        let weight_sum = 0;
-
-                        for (const sub_assignment of assignment.assignments) {
-                            const score = getters.result(
-                                sub_assignment,
-                                rounding
-                            );
-                            if (score === undefined) continue;
-                            const weight =
-                                sub_assignment.weight /
-                                sub_assignment.parent.total_subweight;
-                            weighted_sum += score * weight;
-                            weight_sum += weight;
-                        }
-                        if (weight_sum > 0) {
-                            result = weighted_sum / weight_sum;
+                    if (assignment.type === 'DIPLOMA') {
+                        result = average(assignment.grades);
+                        decimals = 0;
+                    } else if (assignment.type === 'COMB') {
+                        result = average(
+                            assignment.assignments,
+                            rounding && assignment.parent.type === 'DIPLOMA'
+                                ? 0
+                                : null
+                        );
+                        decimals = 0;
+                    } else if (assignment.type === 'VAK') {
+                        const se_avg =
+                            assignment.se_assignments &&
+                            average(assignment.se_assignments);
+                        const ce_avg =
+                            assignment.ce_assignments &&
+                            average(assignment.ce_assignments);
+                        if (!se_only && !ce_only) {
+                            decimals = 0;
+                            if (se_avg !== undefined && ce_avg !== undefined) {
+                                result = (se_avg + ce_avg) / 2;
+                            } else {
+                                result = se_avg || ce_avg;
+                            }
+                        } else if (se_only && !ce_only) {
+                            decimals = 1;
+                            result = se_avg;
+                        } else if (ce_only && !se_only) {
+                            decimals = 1;
+                            result = ce_avg;
+                        } else {
+                            throw new Error('wtf');
                         }
                     }
                 }
                 if (rounding && result !== undefined) {
-                    result = Math.round((result + Number.EPSILON) * 10) / 10;
+                    result = round(result, decimals);
                 }
                 return result;
             },
@@ -202,10 +248,13 @@ const store = createStore({
             },
         subjectWeight: (state) => (assignment) => {
             if (!assignment.parent) return;
+            if (assignment.type === 'CSE') return 0.5;
             let weight = assignment.weight;
             do {
                 assignment = assignment.parent;
-                weight /= assignment.total_subweight;
+                weight /=
+                    assignment.total_subweight *
+                    (assignment.ce_assignments ? 2 : 1);
             } while (assignment.parent.parent);
             return weight;
         },
