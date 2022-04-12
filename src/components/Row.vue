@@ -52,23 +52,35 @@ export default {
             return nl_num(this.$store.getters.result(this.grade, false));
         },
         SEresult() {
+            if (this.grade.type === 'VAK' && !this.grade.se_assignments) {
+                return 'nvt';
+            }
             return nl_num(
                 this.$store.getters.result(this.grade, true, true, false),
                 1
             );
         },
         unRoundedSEresult() {
+            if (this.grade.type === 'VAK' && !this.grade.se_assignments) {
+                return null;
+            }
             return nl_num(
                 this.$store.getters.result(this.grade, false, true, false)
             );
         },
         CEresult() {
+            if (this.grade.type !== 'VAK' || !this.grade.ce_assignments) {
+                return 'nvt';
+            }
             return nl_num(
                 this.$store.getters.result(this.grade, true, false, true),
                 1
             );
         },
         unRoundedCEresult() {
+            if (this.grade.type !== 'VAK' || !this.grade.ce_assignments) {
+                return null;
+            }
             return nl_num(
                 this.$store.getters.result(this.grade, false, false, true)
             );

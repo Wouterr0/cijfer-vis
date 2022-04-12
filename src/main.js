@@ -151,12 +151,13 @@ const store = createStore({
                         result = average(assignment.grades);
                         decimals = 0;
                     } else if (assignment.type === 'COMB') {
-                        result = average(
-                            assignment.assignments,
-                            rounding && assignment.parent.type === 'DIPLOMA'
-                                ? 0
-                                : null
-                        );
+                        if (!ce_only)
+                            result = average(
+                                assignment.assignments,
+                                rounding && assignment.parent.type === 'DIPLOMA'
+                                    ? 0
+                                    : null
+                            );
                         decimals = 0;
                     } else if (assignment.type === 'VAK') {
                         const se_avg =
@@ -197,11 +198,16 @@ const store = createStore({
             },
         avg:
             (state, getters) =>
-            (rounding = false) => {
+            (rounding = false, se_only = false, ce_only = false) => {
                 let sum = 0;
                 let amount = 0;
                 for (const subject of getters.subjects) {
-                    const score = getters.result(subject, rounding);
+                    const score = getters.result(
+                        subject,
+                        rounding,
+                        se_only,
+                        ce_only
+                    );
                     if (score) {
                         sum += score;
                         amount++;

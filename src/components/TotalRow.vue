@@ -8,21 +8,25 @@
         <td colspan="2">
             <div style="display: flex">
                 <div>Totaal:</div>
-                <div class="stats">
-                    <div :title="nl_num(min(), 1)">
-                        <strong>min:</strong> {{ nl_num(min(true), 1) }}
+                <!-- <div class="stats">
+                    <div :title="nl_num(min())">
+                        <strong>min:</strong> {{ nl_num(min(true)) }}
                     </div>
-                    <div :title="nl_num(max(), 1)">
-                        <strong>max:</strong> {{ nl_num(max(true), 1) }}
+                    <div :title="nl_num(max())">
+                        <strong>max:</strong> {{ nl_num(max(true)) }}
                     </div>
-                    <div :title="nl_num(median(), 1)">
-                        <strong>mediaan:</strong> {{ nl_num(median(true), 1) }}
+                    <div :title="nl_num(median())">
+                        <strong>mediaan:</strong> {{ nl_num(median(true)) }}
                     </div>
-                </div>
+                </div> -->
             </div>
         </td>
-        <td style="display: block">
-            <div :title="nl_num(avg(), 1)">{{ nl_num(avg(true), 1) }}</div>
+        <td :title="nl_num(avg(false, true, false))">
+            {{ nl_num(avg(true, true, false)) }}
+        </td>
+        <td />
+        <td :title="nl_num(avg(false, false, true))">
+            {{ nl_num(avg(true, false, true)) }}
         </td>
     </tr>
 </template>
