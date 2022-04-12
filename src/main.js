@@ -121,14 +121,13 @@ const store = createStore({
         result:
             (state, getters) =>
             (assignment, rounding = true, se_only = false, ce_only = false) => {
-                function average(assignments, decimals) {
+                function average(assignments) {
                     let weighted_sum = 0;
                     let weight_sum = 0;
                     let result;
                     for (const assignment of assignments) {
                         let score = getters.result(assignment, rounding);
                         if (score === undefined) continue;
-                        if (decimals) score = round(score, decimals); // round again because top COMB assignments has to be rounded to 0 decimals
                         const weight =
                             assignment.weight /
                             assignment.parent.total_subweight;
@@ -183,6 +182,13 @@ const store = createStore({
                             throw new Error('wtf');
                         }
                     }
+                }
+                if (
+                    assignment.parent &&
+                    assignment.parent.type === 'COMB' &&
+                    assignment.parent.parent.type === 'DIPLOMA'
+                ) {
+                    decimals = 0;
                 }
                 if (rounding && result !== undefined) {
                     result = round(result, decimals);

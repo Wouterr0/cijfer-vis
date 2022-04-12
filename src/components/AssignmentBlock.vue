@@ -41,15 +41,9 @@ export default {
     computed: {
         ...mapState(['hovered', 'clicked']),
         background() {
-            const res = this.$store.getters.result(this.assignment);
+            const res = this.$store.state.results[this.assignment.id];
             const type = this.assignment.type;
-            if (
-                !this.$store.getters.showResults ||
-                res === undefined ||
-                !this.show_percentage
-            ) {
-                return `var(--${type}-color)`;
-            } else {
+            if (this.$store.getters.showResults && res !== undefined) {
                 const fill_percent =
                     ((this.$store.getters.result(this.assignment) - 1) / 9) *
                     100;
@@ -58,14 +52,16 @@ export default {
                         var(--${type}-color-dark) ${fill_percent}%, \
                         var(--${type}-color) ${fill_percent}%, \
                         var(--${type}-color) 100%)`;
+            } else {
+                return `var(--${type}-color)`;
             }
         },
         sub_assignments() {
             return all_sub_assignments(this.assignment);
         },
-        show_percentage() {
-            return this.assignment.type !== 'VAK';
-        },
+        // show_percentage() {
+        //     return this.assignment.type !== 'VAK';
+        // },
     },
     methods: {
         onOver() {
