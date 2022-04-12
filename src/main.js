@@ -317,6 +317,9 @@ const store = createStore({
 // https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 // TODO: Fix averages and make a better overview
 // TODO: Add the paste EventListener also on the main page
+// TODO: sneleng werkt niet
+// TODO: add tooltips for combinations
+// TODO: add feature to put desired result for a combination in and calculate the containing results
 const app = createApp(App);
 app.use(store);
 app.mount('#app');

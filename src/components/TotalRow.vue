@@ -1,7 +1,11 @@
 <template>
     <tr>
-        <td colspan="2">
+        <td colspan="6">
             <hr class="tot-sep" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
             <div style="display: flex">
                 <div>Totaal:</div>
                 <div class="stats">
@@ -18,7 +22,6 @@
             </div>
         </td>
         <td style="display: block">
-            <hr class="tot-sep" />
             <div :title="nl_num(avg(), 1)">{{ nl_num(avg(true), 1) }}</div>
         </td>
     </tr>

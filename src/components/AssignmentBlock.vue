@@ -14,8 +14,8 @@
         @click.stop="onClick()"
     >
         <AssignmentBlocks
-            v-if="assignment.assignments"
-            :assignments="assignment.assignments"
+            v-if="sub_assignments"
+            :assignments="sub_assignments"
         />
     </div>
 </template>
@@ -23,6 +23,7 @@
 <script>
 import { defineAsyncComponent } from 'vue';
 import { mapState } from 'vuex';
+import { all_sub_assignments } from '../utils.js';
 
 export default {
     name: 'AssignmentBlock',
@@ -43,9 +44,9 @@ export default {
             const res = this.$store.getters.result(this.assignment);
             const type = this.assignment.type;
             if (
-                res === undefined ||
                 !this.$store.getters.showResults ||
-                this.assignment.assignments
+                res === undefined ||
+                !this.show_percentage
             ) {
                 return `var(--${type}-color)`;
             } else {
@@ -58,6 +59,12 @@ export default {
                         var(--${type}-color) ${fill_percent}%, \
                         var(--${type}-color) 100%)`;
             }
+        },
+        sub_assignments() {
+            return all_sub_assignments(this.assignment);
+        },
+        show_percentage() {
+            return this.assignment.type !== 'VAK';
         },
     },
     methods: {
