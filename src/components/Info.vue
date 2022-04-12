@@ -39,7 +39,7 @@ export default {
     font-size: calc(var(--font-size) * 2 / 3);
     padding: 0.5em;
     flex: 1;
-    max-width: 30em;
+    max-width: 35em;
     min-width: 15em;
 }
 </style>

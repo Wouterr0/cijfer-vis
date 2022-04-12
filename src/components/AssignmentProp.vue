@@ -1,6 +1,6 @@
 <template>
     <span class="info-key">{{ key_ }}: </span>
-    <span class="info-value" :style="style">{{ value.toString() }}</span>
+    <span class="info-value" :style="style"><slot /></span>
     <br />
 </template>
 
@@ -9,7 +9,6 @@ export default {
     name: 'AssignmentProp',
     props: {
         key_: String,
-        value: null,
         style: Object,
     },
     methods: {

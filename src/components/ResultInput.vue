@@ -42,7 +42,7 @@ export default {
             return this.$store.getters.result(this.assignment);
         },
         canInput() {
-            return ["SET", "MET", "PO"].includes(this.assignment.type);
+            return ["SET", "MET", "PO", "CSE"].includes(this.assignment.type);
         },
     },
     methods: {
