@@ -11,6 +11,7 @@
             :disabled="!canInput"
             required
         />
+        <!-- TODO: add a way to view un rounded result -->
         <input
             type="button"
             value="invullen"
