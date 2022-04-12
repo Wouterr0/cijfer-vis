@@ -2,42 +2,72 @@
     <label>
         Resultaat:
         <br />
-        <input type="number" min="1" step="0.1" v-model="result" required />
-        <input type="button" value="invullen" @click="submitResult" />
-        <input type="button" value="wissen" @click="clearResult" />
+        <input
+            type="number"
+            min="1"
+            step="0.1"
+            v-model="result"
+            @keyup.enter="submitResult"
+            :disabled="!canInput"
+            required
+        />
+        <input
+            type="button"
+            value="invullen"
+            :disabled="!canInput"
+            @click="submitResult"
+        />
+        <input
+            type="button"
+            value="wissen"
+            :disabled="!canInput"
+            @click="clearResult"
+        />
     </label>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-
 export default {
-    name: 'ResultInput',
+    name: "ResultInput",
     props: {
         assignment: Object,
     },
     data() {
         return {
-            result: this.$store.state.results[this.assignment.id],
+            result: undefined,
         };
+    },
+    computed: {
+        assignmentResult() {
+            return this.$store.getters.result(this.assignment);
+        },
+        canInput() {
+            return ["SET", "MET", "PO"].includes(this.assignment.type);
+        },
     },
     methods: {
         clearResult() {
-            this.$store.commit('setResult', {
+            this.$store.commit("setResult", {
                 assignment: this.assignment,
             });
         },
         submitResult() {
-            this.$store.commit('setResult', {
+            this.$store.commit("setResult", {
                 assignment: this.assignment,
                 result: this.result,
             });
         },
+        updateResult() {
+            this.result = this.$store.getters.result(this.assignment, true);
+        },
     },
     watch: {
-        assignment() {
-            this.result = this.$store.state.results[this.assignment.id];
+        assignmentResult() {
+            this.updateResult();
         },
+    },
+    created() {
+        this.updateResult();
     },
 };
 </script>

@@ -13,6 +13,18 @@
         <Replacings />
         <hr class="left" />
         <input
+            placeholder="Importeer resultaten"
+            title="Plak hier je magister resultaten"
+        />
+        <a
+            class="import-btn"
+            href="import.html"
+            title="Voor als je een beetje hulp nodig hebt bij het importeren van je magister cijfers"
+        >
+            help me
+        </a>
+        <hr />
+        <input
             type="range"
             v-model="scale"
             :min="0.7"
@@ -107,6 +119,27 @@ export default {
 
 .settings .left {
     margin: 0 0 0 auto;
+}
+
+.import-btn {
+    margin: -0.3em;
+    padding: 0.3em 0.5em;
+    border-width: 0.03em;
+    border-radius: 0.2em;
+    border-style: solid;
+    border-color: transparent;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 700;
+}
+
+.import-btn:hover {
+    background-color: #0683ea;
+    color: white;
+    border-color: black;
+}
+
+.import-btn:active {
+    outline: 0.15em solid black;
 }
 
 input[type='range'] {
