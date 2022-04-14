@@ -5,13 +5,15 @@
             <AssignmentBlocks :assignments="se_assignments" />
         </td>
         <td v-if="showResults" :title="unRoundedSEresult">{{ SEresult }}</td>
-        <td class="blocks-column">
+        <td v-if="showCE" class="blocks-column">
             <AssignmentBlocks
                 v-if="ce_assignments"
                 :assignments="ce_assignments"
             />
         </td>
-        <td v-if="showResults" :title="unRoundedCEresult">{{ CEresult }}</td>
+        <td v-if="showResults && showCE" :title="unRoundedCEresult">
+            {{ CEresult }}
+        </td>
         <td v-if="showResults" :title="unRoundedResult">{{ result }}</td>
     </tr>
 </template>
@@ -25,6 +27,7 @@ export default {
     props: {
         grade: Object,
         showResults: Boolean,
+        showCE: Boolean,
     },
     components: {
         AssignmentBlocks,
@@ -59,7 +62,6 @@ export default {
         unRoundedSEresult() {
             return nl_num(
                 this.$store.getters.result(this.grade, false, true, false),
-                this.grade.ce_assignments ? 1 : 0
             );
         },
         CEresult() {

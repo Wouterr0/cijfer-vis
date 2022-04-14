@@ -13,8 +13,8 @@
         <td :title="nl_num(avg(false, true, false))">
             {{ nl_num(avg(true, true, false)) }}
         </td>
-        <td />
-        <td :title="nl_num(avg(false, false, true))">
+        <td v-if="showCE" />
+        <td v-if="showCE" :title="nl_num(avg(false, false, true))">
             {{ nl_num(avg(true, false, true)) }}
         </td>
         <td :title="nl_num(avg(false))">
@@ -29,6 +29,9 @@ import { nl_num } from '../utils.js';
 
 export default {
     name: 'TotalRow',
+    props: {
+        showCE: Boolean,
+    },
     computed: mapGetters(['min', 'max', 'median', 'avg']),
     methods: { nl_num },
 };

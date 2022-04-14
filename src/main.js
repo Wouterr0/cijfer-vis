@@ -20,6 +20,7 @@ const store = createStore({
         settings: load('settings', {
             extra: [],
             replacing: [],
+            showCE: true,
             round: false,
             scale: 1,
         }),
@@ -302,6 +303,10 @@ const store = createStore({
         setScale(state, scale) {
             console.log('scale', scale);
             state.settings.scale = scale;
+        },
+        setShowCE(state, showCE) {
+            console.log('show CE', showCE);
+            state.settings.showCE = showCE;
         },
         setMode(state, mode) {
             console.log('mode', mode);
