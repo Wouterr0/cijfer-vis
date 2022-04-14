@@ -20,16 +20,14 @@ export default {
     components: {
         AssignmentBlock,
     },
-    data() {
-        return {
-            totalSubweight: 0,
-        };
-    },
-    created() {
-        this.totalSubweight = 0;
-        for (const assignment of this.assignments) {
-            this.totalSubweight += assignment.weight;
-        }
+    computed: {
+        totalSubweight() {
+            let totalSubweight = 0;
+            for (const assignment of this.assignments) {
+                totalSubweight += assignment.weight;
+            }
+            return totalSubweight;
+        },
     },
 };
 </script>

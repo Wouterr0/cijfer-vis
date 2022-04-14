@@ -1,20 +1,21 @@
 <template>
     <table class="overview">
-        <Header :showResults="showResults" />
+        <Header :showCE="showCE" :showResults="showResults" />
         <Row
-            :key="subject.id"
-            v-for="subject in subjects"
-            :assignment="subject"
+            :key="grade.id"
+            v-for="grade in subjects"
+            :grade="grade"
+            :showCE="showCE"
             :showResults="showResults"
         />
-        <TotalRow v-if="showResults" />
+        <TotalRow v-if="showResults" :showCE="showCE" />
     </table>
 </template>
 <script>
 import Header from './Header.vue';
 import Row from './Row.vue';
 import TotalRow from './TotalRow.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'Overview',
@@ -23,14 +24,19 @@ export default {
         Row,
         TotalRow,
     },
-    computed: mapGetters(['subjects', 'showResults']),
+    computed: {
+        ...mapGetters(['subjects', 'showResults']),
+        ...mapState({
+            showCE: (state) => state.settings.showCE,
+        }),
+    },
 };
 </script>
 
 <style>
 .overview {
     width: 100%;
-    max-width: 45em;
+    max-width: 65em;
     height: 1px;
     border-spacing: var(--assign-gap);
     font-size: var(--table-font-size);

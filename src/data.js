@@ -2,17 +2,17 @@
 // TODO: add handelingsdelen
 // TODO: add SE's
 export default {
-    type: 'COMB',
+    type: 'DIPLOMA',
     fullname: 'diplomacijfer',
     shortname: 'diploma',
     id: 'rbfj8raw3r',
-    assignments: [
+    grades: [
         {
             type: 'VAK',
             fullname: 'Natuurkunde',
             shortname: 'Na.',
             id: 'oeh1gxsud0',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'PO',
                     year: 5,
@@ -69,13 +69,20 @@ export default {
                     id: 'p9zxizlb5a',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/wiskunde-b-vwo-2',
+                    id: 'lo5r266gs9',
+                },
+            ],
         },
         {
             type: 'VAK',
             fullname: 'Scheikunde',
             shortname: 'Sck.',
             id: 'n5x8d27vgf',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'PO',
                     year: 5,
@@ -106,7 +113,7 @@ export default {
                         'Individuele opdracht naar aanleiding van een bezoek aan externe organisatie op het gebied van duurzaamheid',
                     domains: ['A', 'C8', 'F5', 'G5'],
                     weight: 20,
-                    magister: 'SCHK8203',
+                    magister: 'SCHK8204',
                     id: '1zdnkkmoho',
                 },
                 {
@@ -117,7 +124,6 @@ export default {
                         'Individuele verslaglegging van uitvoer van en werkhouding voor verscheidene practica op het gebied van gezondheid',
                     domains: ['A', 'C10', 'D2', 'D4', 'C5'],
                     weight: 20,
-                    magister: 'SCHK8204',
                     id: 'z01wr9t5g8',
                 },
                 {
@@ -131,13 +137,20 @@ export default {
                     id: 'dmrb2mirx2',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/scheikunde-vwo-2',
+                    id: 'gwhgd1zvbn',
+                },
+            ],
         },
         {
             type: 'VAK',
             fullname: 'Biologie',
             shortname: 'Bio.',
             id: 'q8uicp9j8r',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'PO',
                     year: 5,
@@ -192,13 +205,20 @@ export default {
                     id: 'drtwlr6mpg',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/biologie-vwo-2',
+                    id: 'rnov6a8akw',
+                },
+            ],
         },
         {
             type: 'VAK',
             fullname: 'Natuur, Leven en Technologie',
             shortname: 'NLT',
             id: '1u6jxaj0m3',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'PO',
                     year: 5,
@@ -272,7 +292,7 @@ export default {
             fullname: 'Wiskunde B',
             shortname: 'WisB',
             id: 'jbw2r2cjlb',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'SET',
                     year: 5,
@@ -324,6 +344,13 @@ export default {
                     id: 'ykx7val347',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/biologie-vwo-2',
+                    id: 'a301lmcwsp',
+                },
+            ],
         },
         {
             type: 'VAK',
@@ -331,7 +358,7 @@ export default {
             shortname: 'WisD',
             optional: true,
             id: 'zzhzstumsx',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'SET',
                     year: 5,
@@ -429,7 +456,7 @@ export default {
             shortname: 'Fi.',
             optional: true,
             id: '9i65zn7fb7',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'SET',
                     year: 5,
@@ -475,13 +502,20 @@ export default {
                     id: 'o7gjalrjtv',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/filosofie-vwo',
+                    id: '66xgn2c76r',
+                },
+            ],
         },
         {
             type: 'VAK',
             fullname: 'Nederlands',
             shortname: 'Ned.',
             id: 'zx30rjiwo1',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'SET',
                     year: 5,
@@ -514,13 +548,20 @@ export default {
                     id: '9aicnqjbgs',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/nederlands-vwo-2',
+                    id: 'sdptpz6nsb',
+                },
+            ],
         },
         {
             type: 'VAK',
             fullname: 'Engels',
             shortname: 'Eng.',
             id: 'ns17jgif2b',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'MET',
                     year: 6,
@@ -552,6 +593,13 @@ export default {
                     id: 'e484pmwj16',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/engels-vwo-2',
+                    id: 'nuryatwprl',
+                },
+            ],
         },
         {
             type: 'VAK',
@@ -559,7 +607,7 @@ export default {
             shortname: 'SnelEng.',
             replaces: 'ns17jgif2b',
             id: 'vrzx1r9o5w',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'MET',
                     year: 5,
@@ -584,13 +632,19 @@ export default {
                     id: 'rpl6l1jjox',
                 },
             ],
+            ce_assignments: [
+                {
+                    like: 'nuryatwprl',
+                    id: 'lrse06770r',
+                },
+            ],
         },
         {
             type: 'VAK',
             fullname: 'Spaans',
             shortname: 'Sp.',
             id: 'ahpadn77oh',
-            assignments: [
+            se_assignments: [
                 {
                     type: 'SET',
                     year: 6,
@@ -621,6 +675,13 @@ export default {
                     id: '5dwmzbevfi',
                 },
             ],
+            ce_assignments: [
+                {
+                    type: 'CSE',
+                    link: 'https://www.examenblad.nl/examen/spaans-vwo-2',
+                    id: 'uwqracxa6m',
+                },
+            ],
         },
         {
             type: 'COMB',
@@ -633,7 +694,7 @@ export default {
                     fullname: 'Maatschappijleer',
                     shortname: 'Maat.',
                     id: '50t1897ct8',
-                    assignments: [
+                    se_assignments: [
                         {
                             type: 'PO',
                             year: 4,
@@ -678,7 +739,6 @@ export default {
                             id: '8ulmc1jqp7',
                         },
                     ],
-                    weight: 1,
                 },
                 {
                     type: 'VAK',
@@ -686,7 +746,7 @@ export default {
                         'Algemene Natuurwetenschappen (Filosofie en Technologie)',
                     shortname: 'ANW',
                     id: 't6we4xy0a3',
-                    assignments: [
+                    se_assignments: [
                         {
                             type: 'PO',
                             year: 5,
@@ -742,14 +802,13 @@ export default {
                             id: '7qgusse1xa',
                         },
                     ],
-                    weight: 1,
                 },
                 {
                     type: 'VAK',
                     fullname: 'Culturele en Kunstzinnige vorming',
                     shortname: 'CKV',
                     id: '27ox1mmvn2',
-                    assignments: [
+                    se_assignments: [
                         {
                             type: 'PO',
                             year: 4,
@@ -784,7 +843,6 @@ export default {
                             id: 'wo4mih1hcq',
                         },
                     ],
-                    weight: 1,
                 },
                 {
                     type: 'PO',
@@ -792,7 +850,6 @@ export default {
                     period: 3,
                     description:
                         'Verslaglegging van het profielwerkstuk en bijbehorende mondelinge toelichting',
-                    weight: 1,
                     id: 'vnhbeley4l',
                 },
             ],

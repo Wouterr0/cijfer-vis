@@ -1,42 +1,52 @@
 <template>
     <AssignmentProp
         key_="soort"
-        :value="assignment.type"
         :style="{
             background: `var(--${assignment.type}-color)`,
             padding: '0 .25em',
         }"
-    />
+        >{{ assignment.type }}</AssignmentProp
+    >
     <AssignmentProp
         v-if="['VAK', 'COMB'].includes(assignment.type)"
         key_="naam"
-        :value="assignment.fullname"
-    />
-    <AssignmentProp
-        key_="weging per cijfer"
-        :value="nl_num(subjectWeight(assignment) * 100, undefined, 4) + '%'"
-    />
+        >{{ assignment.fullname }}</AssignmentProp
+    >
+    <AssignmentProp key_="weging per cijfer">{{
+        nl_num(subjectWeight(assignment) * 100, undefined, 4) + '%'
+    }}</AssignmentProp>
     <!-- TODO: get also in rational form (a / b) eg. 1/40 -->
-    <AssignmentProp
-        key_="weging diplomacijfer"
-        :value="nl_num(totalWeight(assignment) * 100, undefined, 4) + '%'"
-    />
-    <div v-if="['PO', 'MET', 'SET'].includes(assignment.type)">
-        <AssignmentProp key_="leerjaar" :value="assignment.year" />
-        <AssignmentProp key_="periode" :value="assignment.period" />
-        <AssignmentProp
-            v-if="'domains' in assignment"
-            key_="domeinen"
-            :value="assignment.domains.join(', ')"
-        />
+    <AssignmentProp key_="weging diplomacijfer">{{
+        nl_num(totalWeight(assignment) * 100, undefined, 4) + '%'
+    }}</AssignmentProp>
+    <AssignmentProp v-if="assignment.weight" key_="weging">{{
+        nl_num(assignment.weight)
+    }}</AssignmentProp>
+
+    <template v-if="['PO', 'MET', 'SET'].includes(assignment.type)">
+        <AssignmentProp key_="leerjaar">{{ assignment.year }}</AssignmentProp>
+        <AssignmentProp key_="periode">{{ assignment.period }}</AssignmentProp>
+
+        <AssignmentProp v-if="assignment.magister" key_="magister">{{
+            assignment.magister
+        }}</AssignmentProp>
+
+        <AssignmentProp v-if="'domains' in assignment" key_="domeinen">{{
+            assignment.domains.join(', ')
+        }}</AssignmentProp>
         <AssignmentProp
             key_="beschrijving"
-            :value="assignment.description"
             :style="{
                 whiteSpace: 'pre-wrap',
             }"
-        />
-    </div>
+            >{{ assignment.description }}</AssignmentProp
+        >
+    </template>
+    <AssignmentProp v-if="assignment.link" key_="link">
+        <a :href="assignment.link" target="_blank">
+            {{ assignment.link }}
+        </a>
+    </AssignmentProp>
 </template>
 
 <script>

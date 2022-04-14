@@ -1,25 +1,24 @@
 <template>
     <tr>
-        <td colspan="2">
+        <td colspan="6">
             <hr class="tot-sep" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
             <div style="display: flex">
                 <div>Totaal:</div>
-                <div class="stats">
-                    <div :title="nl_num(min(), 1)">
-                        <strong>min:</strong> {{ nl_num(min(true), 1) }}
-                    </div>
-                    <div :title="nl_num(max(), 1)">
-                        <strong>max:</strong> {{ nl_num(max(true), 1) }}
-                    </div>
-                    <div :title="nl_num(median(), 1)">
-                        <strong>mediaan:</strong> {{ nl_num(median(true), 1) }}
-                    </div>
-                </div>
             </div>
         </td>
-        <td style="display: block">
-            <hr class="tot-sep" />
-            <div :title="nl_num(avg(), 1)">{{ nl_num(avg(true), 1) }}</div>
+        <td :title="nl_num(avg(false, true, false))">
+            {{ nl_num(avg(true, true, false)) }}
+        </td>
+        <td v-if="showCE" />
+        <td v-if="showCE" :title="nl_num(avg(false, false, true))">
+            {{ nl_num(avg(true, false, true)) }}
+        </td>
+        <td :title="nl_num(avg(false))">
+            {{ nl_num(avg(true)) }}
         </td>
     </tr>
 </template>
@@ -30,6 +29,9 @@ import { nl_num } from '../utils.js';
 
 export default {
     name: 'TotalRow',
+    props: {
+        showCE: Boolean,
+    },
     computed: mapGetters(['min', 'max', 'median', 'avg']),
     methods: { nl_num },
 };

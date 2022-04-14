@@ -11,6 +11,7 @@
             :disabled="!canInput"
             required
         />
+        <!-- TODO: add a way to view un rounded result -->
         <input
             type="button"
             value="invullen"
@@ -42,7 +43,7 @@ export default {
             return this.$store.getters.result(this.assignment);
         },
         canInput() {
-            return ["SET", "MET", "PO"].includes(this.assignment.type);
+            return ["SET", "MET", "PO", "CSE"].includes(this.assignment.type);
         },
     },
     methods: {

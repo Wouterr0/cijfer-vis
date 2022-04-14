@@ -19,7 +19,7 @@ export default {
         Errors,
     },
     computed: {
-        ...mapState(['settings']),
+        ...mapState(['settings', 'results']),
         roundness() {
             return this.$store.state.settings.round ? '2em' : '0';
         },
@@ -70,7 +70,6 @@ export default {
     },
     created() {
         console.log(this.$store.state);
-
         window.gen_id = gen_id;
     },
     errorCaptured(err, vm, info) {

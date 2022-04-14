@@ -2,18 +2,25 @@ import { createApp } from 'vue';
 import { createStore } from 'vuex';
 import App from './App.vue';
 import data from './data.js';
-import { assignment_by_id, parse_data, load } from './utils.js';
+import {
+    parse_data,
+    round,
+    load,
+    assignment_by_id,
+    all_sub_assignments,
+} from './utils.js';
 
 // Create a new store instance.
 const store = createStore({
     state: {
-        grade: parse_data(data),
+        diploma: parse_data(data),
         mode: 'results',
         hovered: null,
         clicked: null,
         settings: load('settings', {
             extra: [],
             replacing: [],
+            showCE: true,
             round: false,
             scale: 1,
         }),
@@ -22,7 +29,7 @@ const store = createStore({
     getters: {
         subjects(state) {
             let subjects = [];
-            for (const subject of state.grade.assignments) {
+            for (const subject of state.diploma.grades) {
                 /* Show subject if:
                  *
                  *  it is not (
@@ -64,15 +71,17 @@ const store = createStore({
                 }
                 counted_types[assignment.type]++;
 
-                if (assignment.assignments) {
-                    for (const sub_assignment of assignment.assignments) {
+                const sub_assignments = all_sub_assignments(assignment);
+                if (sub_assignments) {
+                    for (const sub_assignment of sub_assignments) {
                         recurse(sub_assignment);
                     }
                 }
             }
 
             for (const subject of getters.subjects) {
-                for (const assignment of subject.assignments) {
+                const sub_assignments = all_sub_assignments(subject);
+                for (const assignment of sub_assignments) {
                     recurse(assignment);
                 }
             }
@@ -83,35 +92,23 @@ const store = createStore({
         },
         allOptional(state) {
             let allOptionalAssignments = [];
-            function checkOptional(assignment) {
-                if (assignment.optional) {
-                    allOptionalAssignments.push(assignment);
-                }
-                if (assignment.assignments) {
-                    for (const sub_assignment of assignment.assignments) {
-                        checkOptional(sub_assignment);
-                    }
+            for (const subject of state.diploma.grades) {
+                if (subject.optional) {
+                    allOptionalAssignments.push(subject);
                 }
             }
-            checkOptional(state.grade);
             return allOptionalAssignments;
         },
         allReplacing(state) {
             let allReplacingAssignments = [];
-            function checkReplacing(assignment) {
-                if (assignment.replaces) {
+            for (const subject of state.diploma.grades) {
+                if (subject.replaces) {
                     allReplacingAssignments.push({
-                        replaces: assignment_by_id(assignment.replaces),
-                        replacing: assignment,
+                        replaces: assignment_by_id(subject.replaces),
+                        replacing: subject,
                     });
                 }
-                if (assignment.assignments) {
-                    for (const sub_assignment of assignment.assignments) {
-                        checkReplacing(sub_assignment);
-                    }
-                }
             }
-            checkReplacing(state.grade);
             return allReplacingAssignments;
         },
         isOptional: (state) => (assignment) => {
@@ -124,44 +121,114 @@ const store = createStore({
         },
         result:
             (state, getters) =>
-            (assignment, rounding = false) => {
+            (assignment, rounding = true, se_only = false, ce_only = false) => {
+                // if (assignment.type === 'VAK') {
+                //     console.log('result', assignment);
+                // }
+                function average(assignments) {
+                    let weighted_sum = 0;
+                    let weight_sum = 0;
+                    let result;
+                    for (const assignment of assignments) {
+                        let score = getters.result(assignment, rounding);
+                        if (score === undefined) continue;
+                        const weight =
+                            assignment.weight /
+                            assignment.parent.total_subweight;
+                        weighted_sum += score * weight;
+                        weight_sum += weight;
+                    }
+                    if (weight_sum > 0) {
+                        result = weighted_sum / weight_sum;
+                    }
+                    return result;
+                }
+
                 let result;
+                let decimals;
+
                 if (assignment.id in state.results) {
                     result = state.results[assignment.id];
+                    decimals = 1;
                 } else {
-                    if (assignment.assignments) {
-                        let weighted_sum = 0;
-                        let weight_sum = 0;
-
-                        for (const sub_assignment of assignment.assignments) {
-                            const score = getters.result(
-                                sub_assignment,
-                                rounding
+                    if (assignment.type === 'DIPLOMA') {
+                        result = average(assignment.grades);
+                        decimals = 0;
+                    } else if (assignment.type === 'COMB') {
+                        if (!ce_only)
+                            result = average(
+                                assignment.assignments,
+                                rounding && assignment.parent.type === 'DIPLOMA'
+                                    ? 0
+                                    : null
                             );
-                            if (score === undefined) continue;
-                            const weight =
-                                sub_assignment.weight /
-                                sub_assignment.parent.total_subweight;
-                            weighted_sum += score * weight;
-                            weight_sum += weight;
-                        }
-                        if (weight_sum > 0) {
-                            result = weighted_sum / weight_sum;
+                        decimals = 0;
+                    } else if (assignment.type === 'VAK') {
+                        if (se_only || ce_only) {
+                            if (se_only) {
+                                decimals = assignment.ce_assignments ? 1 : 0;
+                                result = average(assignment.se_assignments);
+                            }
+                            if (ce_only) {
+                                decimals = 1;
+                                result = average(assignment.ce_assignments);
+                            }
+                        } else {
+                            decimals = 0;
+
+                            const se_res =
+                                assignment.se_assignments &&
+                                getters.result(
+                                    assignment,
+                                    rounding,
+                                    true,
+                                    false
+                                );
+                            const ce_res =
+                                assignment.ce_assignments &&
+                                getters.result(
+                                    assignment,
+                                    rounding,
+                                    false,
+                                    true
+                                );
+
+                            if (assignment.ce_assignments) {
+                                result =
+                                    se_res !== undefined && ce_res !== undefined
+                                        ? (se_res + ce_res) / 2
+                                        : se_res || ce_res;
+                            } else {
+                                result = se_res;
+                            }
                         }
                     }
                 }
+                if (
+                    assignment.parent &&
+                    assignment.parent.type === 'COMB' &&
+                    assignment.parent.parent.type === 'DIPLOMA'
+                ) {
+                    decimals = 0;
+                }
                 if (rounding && result !== undefined) {
-                    result = Math.round((result + Number.EPSILON) * 10) / 10;
+                    result = round(result, decimals);
                 }
                 return result;
             },
         avg:
             (state, getters) =>
-            (rounding = false) => {
+            (rounding = false, se_only = false, ce_only = false) => {
                 let sum = 0;
                 let amount = 0;
-                for (const subject of getters.subjects) {
-                    const score = getters.result(subject, rounding);
+                for (const grade of getters.subjects) {
+                    if (ce_only && grade.ce_assignments === undefined) continue;
+                    const score = getters.result(
+                        grade,
+                        rounding,
+                        se_only,
+                        ce_only
+                    );
                     if (score) {
                         sum += score;
                         amount++;
@@ -214,10 +281,13 @@ const store = createStore({
             },
         subjectWeight: (state) => (assignment) => {
             if (!assignment.parent) return;
+            if (assignment.type === 'CSE') return 0.5;
             let weight = assignment.weight;
             do {
                 assignment = assignment.parent;
-                weight /= assignment.total_subweight;
+                weight /=
+                    assignment.total_subweight *
+                    (assignment.ce_assignments ? 2 : 1);
             } while (assignment.parent.parent);
             return weight;
         },
@@ -233,6 +303,10 @@ const store = createStore({
         setScale(state, scale) {
             console.log('scale', scale);
             state.settings.scale = scale;
+        },
+        setShowCE(state, showCE) {
+            console.log('show CE', showCE);
+            state.settings.showCE = showCE;
         },
         setMode(state, mode) {
             console.log('mode', mode);
@@ -277,9 +351,12 @@ const store = createStore({
 
 // TODO: Improve accessibility (lighthouse, etc.)
 // TODO: Color grades based on their value and cum laude
+// https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 // TODO: Fix averages and make a better overview
 // TODO: Add the paste EventListener also on the main page
-// https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
+// TODO: sneleng werkt niet
+// TODO: add tooltips for combinations
+// TODO: add feature to put desired result for a combination in and calculate the containing results
 const app = createApp(App);
 app.use(store);
 app.mount('#app');

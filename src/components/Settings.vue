@@ -11,6 +11,11 @@
         <Optionals />
         <hr />
         <Replacings />
+        <hr />
+        <input type="checkbox" id="show-ce" v-model="showCE" />
+        <label for="show-ce" title="Toon centrale examens"
+            >Centrale Examens</label
+        >
         <hr class="left" />
         <input
             placeholder="Importeer resultaten"
@@ -82,6 +87,14 @@ export default {
             },
             set(value) {
                 this.$store.commit('setRound', value);
+            },
+        },
+        showCE: {
+            get() {
+                return this.$store.state.settings.showCE;
+            },
+            set(value) {
+                this.$store.commit('setShowCE', value);
             },
         },
     },
