@@ -31,6 +31,18 @@ function assignment_where(f, assignment = raw_diploma) {
     }
 }
 
+function assignments_where(f, assignment = raw_diploma, result = []) {
+    if (f(assignment)) result.push(assignment);
+    let assignments = all_sub_assignments(assignment);
+
+    if (assignments) {
+        for (const sub_assignment of assignments) {
+            assignments_where(f, sub_assignment, result);
+        }
+    }
+    return result;
+}
+
 export function assignment_by_id(id) {
     return assignment_where((a) => a.id === id);
 }
@@ -197,15 +209,16 @@ export function parsePaste(pastedText, err_callback) {
 
     for (const [, subj, n, score] of magister_results) {
         const magister = subj + n;
-        const assignment = assignment_where((a) => a.magister === magister);
-        if (assignment) {
+
+        const assignments = assignments_where((a) => a.magister === magister);
+        if (assignments.length === 0)
+            err_callback(`Onbekende magister kolomnaam: ${magister}`);
+        for (const assignment of assignments) {
             results.push({
                 magister,
                 assignment,
                 score: parseFloat(score.replace(',', '.')),
             });
-        } else {
-            err_callback(`Onbekende magister kolomnaam: ${magister}`);
         }
     }
     return results;
