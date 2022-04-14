@@ -23,6 +23,11 @@
     <template v-if="['PO', 'MET', 'SET'].includes(assignment.type)">
         <AssignmentProp key_="leerjaar">{{ assignment.year }}</AssignmentProp>
         <AssignmentProp key_="periode">{{ assignment.period }}</AssignmentProp>
+
+        <AssignmentProp v-if="assignment.magister" key_="magister">{{
+            assignment.magister
+        }}</AssignmentProp>
+
         <AssignmentProp v-if="'domains' in assignment" key_="domeinen">{{
             assignment.domains.join(', ')
         }}</AssignmentProp>

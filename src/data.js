@@ -113,7 +113,7 @@ export default {
                         'Individuele opdracht naar aanleiding van een bezoek aan externe organisatie op het gebied van duurzaamheid',
                     domains: ['A', 'C8', 'F5', 'G5'],
                     weight: 20,
-                    magister: 'SCHK8203',
+                    magister: 'SCHK8204',
                     id: '1zdnkkmoho',
                 },
                 {
@@ -124,7 +124,6 @@ export default {
                         'Individuele verslaglegging van uitvoer van en werkhouding voor verscheidene practica op het gebied van gezondheid',
                     domains: ['A', 'C10', 'D2', 'D4', 'C5'],
                     weight: 20,
-                    magister: 'SCHK8204',
                     id: 'z01wr9t5g8',
                 },
                 {
