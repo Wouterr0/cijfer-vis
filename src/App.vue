@@ -70,10 +70,6 @@ export default {
     },
     created() {
         console.log(this.$store.state);
-        // console.log(this.$store.getters.result(this.$store.state.diploma.grades[0], true));
-        console.log(
-            this.$store.getters.result(this.$store.state.diploma, true)
-        );
         window.gen_id = gen_id;
     },
     errorCaptured(err, vm, info) {

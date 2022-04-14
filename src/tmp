@@ -1,0 +1,26 @@
+ artikel 12, vierde lid, onderdeel c, van de wet
+ artikel 26b, zevende lid, van het Inrichtingsbesluit WVO
+ 
+ 
+nvt bij ce van geen ce
+sneleng werkt niet
+
+
+
+er is
+  (geen) centraal examen
+  (wel ) een centraal examen
+
+ik wil
+  alleen het schoolexamen
+  alleen het centraal examen
+  het eindcijfer
+
+er is (geen) centraal examen EN ik wil alleen het schoolexamen: 0 afgerond na middelen opdrachten
+er is (wel ) een centraal examen EN ik wil alleen het schoolexamen: 1 afgerond na middelen opdrachten
+
+er is (geen) centraal examen EN ik wil alleen het centraal examen: error
+er is (wel ) een centraal examen EN ik wil alleen het centraal examen: 1 afgerond na middelen ce examens
+
+er is (geen) centraal examen EN ik wil het eindcijfer: het schoolexamen
+er is (wel ) een centraal examen EN ik wil het eindcijfer: 0 afgerond na middelen schoolexamen en centraal examen

@@ -121,6 +121,9 @@ const store = createStore({
         result:
             (state, getters) =>
             (assignment, rounding = true, se_only = false, ce_only = false) => {
+                // if (assignment.type === 'VAK') {
+                //     console.log('result', assignment);
+                // }
                 function average(assignments) {
                     let weighted_sum = 0;
                     let weight_sum = 0;
@@ -160,27 +163,43 @@ const store = createStore({
                             );
                         decimals = 0;
                     } else if (assignment.type === 'VAK') {
-                        const se_avg =
-                            assignment.se_assignments &&
-                            average(assignment.se_assignments);
-                        const ce_avg =
-                            assignment.ce_assignments &&
-                            average(assignment.ce_assignments);
-                        if (!se_only && !ce_only) {
-                            decimals = 0;
-                            if (se_avg !== undefined && ce_avg !== undefined) {
-                                result = (se_avg + ce_avg) / 2;
-                            } else {
-                                result = se_avg || ce_avg;
+                        if (se_only || ce_only) {
+                            if (se_only) {
+                                decimals = assignment.ce_assignments ? 1 : 0;
+                                result = average(assignment.se_assignments);
                             }
-                        } else if (se_only && !ce_only) {
-                            decimals = 1;
-                            result = se_avg;
-                        } else if (ce_only && !se_only) {
-                            decimals = 1;
-                            result = ce_avg;
+                            if (ce_only) {
+                                decimals = 1;
+                                result = average(assignment.ce_assignments);
+                            }
                         } else {
-                            throw new Error('wtf');
+                            decimals = 0;
+
+                            const se_res =
+                                assignment.se_assignments &&
+                                getters.result(
+                                    assignment,
+                                    rounding,
+                                    true,
+                                    false
+                                );
+                            const ce_res =
+                                assignment.ce_assignments &&
+                                getters.result(
+                                    assignment,
+                                    rounding,
+                                    false,
+                                    true
+                                );
+
+                            if (assignment.ce_assignments) {
+                                result =
+                                    se_res !== undefined && ce_res !== undefined
+                                        ? (se_res + ce_res) / 2
+                                        : se_res || ce_res;
+                            } else {
+                                result = se_res;
+                            }
                         }
                     }
                 }
@@ -201,9 +220,10 @@ const store = createStore({
             (rounding = false, se_only = false, ce_only = false) => {
                 let sum = 0;
                 let amount = 0;
-                for (const subject of getters.subjects) {
+                for (const grade of getters.subjects) {
+                    if (ce_only && grade.ce_assignments === undefined) continue;
                     const score = getters.result(
-                        subject,
+                        grade,
                         rounding,
                         se_only,
                         ce_only

@@ -19,7 +19,6 @@
 <script>
 import AssignmentBlocks from './AssignmentBlocks.vue';
 import { nl_num } from '../utils.js';
-import { mapGetters } from 'vuex';
 
 export default {
     name: 'Row',
@@ -52,20 +51,15 @@ export default {
             return nl_num(this.$store.getters.result(this.grade, false));
         },
         SEresult() {
-            if (this.grade.type === 'VAK' && !this.grade.se_assignments) {
-                return 'nvt';
-            }
             return nl_num(
                 this.$store.getters.result(this.grade, true, true, false),
-                1
+                this.grade.ce_assignments ? 1 : 0
             );
         },
         unRoundedSEresult() {
-            if (this.grade.type === 'VAK' && !this.grade.se_assignments) {
-                return null;
-            }
             return nl_num(
-                this.$store.getters.result(this.grade, false, true, false)
+                this.$store.getters.result(this.grade, false, true, false),
+                this.grade.ce_assignments ? 1 : 0
             );
         },
         CEresult() {
