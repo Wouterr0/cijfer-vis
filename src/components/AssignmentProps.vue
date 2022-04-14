@@ -12,7 +12,6 @@
         key_="naam"
         >{{ assignment.fullname }}</AssignmentProp
     >
-    <!-- TODO: also display weight per subject -->
     <AssignmentProp key_="weging per cijfer">{{
         nl_num(subjectWeight(assignment) * 100, undefined, 4) + '%'
     }}</AssignmentProp>
@@ -20,6 +19,10 @@
     <AssignmentProp key_="weging diplomacijfer">{{
         nl_num(totalWeight(assignment) * 100, undefined, 4) + '%'
     }}</AssignmentProp>
+    <AssignmentProp v-if="assignment.weight" key_="weging">{{
+        nl_num(assignment.weight)
+    }}</AssignmentProp>
+
     <template v-if="['PO', 'MET', 'SET'].includes(assignment.type)">
         <AssignmentProp key_="leerjaar">{{ assignment.year }}</AssignmentProp>
         <AssignmentProp key_="periode">{{ assignment.period }}</AssignmentProp>

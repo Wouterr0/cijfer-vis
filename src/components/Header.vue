@@ -2,7 +2,7 @@
     <th class="small-row">VAK</th>
     <th>SE OPDRACHTEN</th>
     <th v-if="showResults" class="small-row">SE</th>
-    <th>CE OPDRACHTEN</th>
+    <th>Centraal Examen</th>
     <th v-if="showResults" class="small-row">CE</th>
     <th v-if="showResults" class="small-row">Eind.</th>
 </template>
