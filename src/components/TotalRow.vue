@@ -11,14 +11,14 @@
             </div>
         </td>
         <td :title="nl_num(avg(false, true, false))">
-            {{ nl_num(avg(true, true, false)) }}
+            {{ nl_num(avg(true, true, false), 1) }}
         </td>
         <td v-if="showCE" />
         <td v-if="showCE" :title="nl_num(avg(false, false, true))">
-            {{ nl_num(avg(true, false, true)) }}
+            {{ nl_num(avg(true, false, true), 1) }}
         </td>
         <td :title="nl_num(avg(false))">
-            {{ nl_num(avg(true)) }}
+            {{ nl_num(avg(true), 1) }}
         </td>
     </tr>
 </template>
