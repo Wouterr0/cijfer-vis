@@ -9,7 +9,7 @@
             v-model="result"
             @keyup.enter="submitResult"
             :disabled="!canInput"
-            :title="!canInput && subAssignmentResult"
+            :title="subAssignmentResult"
             required
         />
         <!-- TODO: add a way to view un rounded result -->
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-    name: "ResultInput",
+    name: 'ResultInput',
     props: {
         assignment: Object,
     },
@@ -41,20 +41,24 @@ export default {
     },
     computed: {
         subAssignmentResult() {
+            if (this.canInput) return null;
             return this.$store.getters.result(this.assignment, false);
         },
+        assignmentResult() {
+            return this.$store.getters.result(this.assignment);
+        },
         canInput() {
-            return ["SET", "MET", "PO", "CSE"].includes(this.assignment.type);
+            return ['SET', 'MET', 'PO', 'CSE'].includes(this.assignment.type);
         },
     },
     methods: {
         clearResult() {
-            this.$store.commit("setResult", {
+            this.$store.commit('setResult', {
                 assignment: this.assignment,
             });
         },
         submitResult() {
-            this.$store.commit("setResult", {
+            this.$store.commit('setResult', {
                 assignment: this.assignment,
                 result: this.result,
             });
