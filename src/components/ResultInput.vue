@@ -9,6 +9,7 @@
             v-model="result"
             @keyup.enter="submitResult"
             :disabled="!canInput"
+            :title="!canInput && subAssignmentResult"
             required
         />
         <!-- TODO: add a way to view un rounded result -->
@@ -39,8 +40,8 @@ export default {
         };
     },
     computed: {
-        assignmentResult() {
-            return this.$store.getters.result(this.assignment);
+        subAssignmentResult() {
+            return this.$store.getters.result(this.assignment, false);
         },
         canInput() {
             return ["SET", "MET", "PO", "CSE"].includes(this.assignment.type);
