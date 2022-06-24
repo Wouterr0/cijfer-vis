@@ -124,6 +124,7 @@ export default {
                         'Individuele verslaglegging van uitvoer van en werkhouding voor verscheidene practica op het gebied van gezondheid',
                     domains: ['A', 'C10', 'D2', 'D4', 'C5'],
                     weight: 20,
+                    magister: 'SCHK8203',
                     id: 'z01wr9t5g8',
                 },
                 {
