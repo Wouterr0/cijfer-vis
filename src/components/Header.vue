@@ -1,6 +1,6 @@
 <template>
-    <th class="small-row">VAK</th>
-    <th>SE OPDRACHTEN</th>
+    <th class="small-row">Vak</th>
+    <th>SE Opdrachten</th>
     <th v-if="showResults" class="small-row">SE</th>
     <th v-if="showCE">Centraal Examen</th>
     <th v-if="showResults && showCE" class="small-row">CE</th>
