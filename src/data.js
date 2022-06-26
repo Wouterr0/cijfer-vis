@@ -72,7 +72,7 @@ export default {
             ce_assignments: [
                 {
                     type: 'CSE',
-                    link: 'https://www.examenblad.nl/examen/wiskunde-b-vwo-2',
+                    link: 'https://www.examenblad.nl/examen/natuurkunde-vwo-2',
                     id: 'lo5r266gs9',
                 },
             ],
@@ -348,7 +348,7 @@ export default {
             ce_assignments: [
                 {
                     type: 'CSE',
-                    link: 'https://www.examenblad.nl/examen/biologie-vwo-2',
+                    link: 'https://www.examenblad.nl/examen/wiskunde-b-vwo-2',
                     id: 'a301lmcwsp',
                 },
             ],
