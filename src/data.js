@@ -65,7 +65,7 @@ export default {
                         'Modelstudie over een bewegingsverschijnsel\nIndividueel werk',
                     domains: ['A', 'I2'],
                     weight: 17,
-                    magister: 'NAT8206',
+                    magister: 'NAT8208',
                     id: 'p9zxizlb5a',
                 },
             ],
