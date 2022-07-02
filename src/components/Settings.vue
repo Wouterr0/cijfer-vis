@@ -1,12 +1,6 @@
 <template>
     <div class="settings">
         <ToggleButton :values="modi" v-model="mode" style="font-weight: 700" />
-        <input
-            type="button"
-            v-if="showResults"
-            value="ALLE RESULTATEN WISSEN"
-            @click="clearAll"
-        />
         <hr />
         <Optionals />
         <hr />
@@ -17,18 +11,26 @@
             >Centrale Examens</label
         >
         <hr class="left" />
-        <input
-            placeholder="Importeer resultaten"
-            title="Plak hier je magister resultaten"
-        />
-        <a
-            class="import-btn"
-            href="import.html"
-            title="Voor als je een beetje hulp nodig hebt bij het importeren van je magister cijfers"
-        >
-            help me
-        </a>
-        <hr />
+        <template v-if="showResults">
+            <input
+                type="button"
+                value="ALLE RESULTATEN WISSEN"
+                @click="clearAll"
+            />
+            <input
+                placeholder="Importeer resultaten"
+                title="Plak hier je magister resultaten"
+            />
+            <a
+                class="import-btn"
+                href="import.html"
+                title="Voor als je een beetje hulp nodig hebt bij het importeren van je magister cijfers"
+            >
+                help me
+            </a>
+            <hr />
+        </template>
+
         <input
             type="range"
             v-model="scale"
@@ -67,7 +69,7 @@ export default {
         ...mapGetters(['showResults']),
         mode: {
             get() {
-                return this.$store.state.mode;
+                return this.$store.state.settings.mode;
             },
             set(value) {
                 this.$store.commit('setMode', value);
