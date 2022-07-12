@@ -60,7 +60,11 @@ const store = createStore({
         },
         assignments: (state, getters) => {
             let as = assignments_where(
-                (assignment) => !['VAK', 'COMB'].includes(assignment.type),
+                (assignment) => {
+                    if (['VAK', 'COMB'].includes(assignment.type)) return false;
+                    else if (!state.settings.showCE && assignment.type === 'CSE') return false;
+                    else return true;
+                },
                 getters.subjects
             );
             // console.log(as);

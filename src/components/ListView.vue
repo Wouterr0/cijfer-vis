@@ -7,7 +7,7 @@
         <tbody>
             <ListTotal
                 :selectionType="selectionType"
-                :selectedAssignmentIDs="selectedAssignments"
+                :selectedAssignments="selectedAssignments"
             />
             <ListRow
                 :assignment="assignment"
@@ -71,6 +71,12 @@ export default {
                 this.selectionType = listSelectionTypes.None;
                 this.selectedAssignments = [];
             }
+        },
+    },
+    watch: {
+        assignments() {
+            this.selectedAssignments = [];
+            this.selectionType = listSelectionTypes.None;
         },
     },
     components: { ListHeader, ListTotal, ListRow },
