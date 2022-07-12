@@ -1,7 +1,7 @@
 :root {
     --font-size: min(4vh, min(5vw, 2em));
-    --select-border-size: .08em;
-    --assign-gap: .2em;
+    --select-border-size: 0.08em;
+    --assign-gap: 0.2em;
     --assign-padd: calc(var(--assign-gap) - var(--select-border-size));
 
     /* Assingment type colors */
@@ -19,7 +19,7 @@
     --MET-color: hsl(var(--MET-h), var(--test-s), var(--test-l));
     --VAK-color: hsl(0, 0%, var(--test-l));
     --CSE-color: hsl(var(--CSE-h), var(--test-s), var(--test-l));
-    
+
     --PO-color-dark: hsl(var(--PO-h), var(--dark-s), var(--dark-l));
     --SET-color-dark: hsl(var(--SET-h), var(--dark-s), var(--dark-l));
     --MET-color-dark: hsl(var(--MET-h), var(--dark-s), var(--dark-l));
@@ -33,11 +33,34 @@ body {
     margin: 0;
 }
 
-input, label {
+input,
+label {
     font-family: inherit;
     font-size: calc(var(--font-size) / 2);
 }
 
-input[type="button"] {
-    padding: .1em .6em;
+input[type='button'] {
+    padding: 0.1em 0.6em;
+}
+
+input[type='checkbox'],
+input[type='button'] {
+    cursor: pointer;
+}
+
+input[type='checkbox'] {
+    height: 1.2em;
+    width: 1.2em;
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 48;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.unselectable {
+    user-select: none;
 }

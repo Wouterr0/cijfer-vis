@@ -9,7 +9,7 @@
 
 <script>
 export default {
-    name: 'Header',
+    name: 'BlocksHeader',
     props: {
         showResults: Boolean,
         showCE: Boolean,
@@ -18,7 +18,4 @@ export default {
 </script>
 
 <style>
-.small-row {
-    width: 5%;
-}
 </style>

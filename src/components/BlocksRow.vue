@@ -23,7 +23,7 @@ import AssignmentBlocks from './AssignmentBlocks.vue';
 import { nl_num } from '../utils.js';
 
 export default {
-    name: 'Row',
+    name: 'BlocksRow',
     props: {
         grade: Object,
         showResults: Boolean,

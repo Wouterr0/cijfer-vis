@@ -6,6 +6,7 @@ import {
     parse_data,
     round,
     load,
+    assignments_where,
     assignment_by_id,
     all_sub_assignments,
 } from './utils.js';
@@ -14,10 +15,10 @@ import {
 const store = createStore({
     state: {
         diploma: parse_data(data),
-        mode: 'results',
         hovered: null,
         clicked: null,
         settings: load('settings', {
+            mode: 'results',
             extra: [],
             replacing: [],
             showCE: true,
@@ -57,8 +58,22 @@ const store = createStore({
             }
             return subjects;
         },
+        assignments: (state, getters) => {
+            let as = assignments_where(
+                (assignment) => !['VAK', 'COMB'].includes(assignment.type),
+                getters.subjects
+            );
+            // console.log(as);
+            return as;
+        },
         showResults(state) {
-            return state.mode === 'results';
+            switch (state.settings.mode) {
+                case 'results':
+                case 'list':
+                    return true;
+                case 'plan':
+                    return false;
+            }
         },
         focussed(state) {
             return state.clicked !== null ? state.clicked : state.hovered;
@@ -310,7 +325,7 @@ const store = createStore({
         },
         setMode(state, mode) {
             console.log('mode', mode);
-            state.mode = mode;
+            state.settings.mode = mode;
         },
         hover(state, assignment) {
             state.hovered = assignment;
@@ -353,10 +368,8 @@ const store = createStore({
 // TODO: Color grades based on their value and cum laude
 // https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 // TODO: Fix averages and make a better overview
-// TODO: Add the paste EventListener also on the main page
-// TODO: sneleng werkt niet
-// TODO: add tooltips for combinations
 // TODO: add feature to put desired result for a combination in and calculate the containing results
+// TODO: better hover popup
 const app = createApp(App);
 app.use(store);
 app.mount('#app');

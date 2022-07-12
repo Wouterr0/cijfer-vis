@@ -1,7 +1,13 @@
 import raw_diploma from './data.js';
 import { check_validity } from './validate_data.js';
 
-export const modi = { results: 'RESULTATEN', plan: 'PLANNEN' };
+export const modi = { results: 'RESULTATEN', list: 'LIJST', plan: 'PLANNEN' };
+
+export const listSelectionTypes = {
+    All: 'all',
+    Some: 'some',
+    None: 'none',
+};
 
 export function all_sub_assignments(assignment) {
     let sub_assignments = [];
@@ -14,7 +20,7 @@ export function all_sub_assignments(assignment) {
     return sub_assignments;
 }
 
-function assignment_where(f, assignment = raw_diploma) {
+export function assignment_where(f, assignment = raw_diploma) {
     if (f(assignment)) {
         return assignment;
     } else {
@@ -31,9 +37,21 @@ function assignment_where(f, assignment = raw_diploma) {
     }
 }
 
-function assignments_where(f, assignment = raw_diploma, result = []) {
-    if (f(assignment)) result.push(assignment);
-    let assignments = all_sub_assignments(assignment);
+export function parent_where(f, assignment) {
+    if (assignment.parent == undefined) return null;
+    let parent = assignment.parent;
+    if (f(parent)) return parent;
+    return parent_where(f, parent);
+}
+
+export function assignments_where(f, assignment = raw_diploma, result = []) {
+    let assignments;
+    if (Array.isArray(assignment)) {
+        assignments = assignment;
+    } else {
+        if (f(assignment)) result.push(assignment);
+        assignments = all_sub_assignments(assignment);
+    }
 
     if (assignments) {
         for (const sub_assignment of assignments) {

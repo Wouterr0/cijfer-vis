@@ -1,7 +1,7 @@
 <template>
     <table class="overview">
-        <Header :showCE="showCE" :showResults="showResults" />
-        <Row
+        <BlocksHeader :showCE="showCE" :showResults="showResults" />
+        <BlocksRow
             :key="grade.id"
             v-for="grade in subjects"
             :grade="grade"
@@ -12,16 +12,16 @@
     </table>
 </template>
 <script>
-import Header from './Header.vue';
-import Row from './Row.vue';
+import BlocksHeader from './BlocksHeader.vue';
+import BlocksRow from './BlocksRow.vue';
 import TotalRow from './TotalRow.vue';
 import { mapGetters, mapState } from 'vuex';
 
 export default {
     name: 'Overview',
     components: {
-        Header,
-        Row,
+        BlocksHeader,
+        BlocksRow,
         TotalRow,
     },
     computed: {
@@ -42,9 +42,9 @@ export default {
     font-size: var(--table-font-size);
 }
 
-th,
-tr,
-td {
+.overview th,
+.overview tr,
+.overview td {
     padding: 0;
 }
 </style>
