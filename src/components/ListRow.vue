@@ -31,7 +31,7 @@ export default {
     name: 'ListRow',
     props: {
         assignment: Object,
-        selectedAssignmentIDs: Array,
+        selectedAssignments: Array,
         selectionType: String,
     },
     computed: {
@@ -50,13 +50,9 @@ export default {
             }
         },
         selected() {
-            if (this.selectionType == listSelectionTypes.All) {
-                return true;
-            } else if (this.selectionType == listSelectionTypes.None) {
-                return false;
-            } else if (this.selectionType == listSelectionTypes.Some) {
-                return this.selectedAssignmentIDs.includes(this.assignment.id);
-            }
+            return this.selectedAssignments.some(
+                (a) => a.id === this.assignment.id
+            );
         },
     },
     data() {
@@ -72,9 +68,7 @@ export default {
                 'set-toggle',
                 this.selectionType != listSelectionTypes.All &&
                     (this.selectionType == listSelectionTypes.None ||
-                        !this.selectedAssignmentIDs.includes(
-                            this.assignment.id
-                        )),
+                        !this.selected),
                 this.assignment
             );
         },

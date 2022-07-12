@@ -365,6 +365,7 @@ const store = createStore({
 });
 
 // TODO: Improve accessibility (lighthouse, etc.)
+// TODO: More icons
 // TODO: Color grades based on their value and cum laude
 // https://wetten.overheid.nl/jci1.3:c:BWBR0004593&hoofdstuk=V&artikel=52a&z=2021-08-01&g=2021-08-01
 // TODO: Fix averages and make a better overview

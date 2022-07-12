@@ -5,15 +5,18 @@
             @set-all-toggle="setAllToggle"
         />
         <tbody>
+            <ListTotal
+                :selectionType="selectionType"
+                :selectedAssignmentIDs="selectedAssignments"
+            />
             <ListRow
                 :assignment="assignment"
                 :selectionType="selectionType"
-                :selectedAssignmentIDs="selectedAssignmentIDs"
+                :selectedAssignments="selectedAssignments"
                 :key="assignment.id"
                 v-for="assignment in assignments"
                 @set-toggle="setToggle"
             />
-            <!-- TODO: total -->
         </tbody>
     </table>
 </template>
@@ -21,6 +24,7 @@
 <script>
 import ListHeader from './ListHeader.vue';
 import ListRow from './ListRow.vue';
+import ListTotal from './ListTotal.vue';
 import { mapGetters } from 'vuex';
 import { listSelectionTypes } from '../utils.js';
 
@@ -34,44 +38,42 @@ export default {
     },
     data() {
         return {
-            selectedAssignmentIDs: [],
+            selectedAssignments: [],
             selectionType: listSelectionTypes.None,
         };
     },
     methods: {
         setToggle(toggle, assignment) {
-            console.log('set toggle', toggle, assignment.id);
             if (toggle) {
                 if (this.selectionType === listSelectionTypes.None) {
                     this.selectionType = listSelectionTypes.Some;
                 }
-                this.selectedAssignmentIDs.push(assignment.id);
+                this.selectedAssignments.push(assignment);
             } else {
-                if (this.selectionType === listSelectionTypes.All) {
-                    this.selectionType = listSelectionTypes.Some;
-                }
                 this.removeSelectedAssignment(assignment);
+                if (this.selectedAssignments.length === 0) {
+                    this.selectionType = listSelectionTypes.None;
+                    return;
+                }
             }
             this.selectionType = listSelectionTypes.Some;
         },
         removeSelectedAssignment(assignment) {
-            this.selectedAssignmentIDs = this.selectedAssignmentIDs.filter(
-                (id) => id != assignment.id
+            this.selectedAssignments = this.selectedAssignments.filter(
+                (a) => a.id != assignment.id
             );
         },
         setAllToggle(toggle) {
             if (toggle) {
                 this.selectionType = listSelectionTypes.All;
-                this.selectedAssignmentIDs = this.assignments.map(
-                    (assignment) => assignment.id
-                );
+                this.selectedAssignments = this.assignments;
             } else {
                 this.selectionType = listSelectionTypes.None;
-                this.selectedAssignmentIDs = [];
+                this.selectedAssignments = [];
             }
         },
     },
-    components: { ListHeader, ListRow },
+    components: { ListHeader, ListTotal, ListRow },
 };
 </script>
 
@@ -81,7 +83,7 @@ export default {
     display: table;
 
     height: 1px;
-    margin-inline: 1em;
+    margin-inline: 1vw;
     border-collapse: collapse;
     font-size: calc(var(--table-font-size) * 0.6);
 }
@@ -92,15 +94,17 @@ export default {
 }
 
 .listview th:first-child {
+    padding: 0.5em 0 0 0.4em;
     border-top-left-radius: v-bind(roundness);
 }
 
 .listview th:last-child {
+    padding-right: 0.6em;
     border-top-right-radius: v-bind(roundness);
 }
 
 .header-row {
-    border-bottom: 0.05em solid #444;
+    border-bottom: 0.05em solid #888;
 }
 
 .content-row {
@@ -118,6 +122,10 @@ export default {
 
 .selected-row:hover {
     background-color: #bdf;
+}
+
+.total-row {
+    background-color: #fdb;
 }
 
 .listview td {

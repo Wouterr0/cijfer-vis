@@ -8,7 +8,7 @@
 import Optional from './Optional.vue';
 
 export default {
-    name: 'Optionalas',
+    name: 'Optionals',
     components: {
         Optional,
     },
